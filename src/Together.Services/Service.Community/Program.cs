@@ -12,8 +12,10 @@ builder.SetupSerilog();
 var services = builder.Services;
 services.AddSharedKernel<Program>(appSettings);
 services.AddPostgresDbContext<CommunityContext>(appSettings.PostgresConfig);
+services.AddGrpc();
 
 var app = builder.Build();
 app.UseSharedKernel(appSettings);
+app.UseGrpc(appSettings.GrpcEndpoints.ServiceCommunity, endpointBuilder => {});
 await CommunityContextInitialization.SeedAsync(app.Services);
 app.Run();
