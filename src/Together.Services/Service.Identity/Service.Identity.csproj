@@ -7,7 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Together.Infrastructure\Infrastructure.Mail\Infrastructure.Mail.csproj" />
+        <ProjectReference Include="..\..\Together.Infrastructure\Infrastructure.PostgreSQL\Infrastructure.PostgreSQL.csproj" />
         <ProjectReference Include="..\..\Together.Infrastructure\Infrastructure.SharedKernel\Infrastructure.SharedKernel.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
     </ItemGroup>
 
 </Project>
