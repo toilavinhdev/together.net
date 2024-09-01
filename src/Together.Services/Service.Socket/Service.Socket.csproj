@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Together.Infrastructure\Infrastructure.SharedKernel\Infrastructure.SharedKernel.csproj" />
+        <ProjectReference Include="..\..\Together.Infrastructure\Infrastructure.WebSocket\Infrastructure.WebSocket.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option csharp_namespace = "Infrastructure.SharedKernel.Protos.Identity";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+package identity;
+
+service UserGrpcServerService {
+  rpc PingGrpc(google.protobuf.Empty) returns (PingGrpcResponse);
+  rpc GetGeneralUserGrpc(GetGeneralUserGrpcRequest) returns (GetGeneralUserGrpcResponse);
+}
+
+message PingGrpcResponse {
+  string message = 1;
+}
+
+message GetGeneralUserGrpcRequest {
+  string id = 1;
+}
+
+message GetGeneralUserGrpcResponse {
+  optional GeneralUserGrpc data = 1;
+}
+
+message GeneralUserGrpc {
+  string id = 1;
+  string userName = 2;
+  google.protobuf.StringValue avatar = 3;
+  bool isOfficial = 4;
+}
