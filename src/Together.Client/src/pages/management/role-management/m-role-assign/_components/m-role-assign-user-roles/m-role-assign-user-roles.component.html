@@ -1,0 +1,45 @@
+<div id="user-roles-table-wrapper" [pDroppable]="rowDraggableDroppable" (onDrop)="onDrop()">
+  <together-table [data]="roles"
+  >
+    <together-table-column key="#" title="Index" type="index" columnClass="w-[30px] text-center"/>
+    <together-table-column key="name" title="Tên vai trò"/>
+    <together-table-column key="#" title="" columnClass="w-[50px]">
+      <ng-template togetherTableCell let-row>
+        <div class="flex gap-x-1">
+          <p-button
+            (onClick)="removeRole(row)"
+            icon="pi pi-trash text-[12px]"
+            severity="danger"
+            rounded
+            styleClass="w-[34px] h-[34px]"
+          />
+        </div>
+      </ng-template>
+    </together-table-column>
+  </together-table>
+</div>
+<div class="flex justify-end gap-x-3 mt-10">
+  <p-button
+    (onClick)="onCancel()"
+    [disabled]="!rolesHasChanged"
+    label="Hoàn tác"
+    severity="secondary"
+    outlined
+  />
+  <p-button
+    (onClick)="onSubmit()"
+    [disabled]="!params.userId || !rolesHasChanged"
+    label="Cập nhật"
+  />
+</div>
+
+<style>
+  #user-roles-table-wrapper {
+    border: 1px solid transparent;
+    transition: border-color 0.2s;
+
+    &.p-draggable-enter {
+      border-color: var(--primary);
+    }
+  }
+</style>

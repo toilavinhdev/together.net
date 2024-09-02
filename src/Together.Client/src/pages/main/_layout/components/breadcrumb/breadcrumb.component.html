@@ -1,0 +1,14 @@
+<p-breadcrumb
+  class="max-w-full"
+  [model]="items"
+  [home]="home"
+  styleClass="{{componentClass}} shadow"
+>
+  <ng-template pTemplate="item" let-item>
+    <div class="cursor-pointer text-[14px]" [routerLink]="item.url">
+      <i [class]="item.icon"></i>
+      <span>{{item.label | translate}}</span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="separator"> / </ng-template>
+</p-breadcrumb>

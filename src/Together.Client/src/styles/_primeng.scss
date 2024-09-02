@@ -1,0 +1,14 @@
+@import "primeng/resources/themes/aura-light-indigo/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+.p-messages {
+  .p-message-icon {
+    display: flex !important;
+  }
+
+  .p-message-summary {
+    font-size: 14px;
+    font-weight: 600;
+  }
+}

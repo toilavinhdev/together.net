@@ -1,0 +1,32 @@
+<div class="shadow mb-6">
+  <together-table [data]="prefixes">
+    <together-table-column key="#" title="Index" type="index" columnClass="w-[30px] text-center"/>
+    <together-table-column key="name" title="Prefix">
+      <ng-template togetherTableCell let-row>
+        <together-prefix [name]="row.name" [background]="row.background" [foreground]="row.foreground" fontSize="14px" componentClass="inline"/>
+      </ng-template>
+    </together-table-column>
+    <together-table-column key="createdAt" title="Created at" type="datetime" columnClass="w-[200px]"/>
+    <together-table-column key="#" title="" columnClass="w-[100px]">
+      <ng-template togetherTableCell let-row>
+        <div class="flex justify-center gap-x-1">
+          <p-button
+            [routerLink]="['/management/prefix',row.id,'update']"
+            icon="pi pi-pencil text-[12px]"
+            rounded
+            styleClass="w-[34px] h-[34px] bg-primary"
+          />
+          <p-button
+            *ngIf="userService.hasPermission$(policies.Prefix.Delete) | async"
+            (onClick)="confirmDeletePrefixes($event, row.id, row.name)"
+            icon="pi pi-trash text-[12px]"
+            severity="danger"
+            rounded
+            styleClass="w-[34px] h-[34px]"
+          />
+        </div>
+      </ng-template>
+    </together-table-column>
+  </together-table>
+</div>
+<p-confirmDialog />

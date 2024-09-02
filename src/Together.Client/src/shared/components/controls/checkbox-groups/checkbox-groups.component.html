@@ -1,0 +1,30 @@
+<div [ngClass]="controlClass" class="border rounded border-solid {{isError ? 'border-[#dc2626]' : 'border-gray-300'}} duration-200">
+  <div *ngFor="let group of groups; let groupIndex=index; let first = first; let last = last"
+       class="border border-t-0 border-l-0 border-r-0 {{isError ? 'border-[#dc2626]' : 'border-gray-300'}} border-solid duration-200 px-4 py-2"
+       [ngClass]="{'border-b-0': last}">
+    <div class="grid grid-cols-2">
+      <p-checkbox
+        [binary]="true"
+        [label]="group.label"
+        [disabled]="group.disable ?? false"
+        [(ngModel)]="group.checked"
+        (ngModelChange)="onGroupCheck(groupIndex, $event)"
+      />
+      <div>{{group.description}}</div>
+    </div>
+    <div>
+      <div *ngFor="let item of group.items; let itemIndex=index" class="grid grid-cols-2 my-2">
+        <p-checkbox
+          [binary]="true"
+          [label]="item.label"
+          [value]="item.value"
+          [disabled]="item.disable ?? false || group.disable ?? false"
+          [(ngModel)]="item.checked"
+          (ngModelChange)="onItemCheck(groupIndex, itemIndex, $event)"
+          class="ml-8"
+        />
+        <div>{{item.description}}</div>
+      </div>
+    </div>
+  </div>
+</div>

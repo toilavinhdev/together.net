@@ -1,0 +1,29 @@
+<together-container>
+  <form [formGroup]="form">
+    <!--Name-->
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Tên diễn đàn:</label>
+      <input
+        pInputText
+        formControlName="name"
+      />
+      <ng-container *ngIf="form.get('name')?.dirty">
+        <small *ngIf="form.get('name')?.errors?.['required']" class="text-red-600">Không bỏ trống tên diễn đàn</small>
+      </ng-container>
+    </div>
+  </form>
+  <div class="flex justify-end gap-x-3 mt-10">
+    <p-button
+      routerLink="/management/forum"
+      label="Hủy"
+      severity="secondary"
+      outlined
+    />
+    <p-button
+      *ngIf="userService.hasPermission$(policies.Forum.Update) | async"
+      (onClick)="onSubmit()"
+      [loading]="loadingSubmit"
+      label="Xác nhận"
+    />
+  </div>
+</together-container>

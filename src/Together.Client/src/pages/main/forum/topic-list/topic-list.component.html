@@ -1,0 +1,52 @@
+@if (!loading) {
+  @if ((forumService.forums$ | async)?.length) {
+    @for (forum of forumService.forums$ | async; track forum) {
+      <div class="bg-white border-t-[6px] border-t-primary rounded mb-6 shadow" style="border-top-style: solid">
+        <div class="uppercase font-bold text-[16px] px-8 py-4 border-b-[1px] border-b-gray-200" style="border-bottom-style: solid">{{ forum.name }}</div>
+        <div>
+          @for (topic of forum.topics; track topic) {
+            <div class="flex items-center px-8 py-4 border-b-[1px] border-b-gray-200" style="border-bottom-style: solid">
+              <div class="flex flex-col">
+                <a (click)="commonService.navigateToTopic(topic.id)" class="text-[16px] cursor-pointer hover:underline">{{topic.name}}</a>
+                <div *ngIf="topic.description" class="text-[12px] text-gray-500 mt-1">{{topic.description}}</div>
+              </div>
+              <div class="ml-auto flex gap-x-5">
+                <div class="flex flex-col items-center justify-center">
+                  <div class="text-[18px] font-bold">{{topic.postCount | shortenNumber}}</div>
+                  <div class="leading-[8px] font-light text-[11px]">{{commonService.translate('Posts')}}</div>
+                </div>
+                <div class="flex flex-col items-center justify-center">
+                  <div class="text-[18px] font-bold">{{topic.replyCount | shortenNumber}}</div>
+                  <div class="leading-[8px] font-light text-[11px]">{{commonService.translate('Replies')}}</div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  } @else {
+    Không có dữ liệu
+  }
+} @else {
+  @for (_ of Array(2); track _) {
+    <div class="bg-white border-t-[6px] border-t-primary rounded mb-6 shadow" style="border-top-style: solid">
+      <div class="uppercase font-bold text-[16px] px-8 py-4 border-b-[1px] border-b-gray-200" style="border-bottom-style: solid">
+        <p-skeleton width="20rem" height="22px" />
+      </div>
+      <div>
+        @for (__ of Array(2); track __) {
+          <div class="flex items-center px-8 py-4 border-b-[1px] border-b-gray-200" style="border-bottom-style: solid">
+            <div class="flex flex-col">
+              <p-skeleton width="16rem" height="18px" />
+              <p-skeleton width="20rem" height="14px" styleClass="mt-1"/>
+            </div>
+            <div class="ml-auto">
+              <p-skeleton size="32px" />
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+}

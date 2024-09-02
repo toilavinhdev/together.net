@@ -1,0 +1,11 @@
+<div class="font-semibold">Vai trò khả dụng</div>
+<div class="text-gray-500 text-[14px] mb-5">Kéo thả đến vai trò của thành viên</div>
+<together-table [data]="availableRoles"
+                [rowDraggable]="rowDraggableDroppable"
+                (onRowDragStart)="onDragStart($event)"
+                (onRowDragEnd)="onDragEnd()"
+>
+  <together-table-column key="#" title="Index" type="index" columnClass="w-[30px] text-center"/>
+  <together-table-column key="name" title="Tên vai trò"/>
+  <together-table-column key="description" title="Tên vai trò"/>
+</together-table>

@@ -1,0 +1,21 @@
+<p-toast
+  position="bottom-left"
+  styleClass="w-[350px]"
+  [key]="id.toString()"
+>
+  <ng-template let-message pTemplate="message">
+    <div (click)="navigateToSource(message.key)"
+         class="flex-1 flex gap-x-3 items-start cursor-pointer">
+      <together-avatar
+        [src]="message.data['subjectAvatar']"
+      />
+      <div>
+        <div>
+          <div class="font-semibold text-ellipsis line-clamp-1">{{ message.data['subjectUserName'] }}</div>
+          <div class="mt-1 text-[14px]">{{ ENotificationType[message.data['notificationType']] | translate }}</div>
+        </div>
+        <div class="font-medium text-[13px] text-primary mt-1">{{ message.data['createdAt'] | timeAgo }}</div>
+      </div>
+    </div>
+  </ng-template>
+</p-toast>

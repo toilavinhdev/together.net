@@ -1,0 +1,15 @@
+<p-menu #menu popup [model]="items" styleClass="w-[220px]">
+  <ng-template pTemplate="start">
+    <div class="flex items-center gap-x-3 px-2 py-1">
+      <together-avatar [src]="(userService.me$ | async)?.avatar" componentClass="w-[28px] h-[28px]"/>
+      <div class="text-ellipsis line-clamp-1 font-semibold mb-1 text-[14px]">{{(userService.me$ | async)?.userName}}</div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="item" let-item>
+    <div pRipple class="flex items-center text-[14px] cursor-pointer px-4 py-3" [routerLink]="item.routerLink">
+      <span [class]="item.icon"></span>
+      <span class="ml-4">{{ item.label | translate }}</span>
+    </div>
+  </ng-template>
+</p-menu>
+<together-language-switch-modal #languageSwitchModal/>

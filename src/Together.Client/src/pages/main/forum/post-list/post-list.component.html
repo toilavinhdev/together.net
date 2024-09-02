@@ -1,0 +1,34 @@
+<div class="flex justify-between items-center gap-x-2 mb-4">
+  <div *ngIf="status === 'finished'" class="text-[26px] font-medium text-ellipsis line-clamp-1">{{extra?.['topicName']}}</div>
+  <p-skeleton *ngIf="status === 'loading'" width="320px" height="30px"/>
+  <p-button
+    *ngIf="userService.hasPermission$(policies.Post.Create) | async"
+    (onClick)="commonService.navigateToCreatePost(extra?.['topicId'])"
+    styleClass="bg-primary"
+    icon="pi pi-plus"
+    [label]="commonService.translate('Create post')"
+  />
+</div>
+@if ((postService.posts$ | async)?.length) {
+  <together-post
+    *ngFor="let post of postService.posts$ | async; let last=last"
+    [post]="post"
+    [bordered]="!last"
+  />
+  <together-paginator
+    (paginationChange)="onPaginationChange($event)"
+    [pageIndex]="params.pageIndex"
+    [pageSize]="params.pageSize"
+    [totalRecord]="totalRecord"
+    componentClass="mt-4 shadow"
+  />
+}
+@else {
+  <ng-container *ngIf="status === 'loading'">
+    <together-post
+      *ngFor="let _ of Array(6)"
+      loading
+    />
+  </ng-container>
+  <div *ngIf="status === 'finished'">Chưa có bài viết</div>
+}

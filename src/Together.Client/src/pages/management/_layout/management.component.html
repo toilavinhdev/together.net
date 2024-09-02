@@ -1,0 +1,19 @@
+<together-auth-loader/>
+<div class="max-h-screen max-w-screen overflow-hidden flex">
+  <ng-container *ngIf="(userService.hasPermission$(policies.Management.Access) | async) && status === 'finished'">
+    <together-menu/>
+    <div class="flex-1 overflow-y-auto">
+      <together-header/>
+      <div class="mx-6">
+        <router-outlet/>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!(userService.hasPermission$(policies.Management.Access) | async) && status === 'finished'">
+    <div class="text-center h-screen flex-1">
+      <h1 class="mt-10">403 Forbidden</h1>
+      <div>Bạn không có quyền truy cập trang quản lý</div>
+      <p-button routerLink="/" label="Quay lại diễn đàn" styleClass="mt-4 bg-primary"/>
+    </div>
+  </ng-container>
+</div>

@@ -1,0 +1,51 @@
+<div id="together-navbar" class="fixed top-0 left-0 right-0 h-[60px] bg-white shadow z-[100]">
+  <div class="flex mx-[120px]">
+    <div routerLink="/" class="text-[22px] font-semibold uppercase cursor-pointer leading-[60px]">
+      Together<span class="text-primary">NET</span>
+    </div>
+    <div class="flex flex-row items-center mx-[-14px] ml-auto">
+      <div routerLink="/" class="navbar--item">
+        <together-svg-icon name="home" componentClass="mt-1"/>
+      </div>
+      <div routerLink="/search" class="navbar--item">
+        <together-svg-icon name="search" [size]="36" componentClass="mt-1"/>
+      </div>
+      <div routerLink="/conversations" class="navbar--item">
+        <together-svg-icon name="message" [size]="24" componentClass="mt-1"/>
+      </div>
+      <div class="navbar--item" (click)="notificationDropdown.toggle($event)">
+        <div pBadge [badgeDisabled]="(notificationService.unreadCount$ | async) === 0" value="{{notificationService.unreadCount$ | async}}" severity="danger" badgeStyleClass="text-[10px] mt-1">
+          <together-svg-icon name="notification" [size]="24" componentClass="mt-1"/>
+        </div>
+      </div>
+      <div class="navbar--item" (click)="userDropdown.menuComponent.toggle($event)">
+        <together-avatar [src]="(userService.me$ | async)?.avatar" componentClass="scale-[0.6] mt-1"/>
+      </div>
+    </div>
+    <together-user-dropdown #userDropdown/>
+    <together-notification-dropdown #notificationDropdown/>
+  </div>
+</div>
+
+
+<style>
+  .navbar--item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    width: 60px;
+    transition: all;
+    transition-duration: 200ms;
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(215, 218, 220, 0.62);
+    }
+
+    &:active {
+      scale: 0.7;
+      border-radius: 50%
+    }
+  }
+</style>

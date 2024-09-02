@@ -1,0 +1,68 @@
+<div class="flex flex-col h-full">
+  <!--Conversation info container-->
+  <div class="flex gap-x-3 items-center border-b border-b-gray-200 p-2" style="border-bottom-style: solid">
+    <together-avatar
+      [src]="extra['conversationImage']"
+      componentClass="w-[34px] h-[34px] mt-1"
+    />
+    <div *ngIf="extra['conversationType'] == EConversationType.Group"
+         class="font-medium text-[16px]">{{extra['conversationName']}}</div>
+    <div *ngIf="extra['conversationType'] == EConversationType.Private" class="flex flex-col">
+      <div (click)="commonService.navigateToProfile(extra['userId'])"
+           class="font-semibold text-[14px] cursor-pointer hover:underline">{{extra['conversationName']}}</div>
+      <div class="flex items-center gap-x-1">
+        <div class="h-[10px] w-[10px] rounded-full {{extra['userOnline'] ? 'bg-green-600' : 'bg-gray-600'}}"></div>
+        <div class="text-[12px] text-gray-500">{{extra['userOnline'] ? commonService.translate('Online') : commonService.translate('Offline')}}</div>
+      </div>
+    </div>
+  </div>
+  <!--Messages container-->
+  <div
+    togetherScrollReached
+    scrollReachPosition="top"
+    (scrollReached)="onScrollReachedTop()"
+    id="messages-container"
+    class="overflow-y-auto h-full {{!scrolledBottom ? 'opacity-0' : ''}}"
+  >
+    @if (loading) {
+      <div class="text-center mt-2"><i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i></div>
+    }
+    @for (message of messageService.messages$ | async; track message) {
+      <div class="flex mt-2 mx-2 *:max-w-[48%]">
+        <div *ngIf="message.createdById !== (userService.me$ | async)?.id" class="flex items-center gap-x-2">
+          <together-avatar
+            (click)="commonService.navigateToProfile(message.createdById)"
+            [src]="message.createdByAvatar"
+            componentClass="cursor-pointer h-[28px] w-[28px]"
+          />
+          <div>
+            <div
+              class="flex-1 bg-gray-200 px-3 py-2 rounded-2xl"
+              [pTooltip]="message.createdAt | timeAgo"
+              [tooltipPosition]="'right'"
+              [innerHTML]="message.text"></div>
+          </div>
+        </div>
+        <div
+          *ngIf="message.createdById === (userService.me$ | async)?.id"
+          class="bg-primary text-white max-w-[48%] px-3 py-2 rounded-2xl ml-auto"
+          [pTooltip]="message.createdAt | timeAgo"
+          [tooltipPosition]="'left'"
+          [innerHTML]="message.text"></div>
+      </div>
+    }
+  </div>
+  <!--Send message form-->
+  <div class="flex gap-x-2 p-2">
+    <form [formGroup]="messageForm" class="flex-1">
+      <input
+        (keyup.enter)="onSendMessage()"
+        formControlName="text"
+        pInputText
+        placeholder="Aa"
+        class="w-full"
+      />
+    </form>
+    <p-button (onClick)="onSendMessage()" [disabled]="!messageForm.get('text')?.value" icon="pi pi-send" styleClass="bg-primary"></p-button>
+  </div>
+</div>

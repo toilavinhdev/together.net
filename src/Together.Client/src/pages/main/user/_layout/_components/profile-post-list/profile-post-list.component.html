@@ -1,0 +1,26 @@
+@if (posts.length) {
+  @if (!loading) {
+    <together-post
+      *ngFor="let post of posts; let last=last"
+      [post]="post"
+      showTopicName
+      [bordered]="!last"
+    />
+  } @else {
+    @for (_ of Array(4); track _) {
+      <together-post loading />
+    }
+  }
+
+  <together-paginator
+    (paginationChange)="onPaginationChange($event)"
+    [pageIndex]="params.pageIndex"
+    [pageSize]="params.pageSize"
+    [totalRecord]="totalRecord"
+    componentClass="mt-4"
+  />
+
+}
+@else {
+  <div>Chưa có bài viết</div>
+}

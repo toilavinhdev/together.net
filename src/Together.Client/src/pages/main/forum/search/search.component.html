@@ -1,0 +1,79 @@
+<div class="flex gap-x-3">
+  <input
+    (keyup.enter)="onSearch()"
+    pInputText
+    [(ngModel)]="search"
+    (ngModelChange)="search$.next($event)"
+    placeholder="{{'Enter keyword' | translate}}"
+    class="flex-1 shadow"
+  />
+  <p-button
+    (onClick)="onSearch()"
+    [disabled]="status === 'loading'"
+    icon="pi {{status === 'loading' ? 'p-icon-spin pi-spinner' : 'pi-search'}}"
+    raised
+    styleClass="bg-primary"
+  />
+</div>
+<p-tabView *ngIf="status !== 'idle'"
+           [activeIndex]="tabIndex"
+           (activeIndexChange)="onTabChange($event)"
+           id="search-tabs"
+           styleClass="mt-4 shadow rounded"
+>
+  <p-tabPanel *ngIf="userService.hasPermission$(policies.Post.View) | async" [header]="'Posts' | translate">
+    <ng-template pTemplate="content">
+      @if (status !== 'loading') {
+        <together-post
+          *ngFor="let post of posts; let last=last"
+          [post]="post"
+          [bordered]="!last"
+        />
+      } @else {
+        <together-post
+          *ngFor="let _ of Array(4)"
+          loading
+        />
+      }
+      <div *ngIf="status === 'success' && posts.length === 0" class="p-4">
+        Không tìm thấy bài viết phù hợp
+      </div>
+    </ng-template>
+  </p-tabPanel>
+  <p-tabPanel *ngIf="userService.hasPermission$(policies.User.List) | async" [header]="'Members' | translate">
+    <ng-template pTemplate="content">
+      <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-y-6" [ngClass]="{'p-2': users.length}">
+        <div
+          *ngFor="let user of users"
+          (click)="commonService.navigateToProfile(user.id)"
+          class="flex flex-col justify-center items-center w-full py-3 rounded cursor-pointer hover:bg-gray-200 duration-200"
+        >
+          <together-avatar
+            [src]="user.avatar"
+          />
+          <div class="text-ellipsis line-clamp-1 w-full text-center px-2">{{user.userName}}</div>
+        </div>
+      </div>
+      <div *ngIf="status === 'success' && users.length === 0" class="p-4">
+        Không tìm thấy người dùng phù hợp
+      </div>
+    </ng-template>
+  </p-tabPanel>
+</p-tabView>
+
+<together-paginator
+  *ngIf="totalRecord > pageSize"
+  (paginationChange)="onPaginationChange($event)"
+  [pageIndex]="pageIndex"
+  [pageSize]="pageSize"
+  [totalRecord]="totalRecord"
+  componentClass="mt-4 shadow"
+/>
+
+<style>
+  #search-tabs {
+    .p-tabview-panels {
+      padding: 0 !important;
+    }
+  }
+</style>

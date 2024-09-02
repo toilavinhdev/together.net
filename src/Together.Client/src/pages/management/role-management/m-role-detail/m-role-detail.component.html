@@ -1,0 +1,51 @@
+<together-container>
+  <form [formGroup]="form">
+    <!--Name-->
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Tên vai trò:</label>
+      <input
+        pInputText
+        formControlName="name"
+      />
+      <ng-container *ngIf="form.get('name')?.dirty">
+        <small *ngIf="form.get('name')?.errors?.['required']" class="text-red-600">Không bỏ trống tên diễn đàn</small>
+      </ng-container>
+    </div>
+    <!--Description-->
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Ghi chú:</label>
+      <input
+        pInputText
+        formControlName="description"
+      />
+    </div>
+    <!--Claims-->
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Quyền hạn:</label>
+      <together-checkbox-groups
+        formControlName="claims"
+        [groups]="groups"
+        (groupsChange)="groups = $event"
+        controlClass="mt-1"
+      />
+      <ng-container *ngIf="form.get('claims')?.dirty">
+        <small *ngIf="form.get('claims')?.errors?.['required']" class="text-red-600">Vui lòng chọn ít nhất 1 quyền</small>
+      </ng-container>
+    </div>
+  </form>
+  <div *ngIf="form.get('name')?.value === 'Admin'" class="text-red-500">Role <strong>Admin</strong> không được phép cập nhật</div>
+  <div class="flex justify-end gap-x-3 mt-10">
+    <p-button
+      routerLink="/management/role"
+      label="Hủy"
+      severity="secondary"
+      outlined
+    />
+    <p-button
+      *ngIf="userService.hasPermission$(policies.Role.Update) | async"
+      (onClick)="onSubmit()"
+      [disabled]="form.get('name')?.value === 'Admin'"
+      label="Xác nhận"
+    />
+  </div>
+</together-container>

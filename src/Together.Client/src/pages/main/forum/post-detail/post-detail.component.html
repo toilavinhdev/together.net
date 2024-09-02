@@ -1,0 +1,76 @@
+
+
+<section class="bg-white px-8 py-6 rounded shadow mb-4">
+  @if (post && status === 'finished') {
+    <div>
+      <div id="post-title" class="mb-4">
+        <together-prefix
+          *ngIf="post.prefixName"
+          [name]="post.prefixName!"
+          fontSize="14px"
+          [background]="post.prefixBackground!"
+          [foreground]="post.prefixForeground!"
+          class="inline-block mr-1"
+        />
+        <div class="font-medium text-[24px] inline">{{ post.title }}</div>
+      </div>
+      <div class="flex gap-x-3 items-center">
+        <together-avatar
+          [src]="post.createdByAvatar"
+          componentClass="h-[38px] w-[38px] mt-1"
+        />
+        <div>
+          <div (click)="commonService.navigateToProfile(post.createdById)" class="font-medium text-primary cursor-pointer hover:underline">
+            {{ post.createdByUserName }}
+          </div>
+          <div class="text-[14px]">{{post.createdAt | timeAgo}} &bull; {{'Views' | translate}}: {{ post.viewCount | shortenNumber }}</div>
+        </div>
+      </div>
+      <div id="together-post-detail-body" [innerHTML]="post!.body | sanitizeHtml" class="mt-4"></div>
+      <together-vote
+        voteFor="post"
+        (voteResponse)="onVotePost($event)"
+        [sourceId]="post.id"
+        [userId]="post.createdById"
+        [voteUpCount]="post.voteUpCount"
+        [voteDownCount]="post.voteDownCount"
+        [voted]="post.voted"
+        componentClass="mt-8"
+      />
+      <together-reply-writer
+        *ngIf="userService.hasPermission$(policies.Reply.Create) | async"
+        [postId]="postId"
+        (response)="replyListComponent.addRootReply($event)"
+      />
+    </div>
+  }
+  @if (status === 'loading') {
+    <p-skeleton height="2rem" width="60%" styleClass="mb-2" />
+    <div class="flex gap-x-2 items-center mt-5">
+      <p-skeleton size="3rem" shape="circle" styleClass="mb-2" />
+      <div>
+        <p-skeleton height="1rem" width="200px" styleClass="mb-2" />
+        <p-skeleton height="1rem" width="200px" styleClass="mb-2" />
+      </div>
+    </div>
+    <p-skeleton height="10rem" />
+  }
+
+  <together-reply-root-list
+    #replyListComponent
+  />
+</section>
+
+
+
+<style>
+  #together-post-detail-body {
+    overflow: auto;
+
+    img,
+    iframe {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+  }
+</style>

@@ -1,0 +1,47 @@
+<p-menu
+  #menu
+  popup
+  [model]="[]"
+  styleClass="max-h-[60vh] w-[320px] overflow-y-auto"
+>
+  <ng-template pTemplate="start">
+    <div class="text-[14px] font-semibold px-3 py-1">{{'Notifications' | translate}}</div>
+  </ng-template>
+  <ng-template pTemplate="end">
+    @if (status === 'finished' && (notificationService.notifications$ | async)!.length) {
+      @for (notification of (notificationService.notifications$ | async); track notification) {
+        <div (click)="navigateToSource(notification)"
+             class="flex-1 flex gap-x-3 items-start cursor-pointer py-2 px-3 rounded duration-200 mb-1
+              {{notification.status === ENotificationStatus.Unread ? 'bg-[#dce8f4]' : 'hover:bg-[#f1f5f9]'}}">
+          <together-avatar
+            [src]="notification.subject.avatar"
+            componentClass="w-[46px] h-[46px]"
+          />
+          <div>
+            <div>
+              <div class="font-semibold text-ellipsis line-clamp-1 text-[13px]">{{ notification.subject.userName }}</div>
+              <div class="text-[12px]">{{ ENotificationType[notification.type] | translate }}</div>
+            </div>
+            <div class="font-medium text-[12px] text-primary">{{ notification.createdAt | timeAgo }}</div>
+          </div>
+        </div>
+      }
+    }
+
+    @if (status === 'finished' && !(notificationService.notifications$ | async)!.length) {
+      <div class="text-center my-4 text-[14px]">
+        {{'You haven\'t had any notifications yet' | translate}}
+      </div>
+    }
+
+    @if (status === 'loading ') {
+      <div class="px-3 my-1">
+        <div *ngFor="let _ of Array(2)" class="flex gap-x-4 mt-3 items-center">
+          <p-skeleton shape="circle" size="46px"></p-skeleton>
+          <p-skeleton height="50px" class="flex-1"/>
+        </div>
+      </div>
+    }
+  </ng-template>
+</p-menu>
+

@@ -7,10 +7,19 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Together.Infrastructure\Infrastructure.PostgreSQL\Infrastructure.PostgreSQL.csproj" />
         <ProjectReference Include="..\..\Together.Infrastructure\Infrastructure.SharedKernel\Infrastructure.SharedKernel.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+        <Protobuf Include="..\..\Together.Infrastructure\Infrastructure.SharedKernel\Protos\identity.proto" GrpcServices="Client" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.Tools" Version="2.65.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -1,0 +1,68 @@
+<p-tabView id="m-forum-list" styleClass="shadow mb-6">
+  <p-tabPanel [header]="'Diễn đàn' | translate">
+    <together-table [data]="forums()">
+      <together-table-column key="#" title="Index" type="index" columnClass="w-[30px] text-center"/>
+      <together-table-column key="name" title="Forum name"/>
+      <together-table-column key="createdAt" title="Created at" type="datetime" columnClass="w-[200px]"/>
+      <together-table-column key="#" title="" columnClass="w-[100px]">
+        <ng-template togetherTableCell let-row>
+          <div class="flex justify-center gap-x-1">
+            <p-button
+              [routerLink]="['/management/forum',row.id,'update']"
+              icon="pi pi-pencil text-[12px]"
+              rounded
+              styleClass="w-[34px] h-[34px] bg-primary"
+            />
+            <p-button
+              *ngIf="userService.hasPermission$(policies.Forum.Delete) | async"
+              (onClick)="confirmDeleteForum($event, row.id, row.name)"
+              icon="pi pi-trash text-[12px]"
+              severity="danger"
+              rounded
+              styleClass="w-[34px] h-[34px]"
+            />
+          </div>
+        </ng-template>
+      </together-table-column>
+    </together-table>
+  </p-tabPanel>
+  <p-tabPanel *ngIf="userService.hasPermission$(policies.Topic.View) | async" [header]="'Chủ đề' | translate">
+    <together-table [data]="topics()">
+      <together-table-column type="index" title="Index" columnClass="w-[30px] text-center"/>
+      <together-table-column key="name" title="Tên chủ đề"/>
+      <together-table-column key="forumName" title="Tên diễn đàn"/>
+      <together-table-column key="description" title="Ghi chú"/>
+      <together-table-column key="createdAt" title="Thời gian tạo" type="datetime" columnClass="w-[200px]"/>
+      <together-table-column key="#" title="" columnClass="w-[100px]">
+        <ng-template togetherTableCell let-row>
+          <div class="flex justify-center gap-x-1">
+            <p-button
+              [routerLink]="['/management/forum/topic',row.id,'update']"
+              icon="pi pi-pencil text-[12px]"
+              rounded
+              styleClass="w-[34px] h-[34px] bg-primary"
+            />
+            <p-button
+              *ngIf="userService.hasPermission$(policies.Topic.Delete) | async"
+              (onClick)="confirmDeleteTopic($event, row.id, row.name)"
+              icon="pi pi-trash text-[12px]"
+              severity="danger"
+              rounded
+              styleClass="w-[34px] h-[34px]"
+            />
+          </div>
+        </ng-template>
+      </together-table-column>
+    </together-table>
+  </p-tabPanel>
+</p-tabView>
+
+<p-confirmDialog />
+
+<style>
+  #m-forum-list {
+    .p-tabview-panels {
+      padding: 0
+    }
+  }
+</style>

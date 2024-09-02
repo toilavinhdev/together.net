@@ -1,0 +1,67 @@
+<div
+  (click)="showUpdateModal()"
+  pTooltip="Cập nhật thông tin"
+  tooltipPosition="left"
+>
+  <p-button
+    icon="pi pi-user-edit"
+    [rounded]="true"
+    severity="secondary"
+  />
+</div>
+
+<p-dialog header="Cập nhật thông tin" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+  <p-messages/>
+  <form [formGroup]="updateForm">
+    <!--UserName-->
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Tên người dùng:</label>
+      <input
+        pInputText
+        formControlName="userName"
+      />
+      <ng-container *ngIf="updateForm.get('userName')?.dirty">
+        <small *ngIf="updateForm.get('userName')?.errors?.['required']" class="text-red-600">Không bỏ trống tên người dùng</small>
+        <small *ngIf="updateForm.get('userName')?.errors?.['pattern']" class="text-red-600">Tên người dùng có độ dài 6-24 ký tự, a-z 0-9 và dấu _</small>
+      </ng-container>
+    </div>
+    <!--Full Name-->
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Tên đầy đủ:</label>
+      <input
+        pInputText
+        formControlName="fullName"
+      />
+    </div>
+    <!--Gender-->
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Giới tính:</label>
+      <p-dropdown
+        [options]="genderDropdownOptions"
+        formControlName="gender"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Chọn giới tính"
+        styleClass="w-full"
+      />
+      <ng-container *ngIf="updateForm.get('gender')?.dirty">
+        <small *ngIf="updateForm.get('gender')?.errors?.['required']" class="text-red-600">Không bỏ trống giới tính</small>
+      </ng-container>
+    </div>
+    <!--Biography-->
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Giới thiệu:</label>
+      <textarea
+        formControlName="biography"
+        rows="5"
+        cols="30"
+        pInputTextarea>
+      </textarea>
+    </div>
+  </form>
+  <!--Actions-->
+  <div class="flex justify-end gap-x-2">
+    <p-button label="Hoàn tác" severity="secondary" (click)="visible = false" />
+    <p-button (onClick)="onSubmit()" [loading]="loading" [disabled]="!formIsChanged" label="Cập nhật" styleClass="bg-primary"/>
+  </div>
+</p-dialog>

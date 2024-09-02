@@ -1,0 +1,38 @@
+<div id="m-role-assign-users-dropdown-wrapper">
+  <p-dropdown [options]="users"
+              [(ngModel)]="userId"
+              (ngModelChange)="userIdChange.emit($event)"
+              [loading]="loading"
+              (onShow)="listenScrollReachedBottom()"
+              filter
+              showClear
+              optionLabel="userName"
+              optionValue="id"
+              placeholder="Chọn thành viên"
+              styleClass="mb-4 w-full"
+  >
+    <ng-template pTemplate="filter">
+      <div class="flex gap-1">
+        <div class="p-inputgroup" (click)="$event.stopPropagation()">
+          <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+          <input
+            type="text"
+            pInputText
+            placeholder="Tìm kiếm"
+            [(ngModel)]="params.search"
+            (ngModelChange)="this.search$.next()" />
+        </div>
+        <p-button (onClick)="params.search = ''; this.search$.next()" icon="pi pi-times" severity="secondary"/>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="item" let-user>
+      <div class="flex items-center gap-x-2">
+        <together-avatar [src]="user.avatar" componentClass="w-[30px] h-[30px]"/>
+        <div>
+          <div class="font-medium leading-[16px] text-primary">{{user.userName}}</div>
+          <div class="text-[12px] text-gray-500">{{user.fullName}}</div>
+        </div>
+      </div>
+    </ng-template>
+  </p-dropdown>
+</div>

@@ -1,0 +1,40 @@
+<div [ngClass]="componentClass" class="bg-white rounded shadow">
+  <div class="uppercase font-medium text-[13px] px-5 py-5 bg-primary text-white rounded-t">{{'Forum statistics' | translate}}</div>
+  @if (!loading) {
+    @if (statistic) {
+      <div class="grid grid-cols-2 gap-y-4 px-5 py-4">
+        <div *ngIf="statistic.totalOnlineUser !== undefined" class="*:text-center">
+          <div class="text-primary font-bold text-[22px] leading-[22px]">{{statistic.totalOnlineUser | shortenNumber}}</div>
+          <div class="text-gray-500">{{'Online' | translate}}</div>
+        </div>
+        <div *ngIf="statistic.totalUser !== undefined" class="*:text-center">
+          <div class="text-primary font-bold text-[22px] leading-[22px]">{{statistic.totalUser | shortenNumber}}</div>
+          <div class="text-gray-500">{{'Members' | translate}}</div>
+        </div>
+        <div *ngIf="statistic.totalTopic !== undefined" class="*:text-center">
+          <div class="text-primary font-bold text-[22px] leading-[22px]">{{statistic.totalTopic | shortenNumber}}</div>
+          <div class="text-gray-500">{{'Topics' | translate}}</div>
+        </div>
+        <div *ngIf="statistic.totalPost !== undefined" class="*:text-center">
+          <div class="text-primary font-bold text-[22px] leading-[22px]">{{statistic.totalPost | shortenNumber}}</div>
+          <div class="text-gray-500">{{'Posts' | translate}}</div>
+        </div>
+        <div *ngIf="statistic.totalReply !== undefined" class="*:text-center">
+          <div class="text-primary font-bold text-[22px] leading-[22px]">{{statistic.totalReply | shortenNumber}}</div>
+          <div class="text-gray-500">{{'Replies' | translate}}</div>
+        </div>
+        <div *ngIf="statistic.newMember !== undefined" class="*:text-center">
+          <div class="text-primary font-bold text-[18px] leading-[22px] text-ellipsis line-clamp-1">{{statistic.newMember}}</div>
+          <div class="text-gray-500">{{'New member' | translate}}</div>
+        </div>
+      </div>
+    }
+  }
+  @else {
+    <div class="grid grid-cols-2 justify-items-center gap-y-4 px-5 py-4">
+      @for (_ of Array(6); track _) {
+        <p-skeleton width="80px" height="40px"/>
+      }
+    </div>
+  }
+</div>

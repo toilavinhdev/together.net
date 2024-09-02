@@ -1,0 +1,62 @@
+<div class="flex flex-col justify-center h-full w-[360px] mx-auto py-16">
+  <div id="sign-in-title" class="text-center text-2xl font-extrabold">Welcome to Together.NET</div>
+  <together-external-auth componentClass="mt-3"/>
+  <div class="flex items-center my-5 w-full gap-x-4">
+    <div class="flex-1 h-[0.1px] w-full bg-gray-300"></div>
+    <div class="text-gray-500 text-[13px] font-medium">Hoặc đăng nhập với email</div>
+    <div class="flex-1 h-[0.1px] w-full bg-gray-300"></div>
+  </div>
+  <p-messages />
+  <!--Form-->
+  <form [formGroup]="signInForm">
+    <!--Email-->
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Email:</label>
+      <input
+        pInputText
+        formControlName="email"
+      />
+      <ng-container *ngIf="signInForm.get('email')?.dirty">
+        <small *ngIf="signInForm.get('email')?.errors?.['required']" class="text-red-600">Không bỏ trống email</small>
+        <small *ngIf="signInForm.get('email')?.errors?.['pattern']" class="text-red-600">Email không đúng định dạng</small>
+      </ng-container>
+    </div>
+    <!--Password-->
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Mật khẩu:</label>
+      <p-password
+        (keyup.enter)="onSubmit()"
+        [feedback]="false"
+        formControlName="password"
+        toggleMask
+        styleClass="w-full"
+        inputStyleClass="w-full"
+      />
+      <ng-container *ngIf="signInForm.get('password')?.dirty">
+        <small *ngIf="signInForm.get('password')?.errors?.['required']" class="text-red-600">Không bỏ trống mật khẩu</small>
+      </ng-container>
+    </div>
+  </form>
+  <!--Actions-->
+  <p-button (onClick)="onSubmit()" [loading]="loading" label="Đăng nhập" styleClass="w-full bg-primary"></p-button>
+  <div class="flex justify-between items-center mt-4 font-medium">
+    <a routerLink="/auth/forgot-password" class="text-primary">Quên mật khẩu?</a>
+    <a routerLink="/auth/sign-up" class="text-primary">Tạo tài khoản mới</a>
+  </div>
+  <!--Contacts-->
+  <div class="mt-auto">
+    <div class="flex *:flex-1 mx-2">
+      <div class="flex justify-start gap-x-2 text-[12px] text-gray-500">
+        <i class="pi pi-envelope"></i>
+        <a href="mailto:hoangdvinh68@gmail.com" target="_blank" class="text-gray-500">hoangdvinh68&#64;gmail.com</a>
+      </div>
+      <div class="flex justify-end gap-x-2 text-[12px] text-gray-500">
+        <i class="pi pi-github"></i>
+        <a href="https://github.com/toilavinhdev" target="_blank" class="text-gray-500">toilavinhdev</a>
+      </div>
+    </div>
+    <div class="text-[12px] text-gray-500 text-center mt-2">
+      I agree to abide by our <span class="text-primary">Terms of Service</span> and <span class="text-primary">Privacy Policy</span>
+    </div>
+  </div>
+</div>

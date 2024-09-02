@@ -1,0 +1,73 @@
+<div class="h-full w-[360px] mx-auto pb-10">
+  <div class="text-center text-2xl font-extrabold mt-12 mb-8">Tạo tài khoản mới</div>
+  <p-messages />
+  <!--Form-->
+  <form [formGroup]="signUpForm">
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Tên người dùng:</label>
+      <input
+        pInputText
+        formControlName="userName"
+      />
+      <ng-container *ngIf="signUpForm.get('userName')?.dirty">
+        <small *ngIf="signUpForm.get('userName')?.errors?.['required']" class="text-red-600">Không bỏ trống tên người dùng</small>
+        <small *ngIf="signUpForm.get('userName')?.errors?.['pattern']" class="text-red-600">Tên người dùng có độ dài 6-24 ký tự, a-z 0-9 và dấu _</small>
+      </ng-container>
+    </div>
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Email:</label>
+      <input
+        pInputText
+        formControlName="email"
+      />
+      <small>Email là mặc định đối với mỗi tài khoản</small>
+      <ng-container *ngIf="signUpForm.get('email')?.dirty">
+        <small *ngIf="signUpForm.get('email')?.errors?.['required']" class="text-red-600">Không bỏ trống email</small>
+        <small *ngIf="signUpForm.get('email')?.errors?.['pattern']" class="text-red-600">Email không đúng định dạng</small>
+      </ng-container>
+    </div>
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Giới tính:</label>
+      <p-dropdown
+        [options]="genderDropdownOptions"
+        formControlName="gender"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Chọn giới tính"
+        styleClass="w-full"
+      />
+      <ng-container *ngIf="signUpForm.get('gender')?.dirty">
+        <small *ngIf="signUpForm.get('gender')?.errors?.['required']" class="text-red-600">Không bỏ trống giới tính</small>
+      </ng-container>
+    </div>
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Mật khẩu:</label>
+      <p-password
+        [feedback]="true"
+        [toggleMask]="true"
+        formControlName="password"
+        styleClass="w-full"
+        inputStyleClass="w-full"
+      />
+      <ng-container *ngIf="signUpForm.get('password')?.dirty">
+        <small *ngIf="signUpForm.get('password')?.errors?.['required']" class="text-red-600">Không bỏ trống mật khẩu</small>
+      </ng-container>
+    </div>
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Nhập lại mật khẩu:</label>
+      <p-password
+        (keyup.enter)="onSubmit()"
+        [toggleMask]="true"
+        [feedback]="false"
+        formControlName="confirmPassword"
+        styleClass="w-full"
+        inputStyleClass="w-full"
+      />
+      <ng-container *ngIf="signUpForm.get('confirmPassword')?.dirty">
+        <small *ngIf="signUpForm.get('confirmPassword')?.errors?.['matchTo']" class="text-red-600">Mật khẩu không khớp</small>
+      </ng-container>
+    </div>
+  </form>
+  <p-button (onClick)="onSubmit()" [loading]="loading" label="Đăng ký" styleClass="w-full bg-primary"></p-button>
+  <div class="text-center mt-5">Đã có tài khoản? <a routerLink="/auth/sign-in" class="text-primary">Đăng nhập</a></div>
+</div>

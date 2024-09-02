@@ -1,0 +1,13 @@
+<div pTooltip="Tải ảnh đại diện"
+     tooltipPosition="left">
+  <label for="upload-avatar">
+    <input
+      id="upload-avatar"
+      type="file"
+      accept=".png, .jpg, .jpeg, .webp"
+      class="hidden"
+      (change)="onFileChange($event)"
+    />
+    <div class="pi pi-upload p-3 bg-[#f1f5f9] hover:bg-[#e2e8f0] rounded-full cursor-pointer"></div>
+  </label>
+</div>

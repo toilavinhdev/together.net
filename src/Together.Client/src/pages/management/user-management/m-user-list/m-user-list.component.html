@@ -1,0 +1,53 @@
+<div id="m-forum-list" class="shadow mb-6 bg-white rounded">
+  <div class="flex p-4">
+    <input
+      pInputText
+      [(ngModel)]="params.search"
+      (ngModelChange)="search$.next()"
+      placeholder="Tìm kiếm"
+      class="w-[400px]"
+    />
+    <together-m-user-list-roles-dropdown
+      (roleIdChange)="onRoleIdChange($event)"
+      class="ml-auto"
+    />
+  </div>
+  <together-table [data]="users"
+                  [loading]="loading"
+  >
+    <together-table-column key="#" title="Index" type="index" columnClass="w-[30px] text-center"/>
+    <together-table-column key="#" title="Thành viên">
+      <ng-template togetherTableCell let-row>
+        <div class="flex items-center gap-x-2">
+          <together-avatar [src]="row.avatar" componentClass="w-[30px] h-[30px]"/>
+          <div>
+            <div (click)="commonService.navigateToProfile(row.id)" class="font-medium leading-[16px] text-primary cursor-pointer hover:underline">{{row.userName}}</div>
+            <div *ngIf="row.fullName" class="text-[12px] text-gray-500">{{row.fullName}}</div>
+          </div>
+        </div>
+      </ng-template>
+    </together-table-column>
+    <together-table-column key="email" title="Email"/>
+    <together-table-column key="status" title="Trạng thái" columnClass="w-[160px] text-center" headerClass="text-center">
+      <ng-template togetherTableCell let-row>
+        <together-user-status [status]="row.status"/>
+      </ng-template>
+    </together-table-column>
+    <together-table-column key="createdAt" type="datetime" title="Ngày tham gia" columnClass="w-[200px]"/>
+  </together-table>
+  <together-paginator
+    (paginationChange)="onPaginationChange($event)"
+    [pageIndex]="params.pageIndex"
+    [pageSize]="params.pageSize"
+    [totalRecord]="totalUsers"
+    showCurrentPageReport
+  />
+</div>
+
+<style>
+  #m-forum-list {
+    .p-tabview-panels {
+      padding: 0
+    }
+  }
+</style>

@@ -1,0 +1,14 @@
+<div id="setting-tabs" class="bg-white rounded shadow mt-4">
+  <p-tabMenu [model]="items" />
+  <div class="p-4">
+    <router-outlet/>
+  </div>
+</div>
+
+<style>
+  #setting-tabs {
+    .p-tabmenu, .p-tabmenu-nav {
+      border-radius: 4px !important;
+    }
+  }
+</style>

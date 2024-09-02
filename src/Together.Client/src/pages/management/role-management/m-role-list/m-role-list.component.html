@@ -1,0 +1,30 @@
+<div class="mb-6 shadow">
+  <together-table [data]="roles" componentClass="mb-8">
+    <together-table-column key="#" title="Index" type="index" columnClass="w-[30px] text-center"/>
+    <together-table-column key="name" title="Tên vai trò"/>
+    <together-table-column key="description" title="Ghi chú"/>
+    <together-table-column key="createdAt" type="datetime" title="Thời gian tạo" columnClass="w-[200px]"/>
+    <together-table-column key="#" title="" columnClass="w-[100px]">
+      <ng-template togetherTableCell let-row>
+        <div class="flex justify-center gap-x-1">
+          <p-button
+            [routerLink]="['/management/role',row.id,'update']"
+            icon="pi pi-pencil text-[12px]"
+            rounded
+            styleClass="w-[34px] h-[34px] bg-primary"
+          />
+          <p-button
+            *ngIf="userService.hasPermission$(policies.Role.Delete) | async"
+            (onClick)="confirmDelete($event, row.id, row.name)"
+            [disabled]="row.isDefault || row.name === 'Admin'"
+            icon="pi pi-trash text-[12px]"
+            severity="danger"
+            rounded
+            styleClass="w-[34px] h-[34px]"
+          />
+        </div>
+      </ng-template>
+    </together-table-column>
+  </together-table>
+</div>
+<p-confirmDialog />

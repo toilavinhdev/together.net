@@ -1,0 +1,13 @@
+<div class="flex justify-center min-h-screen shadow">
+  <div class="flex-1 flex my-10 mx-28 shadow-lg rounded">
+    <!--Left-->
+    <div class="flex-1 bg-white rounded-l">
+      <router-outlet/>
+    </div>
+    <!--Right-->
+    <div class=" flex-1 hidden lg:flex bg-indigo-100 rounded-r">
+      <div style="background-image: url('shared/assets/images/auth-banner.svg')"
+           class="bg-contain bg-no-repeat bg-center w-full m-16"></div>
+    </div>
+  </div>
+</div>

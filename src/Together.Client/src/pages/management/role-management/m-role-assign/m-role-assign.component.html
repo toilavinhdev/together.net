@@ -1,0 +1,21 @@
+<div class="grid grid-cols-2 gap-x-6">
+  <together-container componentClass="min-h-[calc(100vh-120px)]">
+    <together-m-role-assign-available-roles
+      #availableRolesComponent
+      (rowDraggingChange)="userRolesComponent.draggingRole = $event"
+      [rowDraggableDroppable]="rowDraggableDroppable"
+    />
+  </together-container>
+    <together-container componentClass="min-h-[calc(100vh-120px)]">
+      <together-m-role-assign-users
+        (userIdChange)="userRolesComponent.loadRoles($event); availableRolesComponent.loadRoles()"
+      />
+      <together-m-role-assign-user-roles
+        #userRolesComponent
+        (userRolesChange)="availableRolesComponent.existedRoles = $event;"
+        [rowDraggableDroppable]="rowDraggableDroppable"
+      />
+    </together-container>
+</div>
+
+

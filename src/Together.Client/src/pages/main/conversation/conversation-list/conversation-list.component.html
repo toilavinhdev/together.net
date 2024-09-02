@@ -1,0 +1,30 @@
+<div class="border-r border-r-gray-200 w-[320px] h-full" style="border-right-style: solid">
+  @if ((conversationService.conversations$ | async)?.length) {
+    @for (conversation of conversationService.conversations$ | async; track conversation) {
+      <div
+        (click)="commonService.navigateToConversation(conversation.id);"
+        class="flex items-center gap-x-2 p-1 m-1 rounded cursor-pointer duration-300
+          {{conversation.id === selectedConversationId ? 'bg-primary-lighter' : 'hover:bg-gray-200 '}}"
+      >
+        <together-avatar
+          [src]="conversation.image"
+          componentClass="scale-[0.9] mt-1"
+        />
+        <div>
+          <div>{{conversation.name}}</div>
+          <div class="flex text-[12px] mt-1">
+            <div class="text-ellipsis line-clamp-1">
+              <span *ngIf="conversation.lastMessageByUserId === (userService.me$ | async)?.id">{{commonService.translate('You')}}:&nbsp;</span>
+              {{conversation.lastMessageText}}
+            </div>
+            <div *ngIf="conversation.lastMessageAt" class="text-gray-500 whitespace-nowrap mr-1">&nbsp;&bull;&nbsp;{{conversation.lastMessageAt | timeAgo}}</div>
+          </div>
+        </div>
+      </div>
+    }
+  } @else {
+    <div class="text-center py-6">
+      {{commonService.translate('You haven\'t had any conversations yet')}}
+    </div>
+  }
+</div>

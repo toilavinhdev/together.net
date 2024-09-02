@@ -1,0 +1,19 @@
+<div class="flex items-center h-[60px] px-6 mb-4">
+  <div class="font-semibold text-[22px]">{{(commonService.title$ | async)! | translate}}</div>
+  <div class="ml-auto flex items-center gap-x-4">
+    <p-button
+      (onClick)="notificationDropdown.toggle($event)"
+      icon="pi pi-bell"
+      severity="primary"
+      rounded
+      styleClass="w-[32px] h-[32px] bg-primary"
+    />
+    <together-avatar
+      [src]="(userService.me$ | async)?.avatar"
+      (click)="userDropdown.menuComponent.toggle($event)"
+      componentClass="w-[32px] h-[32px] cursor-pointer mt-1"
+    />
+  </div>
+  <together-user-dropdown #userDropdown/>
+  <together-notification-dropdown #notificationDropdown/>
+</div>

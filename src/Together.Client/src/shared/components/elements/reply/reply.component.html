@@ -1,0 +1,83 @@
+<div *ngIf="reply" [ngClass]="componentClass" class="flex gap-x-1 overflow-x-auto">
+  <together-avatar
+    (click)="commonService.navigateToProfile(reply.createdById)"
+    [src]="reply.createdByAvatar"
+    componentClass="scale-[0.7] mt-[-4px] ml-[-8px] hover:cursor-pointer"
+  />
+  <div class="flex-1">
+    <div>
+      <div>
+      <span (click)="commonService.navigateToProfile(reply.createdById)"
+            class="text-primary font-medium cursor-pointer hover:underline">{{reply.createdByUserName}}</span>
+        <span class="text-gray-600">&nbsp;&bull;&nbsp;{{reply.createdAt | timeAgo}}</span>
+      </div>
+      <div *ngIf="!showEditor" id="together-reply-body" [innerHTML]="reply.body | sanitizeHtml" class="mt-1"></div>
+      <together-editor
+        #editorComponent
+        [(ngModel)]="body"
+        [toolbar]="[['link', 'image']]"
+        [bottomTpl]="editorBottomTpl"
+        controlClass="min-h-[80px]"
+        wrapperClass="{{!showEditor ? 'hidden' : ''}}"
+      >
+        <ng-template #editorBottomTpl>
+          <div class="flex justify-end gap-x-2 p-2">
+            <p-button
+              (onClick)="showEditor = false;"
+              [label]="commonService.translate('Cancel')"
+              size="small"
+              severity="secondary"
+            />
+            <p-button
+              (onClick)="onUpdate()"
+              [label]="commonService.translate('Submit')"
+              label="Phản hồi"
+              size="small"
+              styleClass="bg-primary"
+            />
+          </div>
+        </ng-template>
+      </together-editor>
+    </div>
+    <together-vote
+      voteFor="reply"
+      (expandReplyWriter)="replyWriterComponent.toggle()"
+      (voteResponse)="onVoteReply($event)"
+      (updateResponse)="editorComponent.setQuillContent(reply.body); showEditor = true"
+      (deleteResponse)="onDeleteSelf()"
+      [sourceId]="reply.id"
+      [userId]="reply.createdById"
+      [voteUpCount]="reply.voteUpCount"
+      [voteDownCount]="reply.voteDownCount"
+      [voted]="reply.voted"
+      [replyCount]="reply.childCount"
+    />
+    <together-reply-writer #replyWriterComponent
+                           (response)="onAddChild($event)"
+                           [postId]="reply.postId"
+                           [parentId]="reply.id"
+                           [showOnClose]="false"></together-reply-writer>
+    <!--Children-->
+    <together-reply
+      *ngFor="let child of children"
+      (deleteReply)="onDeleteChild($event)"
+      [reply]="child"
+    />
+    <div
+      *ngIf="reply.childCount && childrenHasNextPage"
+      (click)="showChildren()"
+      class="text-gray-600 text-[12px] cursor-pointer hover:underline mt-1 mb-4">{{!childrenLoading ? 'Hiển thị thêm phản hồi': 'Đang tải...'}}</div>
+  </div>
+</div>
+
+<style>
+  #together-reply-body {
+    overflow: auto;
+
+    img,
+    iframe {
+      max-width: 50%;
+      margin: 0 auto;
+    }
+  }
+</style>

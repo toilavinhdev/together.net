@@ -1,0 +1,59 @@
+@if (!loading) {
+  <div
+    [ngClass]="componentClass"
+    class="flex items-center bg-white py-2 {{bordered ? 'border-b border-b-gray-400/40' : ''}}"
+    [ngStyle]="{borderBottomStyle: bordered ? 'solid' : 'none'}">
+    <div class="flex items-start gap-x-1 ml-2">
+      <together-avatar
+        [src]="post.author.avatar"
+        componentClass="scale-[0.8]"
+      />
+      <div class="mt-1">
+        <div (click)="commonService.navigateToPost(post.id)" class="cursor-pointer group">
+        <span *ngIf="post.prefixId" class="inline-block">
+          <together-prefix
+            [name]="post.prefixName!"
+            [foreground]="post.prefixForeground!"
+            [background]="post.prefixBackground!"
+          />
+        </span>
+          <a class="inline text-[15px] text-ellipsis line-clamp-2 hover:underline group-hover:underline indent-0">{{ post.title }}</a>
+        </div>
+        <div class="text-xs text-gray-500 mt-[2px]">
+          <a (click)="commonService.navigateToProfile(post.author.id)" class="hover:underline cursor-pointer">{{ post.author.userName }}</a>
+          <span class="font-light">&nbsp;&bull;&nbsp;{{ post.createdAt | timeAgo }}</span>
+        </div>
+        @if (showTopicName) {
+          <div (click)="commonService.navigateToTopic(post.topicId)"
+               class="text-xs text-primary text-ellipsis line-clamp-1 cursor-pointer hover:underline"
+          >{{ post.topicName }}</div>
+        }
+      </div>
+    </div>
+    @if (showReplyCount) {
+      <div class="ml-auto min-w-[80px] flex flex-col items-center justify-center">
+        <div class="text-[18px] font-bold">{{post.replyCount | shortenNumber}}</div>
+        <div class="leading-[8px] font-light text-[11px]">{{commonService.translate('Replies')}}</div>
+      </div>
+    }
+  </div>
+}
+@else {
+  <div [ngClass]="componentClass" class="flex items-center bg-white py-2 border-b border-b-gray-400/40" style="border-bottom-style: solid">
+    <div class="flex items-start gap-x-3 ml-2">
+      <p-skeleton size="40px" shape="circle" styleClass="mt-1"/>
+      <div class="mt-1">
+        <p-skeleton width="200px" />
+        <p-skeleton width="30%" height="10px" styleClass="mt-1"/>
+        @if (showTopicName) {
+          <p-skeleton width="6rem" height="10px" styleClass="mt-1"/>
+        }
+      </div>
+    </div>
+    @if (showReplyCount) {
+      <div class="ml-auto min-w-[80px] flex flex-col items-center justify-center">
+        <p-skeleton size="32px" />
+      </div>
+    }
+  </div>
+}

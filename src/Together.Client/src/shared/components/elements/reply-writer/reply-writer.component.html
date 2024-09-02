@@ -1,0 +1,51 @@
+<div [ngClass]="componentClass" class="w-full my-3">
+  @if (!expand && showOnClose) {
+    <div (click)="expand = true" class="rounded-3xl border border-gray-400 border-solid">
+      <div class="text-gray-300 px-4 py-3">{{commonService.translate('Reply post')}}</div>
+    </div>
+  }
+  @else if(expand) {
+    <div class="reply-writer border border-solid border-gray-300 rounded">
+      <p-editor
+        [(ngModel)]="body"
+        [style]="{ minHeight: '30px' }"
+        [placeholder]="commonService.translate('Reply post')"
+      >
+        <ng-template pTemplate="header">
+        <span class="ql-formats">
+            <button type="button" class="ql-link" aria-label="Link"></button>
+            <button type="button" class="ql-image" aria-label="Image"></button>
+        </span>
+        </ng-template>
+      </p-editor>
+      <div class="flex justify-end gap-x-2 p-2">
+        <p-button
+          (onClick)="expand = false"
+          [label]="commonService.translate('Cancel')"
+          size="small"
+          severity="secondary"
+        />
+        <p-button
+          (onClick)="onSubmit()"
+          [label]="commonService.translate('Submit')"
+          label="Phản hồi"
+          size="small"
+          styleClass="bg-primary"
+        />
+      </div>
+    </div>
+  }
+</div>
+
+<style>
+  .reply-writer {
+    .p-editor-toolbar,
+    .p-editor-content {
+      border: none;
+    }
+
+    .p-editor-toolbar {
+      border-bottom: 1px solid #e2e8f0
+    }
+  }
+</style>

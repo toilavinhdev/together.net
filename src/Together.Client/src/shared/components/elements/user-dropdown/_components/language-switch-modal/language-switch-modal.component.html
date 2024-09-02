@@ -1,0 +1,15 @@
+@if (visible) {
+  <div class="fixed top-0 left-0 right-0 h-screen bg-gray-500/40 flex items-center justify-center z-[100]">
+    <div togetherClickOutside
+         (clickOutside)="onClickOutside()"
+         class="flex gap-x-4 bg-gray-600/50 text-white px-5 py-4 rounded-2xl *:cursor-pointer *:rounded-2xl *:duration-300">
+      @for (item of items; track item) {
+        <div (click)="switchLanguage(item.value)"
+             class="px-4 py-3 {{commonService.getCurrentLanguage() === item.value ? 'bg-[#c2c2c2]' : 'hover:bg-gray-400 '}}">
+          <img [src]="item.iconPath" alt="" class="h-[90px] w-[90px]"/>
+          <div class="text-center">{{item.title}}</div>
+        </div>
+      }
+    </div>
+  </div>
+}

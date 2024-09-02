@@ -1,0 +1,29 @@
+<div class="mt-10">
+  @if (replies.length && status === 'finished') {
+    @for (reply of replies; track reply) {
+      <together-reply
+        (deleteReply)="onDeleteReply($event)"
+        [reply]="reply"
+      />
+    }
+  } @else if (!replies.length && status === 'finished') {
+    <div class="italic">{{commonService.translate('No replies')}}</div>
+  }
+
+  @if (status === 'loading') {
+    @for (_ of Array(2); track _) {
+      <ng-container [ngTemplateOutlet]="skeletonTpl"/>
+    }
+  }
+
+</div>
+
+<ng-template #skeletonTpl>
+  <div class="flex gap-x-2 items-start mt-4">
+    <p-skeleton size="3rem" shape="circle" styleClass="mb-2" />
+    <div>
+      <p-skeleton height="1rem" width="200px" styleClass="mb-2" />
+      <p-skeleton height="4rem" width="400px" styleClass="mb-2" />
+    </div>
+  </div>
+</ng-template>

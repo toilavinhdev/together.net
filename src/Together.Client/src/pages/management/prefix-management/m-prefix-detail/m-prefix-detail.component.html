@@ -1,0 +1,50 @@
+<together-container>
+  <!--Demo-->
+  <together-prefix
+    [name]="form.get('name')?.value ?? 'Together.NET'"
+    [background]="form.get('background')?.value"
+    [foreground]="form.get('foreground')?.value"
+    fontSize="16px"
+    componentClass="inline"
+  />
+  <form [formGroup]="form" class="mt-8">
+    <!--Name-->
+    <div class="flex flex-col gap-1 mb-4">
+      <label>Tên prefix:</label>
+      <input
+        pInputText
+        formControlName="name"
+      />
+      <ng-container *ngIf="form.get('name')?.dirty">
+        <small *ngIf="form.get('name')?.errors?.['required']" class="text-red-600">Không bỏ trống tên prefix</small>
+      </ng-container>
+    </div>
+    <div class="flex gap-x-10">
+      <!--Foreground-->
+      <div class="flex flex-col gap-1 mb-4">
+        <label>Màu chữ:</label>
+        <p-colorPicker
+          formControlName="foreground"
+
+        />
+        <ng-container *ngIf="form.get('foreground')?.dirty">
+          <small *ngIf="form.get('foreground')?.errors?.['required']" class="text-red-600">Vui lòng chọn màu nền</small>
+        </ng-container>
+      </div>
+      <!--Background-->
+      <div class="flex flex-col gap-1 mb-4">
+        <label>Màu nền:</label>
+        <p-colorPicker
+          formControlName="background"
+        />
+        <ng-container *ngIf="form.get('background')?.dirty">
+          <small *ngIf="form.get('background')?.errors?.['required']" class="text-red-600">Không bỏ trống tên prefix</small>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+  <div class="flex justify-end gap-x-3 mt-10">
+    <p-button routerLink="/management/prefix" label="Hủy" severity="secondary" outlined/>
+    <p-button *ngIf="userService.hasPermission$(policies.Prefix.Update) | async" (onClick)="onSubmit()" label="Xác nhận"/>
+  </div>
+</together-container>

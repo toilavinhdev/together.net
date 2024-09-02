@@ -1,0 +1,59 @@
+<div [ngClass]="{'gap-x-3': voteFor === 'post', '-ml-3': voteFor === 'reply'}" class="flex items-center my-1 {{componentClass}}">
+  <div
+    *ngIf="(voteFor === 'post' && (userService.hasPermission$(policies.Post.Vote) | async)) || (voteFor === 'reply' && (userService.hasPermission$(policies.Reply.Vote) | async))"
+    (click)="onVote(EVoteType.UpVote)"
+    class="flex items-center gap-x-1 px-3 py-2 cursor-pointer rounded-full duration-200 hover:bg-gray-300"
+    [ngClass]="{'bg-gray-300/40': voteFor === 'post'}"
+  >
+    <i class="{{voted === EVoteType.UpVote ? 'fa-solid text-primary' : 'fa-light'}} fa-circle-up text-[18px]"></i>
+    <span class="text-[13px] font-medium">{{voteUpCount | shortenNumber}}</span>
+  </div>
+  <div
+    *ngIf="(voteFor === 'post' && (userService.hasPermission$(policies.Post.Vote) | async)) || (voteFor === 'reply' && (userService.hasPermission$(policies.Reply.Vote) | async))"
+    (click)="onVote(EVoteType.DownVote)"
+    class="flex items-center gap-x-1 px-3 py-2 cursor-pointer rounded-full duration-200 bg-gray-300/40 hover:bg-gray-300"
+    [ngClass]="{'bg-gray-300/40': voteFor === 'post'}"
+  >
+    <i class="{{voted === EVoteType.DownVote ? 'fa-solid text-primary' : 'fa-light'}} fa-circle-down text-[18px]"></i>
+    <span class="text-[13px] font-medium">{{voteDownCount | shortenNumber}}</span>
+  </div>
+  <div
+    *ngIf="userService.hasPermission$(policies.Reply.Create) | async"
+    (click)="expandReplyWriter.emit()"
+    class="flex items-center gap-x-1 px-3 py-2 cursor-pointer rounded-full duration-200 bg-gray-300/40 hover:bg-gray-300"
+    [ngClass]="{'bg-gray-300/40': voteFor === 'post'}"
+  >
+    <i class="fa-light fa-message-dots text-[16px] mt-[2px]"></i>
+    <span class="text-[13px] font-medium">{{replyCount | shortenNumber}}</span>
+  </div>
+  <div
+    (click)="menu.toggle($event);"
+    class="px-3 py-2 cursor-pointer rounded-full duration-200 bg-gray-300/40 hover:bg-gray-300"
+    [ngClass]="{'bg-gray-300/40': voteFor === 'post'}"
+  >
+    <i class="fa-solid fa-ellipsis"></i>
+    <p-menu #menu [model]="items" [popup]="true">
+      <ng-template pTemplate="item" let-item>
+        <div *ngIf="
+              item.id === 'Update' || item.id === 'Delete'
+                ?
+                  ((
+                    (item.id === 'Update' && voteFor === 'post' && (userService.hasPermission$(policies.Post.Update) | async)) ||
+                    (item.id === 'Delete' && voteFor === 'post' && (userService.hasPermission$(policies.Post.Delete) | async)) ||
+                    (item.id === 'Update' && voteFor === 'reply' && (userService.hasPermission$(policies.Reply.Update) | async)) ||
+                    (item.id === 'Delete' && voteFor === 'reply' && (userService.hasPermission$(policies.Reply.Delete) | async))
+                  ) && (userId === (userService.me$ | async)?.id))
+                : true
+              "
+             pRipple
+             class="flex items-center text-[14px] px-3 py-2"
+        >
+          <span [class]="item.icon"></span>
+          <span class="ml-3">{{ item.label | translate }}</span>
+        </div>
+      </ng-template>
+    </p-menu>
+  </div>
+</div>
+
+<p-confirmDialog />

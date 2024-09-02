@@ -1,0 +1,90 @@
+<section class="bg-white shadow rounded px-6 py-4">
+  <div class="text-[26px] font-medium text-ellipsis line-clamp-1 mb-6">
+    {{commonService.translate(formType === 'create' ? 'Create post' : 'Update post')}}
+  </div>
+  <form [formGroup]="form">
+    <!--Topic-->
+    <p-dropdown
+      formControlName="topicId"
+      [options]="(forums$ | async)!"
+      [group] = true
+      [placeholder]="commonService.translate('Select topic')"
+      [loading]="loadingTopic"
+      styleClass="w-full"
+    ></p-dropdown>
+    <div class="flex gap-x-3 mt-4">
+      <!--Prefix-->
+      <p-dropdown
+        [loading]="loadingPrefix"
+        formControlName="prefixId"
+        [options]="(prefixService.prefixes$ | async) ?? []"
+        optionLabel="name"
+        optionValue="id"
+        [placeholder]="commonService.translate('Select prefix')"
+        showClear
+        styleClass="min-w-[200px]"
+      >
+        <ng-template pTemplate="selectedItem">
+          <together-prefix
+            *ngIf="selectedPrefix"
+            [name]="selectedPrefix.name"
+            [foreground]="selectedPrefix.foreground"
+            [background]="selectedPrefix.background"
+            componentClass="inline-block"
+          />
+        </ng-template>
+        <ng-template let-prefix pTemplate="item">
+          <together-prefix
+            [name]="prefix.name"
+            [foreground]="prefix.foreground"
+            [background]="prefix.background"
+            componentClass="inline-block"
+          />
+        </ng-template>
+      </p-dropdown>
+      <!--Title-->
+      <input
+        formControlName="title"
+        pInputText
+        [placeholder]="commonService.translate('Enter title')"
+        class="flex-1"
+      />
+    </div>
+    <!--Body-->
+    <together-editor
+      #editor
+      formControlName="body"
+      placeholder="Aa"
+      wrapperClass="mt-4"
+    />
+  </form>
+  <div class="mt-4">
+    <p *ngIf="form.get('topicId')?.dirty && form.get('topicId')?.errors?.['required']" class="text-red-600">{{commonService.translate('Please select a topic')}}</p>
+    <p *ngIf="form.get('title')?.dirty && form.get('title')?.errors?.['required']" class="text-red-600">{{commonService.translate('Please enter a title')}}</p>
+    <p *ngIf="form.get('body')?.dirty && form.get('body')?.errors?.['required']" class="text-red-600">{{commonService.translate('Please enter content')}}</p>
+  </div>
+  <p-button
+    *ngIf="formType === 'create'"
+    (onClick)="onSubmit()"
+    [loading]="loading"
+    [label]="commonService.translate('Post')"
+    styleClass="w-full mt-4 bg-primary"
+    size="large"
+  />
+  <div *ngIf="formType === 'update'" class="flex *:flex-1 gap-x-3 mt-4">
+    <p-button
+      (onClick)="commonService.navigateToPost(postId)"
+      [label]="commonService.translate('Cancel')"
+      styleClass="w-full"
+      severity="secondary"
+      size="large"
+    />
+    <p-button
+      (onClick)="onSubmit()"
+      [loading]="loading"
+      [label]="commonService.translate('Submit')"
+      styleClass="w-full bg-primary"
+      size="large"
+    />
+  </div>
+</section>

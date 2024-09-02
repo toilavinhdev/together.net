@@ -1,0 +1,28 @@
+<div [ngClass]="componentClass" class="bg-white rounded shadow">
+  <div class="uppercase font-medium text-[13px] px-5 py-5 bg-primary text-white rounded-t">{{'Latest posts' | translate}}</div>
+  @if (!loading) {
+    @if (latestPost.length) {
+      @for (post of latestPost; track post) {
+        <together-post
+          [post]="post"
+          [showReplyCount]="false"
+          [showTopicName]="true"
+        />
+      }
+    } @else {
+      <div class="p-6">
+        Không có dữ liệu
+      </div>
+    }
+  }
+  @else {
+    @for (_ of Array(5); track _) {
+      <together-post
+        loading
+        showTopicName
+        [showReplyCount]="false"
+      />
+    }
+  }
+
+</div>

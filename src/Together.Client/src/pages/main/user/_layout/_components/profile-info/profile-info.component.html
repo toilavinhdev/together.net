@@ -1,0 +1,51 @@
+@if (!loading) {
+  <div *ngIf="user" class="flex items-start gap-x-10 bg-white rounded shadow px-10 py-6 mt-4">
+    <together-avatar [src]="user.avatar" componentClass="h-[140px] w-[140px]"/>
+    <div class="relative flex-1">
+      <div class="font-medium text-[28px]">{{user.userName}}</div>
+      <div>
+        <span *ngIf="user.fullName">{{user.fullName}}</span>
+        <span *ngIf="!user.fullName" class="text-gray-500 italic">{{commonService.translate('No name')}}</span>
+      </div>
+      <div class="flex gap-x-10 text-[16px] mt-4">
+        <div>
+          <i class="fa-regular fa-calendar-circle-user"></i>
+          <span>&nbsp;{{user.createdAt | date: 'dd/MM/yyyy'}}</span>
+        </div>
+        <div>
+          <span class="font-bold">{{user.postCount | shortenNumber}}</span>
+          <span>&nbsp;{{commonService.translate('Posts')}}</span>
+        </div>
+        <div>
+          <span class="font-bold">{{user.replyCount | shortenNumber}}</span>
+          <span>&nbsp;{{commonService.translate('Replies')}}</span>
+        </div>
+      </div>
+      <div class="mt-4">
+        <span *ngIf="user.biography">{{user.biography}}</span>
+        <span *ngIf="!user.biography" class="text-gray-500 italic">{{commonService.translate('Not thing')}}</span>
+      </div>
+      <div class="absolute top-0 right-0 flex flex-col gap-y-2">
+        <together-profile-update-modal *ngIf="userService.userIsMe$ | async"/>
+        <together-profile-upload-avatar *ngIf="userService.userIsMe$ | async"/>
+        <together-profile-get-private-conversation *ngIf="!(userService.userIsMe$ | async)"/>
+      </div>
+    </div>
+  </div>
+}
+
+@else {
+  <div class="flex items-start gap-x-10 bg-white rounded shadow px-10 py-6 mt-4">
+    <p-skeleton shape="circle" size="140px" />
+    <div>
+      <p-skeleton width="40rem" height="30px" />
+      <p-skeleton width="40rem" styleClass="mt-2" />
+      <div class="flex gap-x-10 mt-4">
+        <p-skeleton width="10rem" />
+        <p-skeleton width="10rem" />
+        <p-skeleton width="10rem" />
+      </div>
+      <p-skeleton width="16rem" styleClass="mt-4" />
+    </div>
+  </div>
+}

@@ -1,0 +1,46 @@
+<div class="flex gap-x-6">
+  <ng-container
+    [ngTemplateOutlet]="statisticBlockTpl"
+    [ngTemplateOutletContext]="{
+        title: 'Thành viên',
+        icon: 'pi pi-users',
+        value: statistics?.totalUser,
+        subValue: statistics?.totalUserToday
+      }"
+  />
+  <ng-container
+    [ngTemplateOutlet]="statisticBlockTpl"
+    [ngTemplateOutletContext]="{
+        title: 'Bài viết',
+        icon: 'pi pi-file',
+        value: statistics?.totalPost,
+        subValue: statistics?.totalPostToday,
+      }"
+  />
+  <ng-container
+    [ngTemplateOutlet]="statisticBlockTpl"
+    [ngTemplateOutletContext]="{
+        title: 'Phản hồi',
+        icon: 'pi pi-comments',
+        value: statistics?.totalReply,
+        subValue: statistics?.totalReplyToday,
+      }"
+  />
+</div>
+
+<ng-template #statisticBlockTpl let-title="title" let-value="value" let-subValue="subValue" let-icon="icon">
+  <div class="bg-white shadow rounded px-8 py-5 w-[220px]">
+    <div class="flex justify-between">
+      <div>
+        <div class="text-gray-600 font-semibold text-[14px]">{{title | translate}}</div>
+        <div class="font-semibold text-[30px] text-primary">{{value | shortenNumber}}</div>
+      </div>
+      <div class="mt-1">
+        <span class="{{icon}} bg-primary text-white p-2 rounded-lg"></span>
+      </div>
+    </div>
+    <div class="text-[12px]">
+      <span class="text-green-700">+{{subValue | shortenNumber}}</span> hôm nay
+    </div>
+  </div>
+</ng-template>

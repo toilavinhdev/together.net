@@ -1,0 +1,21 @@
+<div>
+  <p-menu
+    [model]="items"
+    styleClass="h-screen w-[230px] overflow-y-auto"
+  >
+    <ng-template pTemplate="start">
+      <div routerLink="/" class="text-[22px] text-center font-semibold uppercase cursor-pointer leading-[60px]">
+        Together<span class="text-primary">NET</span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="submenuheader" let-item>
+      <span class="text-primary uppercase text-[12px]">{{ item.label | translate }}</span>
+    </ng-template>
+    <ng-template pTemplate="item" let-item>
+      <a [routerLink]="item.routerLink" pRipple class="flex items-center gap-x-2 text-[14px] p-menuitem-link">
+        <span [class]="item.icon"></span>
+        <span>{{ item.label | translate }}</span>
+      </a>
+    </ng-template>
+  </p-menu>
+</div>

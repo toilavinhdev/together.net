@@ -1,0 +1,17 @@
+<p-toast
+  position="top-center"
+  [baseZIndex]="5000"
+  styleClass="w-[350px]"
+>
+  <ng-template let-message pTemplate="message">
+    <div *ngIf="model" class="flex-1 flex items-center min-h-[28px]">
+      <div class="mr-3">
+        <i *ngIf="model.type === 'success'" class="pi pi-check-circle"></i>
+        <i *ngIf="model.type === 'info'" class="pi pi-info-circle"></i>
+        <i *ngIf="model.type === 'warn'" class="pi pi-exclamation-circle"></i>
+        <i *ngIf="model.type === 'error'" class="pi pi-times-circle"></i>
+      </div>
+      <div>{{message.summary}}</div>
+    </div>
+  </ng-template>
+</p-toast>

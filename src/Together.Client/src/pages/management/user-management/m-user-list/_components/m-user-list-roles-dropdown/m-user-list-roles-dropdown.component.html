@@ -1,0 +1,13 @@
+<div id="m-user-list-roles-dropdown">
+  <p-dropdown [options]="roles"
+              [(ngModel)]="roleId"
+              (ngModelChange)="roleIdChange.emit($event)"
+              [loading]="loading"
+              (onShow)="loadRoles(); listenScrollReachedBottom()"
+              showClear
+              optionLabel="name"
+              optionValue="id"
+              placeholder="Chọn vai trò"
+              styleClass="w-[320px]"
+  />
+</div>

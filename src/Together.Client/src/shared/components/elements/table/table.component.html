@@ -1,0 +1,69 @@
+<p-table #dynamicTable
+         [styleClass]="classes"
+         [value]="data"
+         [dataKey]="dataKey"
+         [columns]="columns.toArray()"
+         [loading]="loading"
+         [rowHover]="rowHover"
+         [scrollable]="true"
+         [scrollHeight]="scrollHeight"
+         [expandedRowKeys]="expandedRows"
+         (onRowExpand)="onRowExpand($event)"
+         (onRowCollapse)="onRowCollapse($event)"
+         class="together-dynamic-table"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngIf="nestedTableTpl" style="width: 5rem"></th>
+      <th *ngFor="let column of columns" [ngClass]="column.headerClass">
+        <ng-container *ngIf="column.headerTpl"
+                      [ngTemplateOutlet]="column.headerTpl.template"
+        />
+        <ng-container *ngIf="!column.headerTpl">
+          <div>{{ column.title | translate }}</div>
+        </ng-container>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-row let-columns="columns" let-index="rowIndex" let-expanded="expanded">
+    <tr [pDraggable]="rowDraggable"
+        [pDraggableDisabled]="!rowDraggable"
+        [dragEffect]="'move'"
+        (onDragStart)="onRowDragStart.emit(row)"
+        (onDragEnd)="onRowDragEnd.emit(row)"
+        [ngClass]="{'cursor-move': rowDraggable}"
+    >
+      <td *ngIf="nestedTableTpl">
+        <p-button
+          [pRowToggler]="row" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+          text rounded plain
+        />
+      </td>
+      <td *ngFor="let column of columns" [class]="column.columnClass">
+        <ng-container *ngIf="column.cellTpl"
+                      [ngTemplateOutlet]="column.cellTpl.template"
+                      [ngTemplateOutletContext]="{ $implicit: row, index: index }"
+        />
+        <ng-container *ngIf="!column.cellTpl">
+          <ng-container [ngSwitch]="column.type">
+            <ng-container *ngSwitchCase="'index'">{{index + 1}}</ng-container>
+            <ng-container *ngSwitchCase="'text'">{{row[column.key]}}</ng-container>
+            <ng-container *ngSwitchCase="'datetime'">{{row[column.key] | date:'HH:mm:ss dd-MM-yyyy'}}</ng-container>
+          </ng-container>
+        </ng-container>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="rowexpansion" let-row>
+    <tr *ngIf="nestedTableTpl">
+      <td [colSpan]="columns.length + 1">
+        <ng-container [ngTemplateOutlet]="nestedTableTpl"/>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<div *ngIf="!data || !data.length" class="flex flex-col items-center pt-10 bg-white border border-t-0 border-solid border-gray-200">
+  <together-svg-icon name="nodata" [width]="288" [height]="217"/>
+  <div class="text-[16px] my-12">Không có dữ liệu</div>
+</div>
