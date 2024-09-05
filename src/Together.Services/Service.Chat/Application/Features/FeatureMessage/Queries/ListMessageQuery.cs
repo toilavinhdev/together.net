@@ -115,7 +115,7 @@ public sealed class ListMessageQuery : IBaseRequest<ListMessageResponse>, IPagin
                         RedisKeys.Identity<IdentityPrivilege>(receiver.ParticipantId));
                     if (cachedUser is null) break;
                     extra.Add("conversationName", cachedUser!.UserName);
-                    extra.Add("conversationImage", cachedUser.Avatar ?? string.Empty);
+                    if (!string.IsNullOrEmpty(cachedUser.Avatar)) extra.Add("conversationImage", cachedUser.Avatar);
                     extra.Add("userId", cachedUser.Id);
                     var userOnline = await redisService.SetContainsAsync(RedisKeys.SocketOnlineUsers(), cachedUser.Id.ToString());
                     extra.Add("userOnline", userOnline);

@@ -10,6 +10,7 @@ package identity;
 service UserGrpcServerService {
   rpc PingGrpc(google.protobuf.Empty) returns (PingGrpcResponse);
   rpc GetGeneralUserGrpc(GetGeneralUserGrpcRequest) returns (GetGeneralUserGrpcResponse);
+  rpc UserStatisticsGrpc(UserStatisticsGrpcRequest) returns (UserStatisticsGrpcResponse);
 }
 
 message PingGrpcResponse {
@@ -29,4 +30,17 @@ message GeneralUserGrpc {
   string userName = 2;
   google.protobuf.StringValue avatar = 3;
   bool isOfficial = 4;
+}
+
+message UserStatisticsGrpcRequest {
+  repeated string metrics = 1;
+}
+
+message UserStatisticsGrpcResponse {
+  repeated MetricPair data = 1;
+}
+
+message MetricPair {
+  string metric = 1;
+  string value = 2;
 }

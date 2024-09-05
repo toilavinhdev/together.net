@@ -4,7 +4,6 @@ using Infrastructure.SharedKernel.Extensions;
 using Infrastructure.SharedKernel.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Service.Identity.Application.Features.FeatureUser.Commands;
 using Service.Identity.Application.Features.FeatureUser.Queries;
 using Service.Identity.Application.Features.FeatureUser.Responses;
@@ -24,7 +23,7 @@ public sealed class UserEndpoint : IEndpoint
         group.MapGet("/{userId:guid}", GetUser);
         
         group.MapGet("/list", ListUser);
-
+        
         group.MapPut("/me/upload-avatar", UploadAvatar);
         
         group.MapPut("/me/update-profile", UpdateProfile);
@@ -60,3 +59,4 @@ public sealed class UserEndpoint : IEndpoint
     private static Task<BaseResponse> UploadAvatar(ISender sender, UpdateAvatarCommand command)
         => sender.Send(command);
 }
+

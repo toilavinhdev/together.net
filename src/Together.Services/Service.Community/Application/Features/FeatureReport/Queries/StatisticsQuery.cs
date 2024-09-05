@@ -1,15 +1,17 @@
+using Grpc.Net.Client;
 using Infrastructure.SharedKernel.Extensions;
 using Infrastructure.SharedKernel.Mediator;
+using Infrastructure.SharedKernel.Protos.Identity;
 using Microsoft.EntityFrameworkCore;
 using Service.Community.Domain;
 
-namespace Service.Community.Application.Features.FeatureStatistics.Queries;
+namespace Service.Community.Application.Features.FeatureReport.Queries;
 
 public sealed class StatisticsQuery : IBaseRequest<Dictionary<string, object>>
 {
     public List<string>? Metrics { get; set; }
     
-    internal class Handle(IHttpContextAccessor httpContextAccessor, CommunityContext context) 
+    internal class Handle(IHttpContextAccessor httpContextAccessor, CommunityContext context, AppSettings appSettings) 
         : BaseRequestHandler<StatisticsQuery, Dictionary<string, object>>(httpContextAccessor)
     {
         protected override async Task<Dictionary<string, object>> HandleAsync(StatisticsQuery request, CancellationToken ct)
@@ -51,6 +53,23 @@ public sealed class StatisticsQuery : IBaseRequest<Dictionary<string, object>>
                 var totalReplyToday = await context.Replies.LongCountAsync(r => r.CreatedAt >= start && r.CreatedAt <= end, ct);
                 data.Add("totalReplyToday", totalReplyToday);
             }
+            
+            // user statistics
+            var userMetrics = new List<string>();
+            if (request.Metrics.Contains("totalOnlineUser")) userMetrics.Add("totalOnlineUser");
+            if (request.Metrics.Contains("totalUser")) userMetrics.Add("totalUser");
+            if (request.Metrics.Contains("totalUserToday")) userMetrics.Add("totalUserToday");
+            if (request.Metrics.Contains("newMember")) userMetrics.Add("newMember");
+
+            var channelOptions = new GrpcChannelOptions { HttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator } };
+            var channel = GrpcChannel.ForAddress(appSettings.GrpcEndpoints.ServiceIdentity, channelOptions);
+            var client = new UserGrpcServerService.UserGrpcServerServiceClient(channel);
+            var response = await client.UserStatisticsGrpcAsync(new UserStatisticsGrpcRequest
+            {
+                Metrics = { userMetrics }
+            }, cancellationToken: ct);
+
+            foreach (var pair in response.Data) data.Add(pair.Metric, pair.Value);
             
             return data;
         }

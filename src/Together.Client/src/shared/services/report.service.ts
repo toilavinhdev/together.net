@@ -15,10 +15,10 @@ import { IBaseResponse } from '@/core/models';
 export class ReportService extends BaseService {
   constructor() {
     super();
-    this.setEndpoint('community', 'report');
   }
 
   statistics(metrics?: string[]): Observable<IStatisticsResponse> {
+    this.setEndpoint('community', 'report');
     const url = this.createUrl('/statistics');
     return this.client
       .post<IBaseResponse<IStatisticsResponse>>(url, { metrics })
@@ -26,6 +26,7 @@ export class ReportService extends BaseService {
   }
 
   getPrefixReport(): Observable<IPrefixReportResponse[]> {
+    this.setEndpoint('community', 'report');
     const url = this.createUrl('/prefix');
     return this.client
       .get<IBaseResponse<IPrefixReportResponse[]>>(url)
@@ -35,6 +36,7 @@ export class ReportService extends BaseService {
   getDailyUserReport(
     params: IDailyUserReportRequest,
   ): Observable<IDailyUserReportResponse[]> {
+    this.setEndpoint('identity', 'report');
     const url = this.createUrl('/daily-user');
     return this.client
       .get<

@@ -4,20 +4,20 @@ using Infrastructure.SharedKernel.Extensions;
 using Infrastructure.SharedKernel.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Service.Community.Application.Features.FeatureReport.Queries;
-using Service.Community.Application.Features.FeatureReport.Responses;
+using Service.Identity.Application.Features.FeatureReport.Queries;
+using Service.Identity.Application.Features.FeatureReport.Responses;
 
-namespace Service.Community.Endpoints;
+namespace Service.Identity.Endpoints;
 
 public sealed class ReportEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/v1/report").WithTags("Report");
-        
-        group.MapGet("/prefix", PrefixReport);
 
         group.MapPost("/statistics", Statistics);
+        
+        group.MapGet("/daily-user", DailyUserReport);
     }
 
     [Authorize]
@@ -25,6 +25,6 @@ public sealed class ReportEndpoint : IEndpoint
         => sender.Send(query);
     
     [AccessControl(Policies.Management.ViewDashboard)]
-    private static Task<BaseResponse<List<PrefixReportResponse>>> PrefixReport(ISender sender)
-        => sender.Send(new PrefixReportQuery());
+    private static Task<BaseResponse<List<DailyUserReportResponse>>> DailyUserReport(ISender sender, [AsParameters] DailyUserReportQuery query)
+        => sender.Send(query);
 }
