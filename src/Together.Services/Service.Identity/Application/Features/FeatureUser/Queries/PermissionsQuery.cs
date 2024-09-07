@@ -16,12 +16,14 @@ public sealed class PermissionsQuery : IBaseRequest<List<string>>
                 .Where(ur => ur.UserId == UserClaimsPrincipal.Id)
                 .Select(ur => ur.Role)
                 .ToListAsync(ct);
-
-            return roles
+            
+            var permissions = roles
                 .SelectMany(role => role.Claims)
                 .Distinct()
                 .OrderBy(claim => claim)
                 .ToList();
+            
+            return permissions;
         }
     }
 }

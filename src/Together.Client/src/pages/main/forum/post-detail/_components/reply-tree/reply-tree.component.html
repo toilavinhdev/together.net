@@ -1,0 +1,43 @@
+<p-dialog
+  header="Hoạt động"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '55rem' }"
+  (onHide)="onHide()"
+>
+  @if (status === 'finished') {
+    <div>{{parent?.parentId}}</div>
+    <together-reply
+      *ngIf="parent"
+      [reply]="parent"
+    />
+    <div class="bg-primary-lighter p-2 rounded">
+      <div class="text-[12px] mb-4">
+        <div *ngIf="focusChild">
+          <span (click)="commonService.navigateToProfile(focusChild.createdById)" class="text-primary hover:underline cursor-pointer font-semibold">{{focusChild.createdByUserName}}&nbsp;</span>
+          <span *ngIf="notificationType === ENotificationType.ReplyPost">đã phản hồi bài viết:</span>
+          <span *ngIf="notificationType === ENotificationType.VoteReply">đã vote phản hồi:</span>
+          <span *ngIf="notificationType === ENotificationType.ReplyReply">đã trả lời bình luận trên:</span>
+        </div>
+      </div>
+      <together-reply
+        *ngIf="focusChild"
+        [reply]="focusChild"
+      />
+    </div>
+  } @else if (status === 'loading') {
+    @for (_ of Array(2); track _) {
+      <ng-container [ngTemplateOutlet]="skeletonTpl"/>
+    }
+  }
+</p-dialog>
+
+<ng-template #skeletonTpl>
+  <div class="flex gap-x-2 items-start mt-4">
+    <p-skeleton size="3rem" shape="circle" styleClass="mb-2" />
+    <div>
+      <p-skeleton height="1rem" width="200px" styleClass="mb-2" />
+      <p-skeleton height="4rem" width="400px" styleClass="mb-2" />
+    </div>
+  </div>
+</ng-template>

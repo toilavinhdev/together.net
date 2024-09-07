@@ -4,7 +4,12 @@ using Service.Community.Domain.Enums;
 
 namespace Service.Community.Application.Features.FeatureReply.Responses;
 
-public class ListReplyResponse : PaginationResult<ReplyViewModel>;
+public class ReplyResponse : PaginationResult<ReplyViewModel>
+{
+    public ReplyViewModel? Parent { get; set; }
+    
+    public ReplyViewModel? FocusChild { get; set; }
+}
 
 public class ReplyViewModel : ModifierTrackingEntity
 {

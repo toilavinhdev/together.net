@@ -6,6 +6,7 @@ import {
   ICreateReplyResponse,
   IListReplyRequest,
   IListReplyResponse,
+  IReplyViewModel,
   IUpdateReplyRequest,
   IVoteReplyRequest,
 } from '@/shared/entities/reply.entities';
@@ -22,7 +23,7 @@ export class ReplyService extends BaseService {
   }
 
   listReply(params: IListReplyRequest): Observable<IListReplyResponse> {
-    const url = this.createUrl('/list');
+    const url = this.createUrl('/query');
     return this.client
       .get<
         IBaseResponse<IListReplyResponse>

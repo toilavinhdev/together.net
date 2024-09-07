@@ -90,13 +90,29 @@ export class NotificationDropdownComponent
   navigateToSource(notification: INotificationViewModel) {
     switch (notification.type) {
       case ENotificationType.VotePost:
-        this.commonService.navigateToPost(notification.directObjectId);
+        this.commonService.navigateToPost(notification.directObjectId, {
+          notificationType: notification.type,
+        });
         break;
       case ENotificationType.VoteReply:
         this.commonService.navigateToPost(notification.prepositionalObjectId!, {
-          replyId: notification.directObjectId,
+          focusChildId: notification.directObjectId,
+          replyParentId: undefined,
+          notificationType: notification.type,
         });
         break;
+      case ENotificationType.ReplyPost:
+        this.commonService.navigateToPost(notification.prepositionalObjectId!, {
+          focusChildId: notification.directObjectId,
+          notificationType: notification.type,
+        });
+        break;
+      case ENotificationType.ReplyReply:
+        this.commonService.navigateToPost(notification.prepositionalObjectId!, {
+          focusChildId: notification.directObjectId,
+          replyParentId: notification.indirectObjectId,
+          notificationType: notification.type,
+        });
     }
     if (notification.status == ENotificationStatus.Unread) {
       this.markRead(notification.id);

@@ -1,5 +1,3 @@
-
-
 <section class="bg-white px-8 py-6 rounded shadow mb-4">
   @if (post && status === 'finished') {
     <div>
@@ -59,9 +57,11 @@
   <together-reply-root-list
     #replyListComponent
   />
+
+  <together-reply-tree
+    #replyTreeComponent
+  />
 </section>
-
-
 
 <style>
   #together-post-detail-body {

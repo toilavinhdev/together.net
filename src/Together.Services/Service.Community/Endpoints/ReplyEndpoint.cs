@@ -15,7 +15,7 @@ public sealed class ReplyEndpoint : IEndpoint
     {
         var group = app.MapGroup("/api/v1/reply").WithTags("Reply");
 
-        group.MapGet("/list", ListReply);
+        group.MapGet("/query", ListReply);
         
         group.MapPost("/create", CreateReply);
         
@@ -27,7 +27,7 @@ public sealed class ReplyEndpoint : IEndpoint
     }
     
     [AccessControl(Policies.Reply.View)]
-    private static Task<BaseResponse<ListReplyResponse>> ListReply(ISender sender, [AsParameters] ListReplyQuery query)
+    private static Task<BaseResponse<ReplyResponse>> ListReply(ISender sender, [AsParameters] ReplyQuery query)
         => sender.Send(query);
     
     [AccessControl(Policies.Reply.Create)]

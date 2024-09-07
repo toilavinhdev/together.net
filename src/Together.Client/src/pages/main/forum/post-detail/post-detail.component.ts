@@ -25,6 +25,7 @@ import { EVoteType } from '@/shared/enums';
 import { TranslateModule } from '@ngx-translate/core';
 import { policies } from '@/shared/constants';
 import { SkeletonModule } from 'primeng/skeleton';
+import { ReplyTreeComponent } from '@/pages/main/forum/post-detail/_components/reply-tree/reply-tree.component';
 
 @Component({
   selector: 'together-post-detail',
@@ -42,6 +43,7 @@ import { SkeletonModule } from 'primeng/skeleton';
     VoteComponent,
     TranslateModule,
     SkeletonModule,
+    ReplyTreeComponent,
   ],
   templateUrl: './post-detail.component.html',
 })

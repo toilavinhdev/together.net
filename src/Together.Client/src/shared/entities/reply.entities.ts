@@ -26,6 +26,7 @@ export interface IUpdateReplyRequest {
 export interface IListReplyRequest extends IPaginationRequest {
   postId?: string;
   parentId?: string;
+  focusChildId?: string;
 }
 
 export interface IListReplyResponse

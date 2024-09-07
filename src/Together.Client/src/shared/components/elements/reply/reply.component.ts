@@ -76,7 +76,6 @@ export class ReplyComponent extends BaseComponent {
 
   showChildren() {
     if (this.childrenLoading) return;
-    console.log(this.reply.level);
     this.loadChildren();
   }
 

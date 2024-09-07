@@ -1,4 +1,6 @@
-﻿export interface IPaginationRequest {
+﻿import { IReplyViewModel } from '@/shared/entities/reply.entities';
+
+export interface IPaginationRequest {
   pageIndex: number;
   pageSize: number;
 }
@@ -15,4 +17,6 @@ export interface IPagination {
 export interface IPaginationResult<T> {
   pagination: IPagination;
   result: T[];
+  parent?: IReplyViewModel;
+  focusChild?: IReplyViewModel;
 }
