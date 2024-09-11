@@ -2,6 +2,7 @@ using Infrastructure.Logging;
 using Infrastructure.PostgreSQL;
 using Infrastructure.SharedKernel;
 using Infrastructure.SharedKernel.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Service.Community;
 using Service.Community.Domain;
 
@@ -16,6 +17,6 @@ services.AddGrpc();
 
 var app = builder.Build();
 app.UseSharedKernel(appSettings);
-app.UseGrpc(appSettings.GrpcEndpoints.ServiceCommunity, endpointBuilder => {});
+app.UseGrpc(appSettings.GrpcEndpoints.ServiceCommunity, _ => {});
 await CommunityContextInitialization.SeedAsync(app.Services);
 app.Run();

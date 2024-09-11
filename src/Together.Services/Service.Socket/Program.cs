@@ -17,6 +17,7 @@ services.AddHostedService<SendNotificationSocketBackgroundService>();
 
 var app = builder.Build();
 app.UseSharedKernel(appSettings);
+app.UseGrpc(appSettings.GrpcEndpoints.ServiceSocket, _ => {});
 app.UseWebSockets();
 app.MapWebSocketHandler<SocketHandler>($"/{appSettings.Metadata.EndpointPrefix}/ws");
 app.MapGet("/socket/connections", (SocketHandler handler) => handler.ConnectionManager.GetAll());

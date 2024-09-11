@@ -1,11 +1,13 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
+using Infrastructure.SharedKernel.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Infrastructure.SharedKernel.Extensions;
 
-public static partial class StringExtensions
+public static class StringExtensions
 {
     public static Guid ToGuid(this string input) => Guid.TryParse(input, out var result) ? result : default;
 
@@ -81,15 +83,32 @@ public static partial class StringExtensions
         return input.ToSnakeCase('-');
     }
     
-    public static string ToSnakeCase(this string input, char separator)
+    private static string ToSnakeCase(this string input, char separator)
     {
         if (string.IsNullOrEmpty(input)) return default!;
         var inspect = input.Select(
             (x, idx) => idx > 0 && char.IsUpper(x) 
                 ? $"{separator}{x}" 
                 : string.IsNullOrWhiteSpace(x.ToString()) 
-                    ? ""
+                    ? string.Empty
                     : x.ToString());
         return string.Concat(inspect).ToLower();
+    }
+
+    public static string RemoveVietnameseDiacritics(this string input)
+    {
+        if (string.IsNullOrEmpty(input)) return input;
+        input = input.ToLower().Trim();
+        input = RegexUtils.LineBreakRegex.Replace(input, " ");
+        input = RegexUtils.SpacesTabsRegex.Replace(input, " ");
+        input = RegexUtils.SpecialCharactersRegex.Replace(input, "");
+        input = RegexUtils.CharacterVariantARegex.Replace(input, "a");
+        input = RegexUtils.CharacterVariantDRegex.Replace(input, "d");
+        input = RegexUtils.CharacterVariantERegex.Replace(input, "e");
+        input = RegexUtils.CharacterVariantIRegex.Replace(input, "i");
+        input = RegexUtils.CharacterVariantORegex.Replace(input, "o");
+        input = RegexUtils.CharacterVariantURegex.Replace(input, "u");
+        input = RegexUtils.CharacterVariantYRegex.Replace(input, "y");
+        return input;
     }
 }

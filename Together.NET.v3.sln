@@ -52,6 +52,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Logging", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Mail", "src\Together.Infrastructure\Infrastructure.Mail\Infrastructure.Mail.csproj", "{19102930-62C5-443F-AE61-D195B5CFD358}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{488AD767-8F50-40DA-B13A-7C96B6A4D358}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\psql-fts-vietnamese-stopword.sh = scripts\psql-fts-vietnamese-stopword.sh
+		scripts\psql-fts-vietnamese-stopword.sql = scripts\psql-fts-vietnamese-stopword.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

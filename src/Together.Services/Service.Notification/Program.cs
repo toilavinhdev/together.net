@@ -18,5 +18,6 @@ services.AddHostedService<DeleteNotificationBackgroundService>();
 
 var app = builder.Build();
 app.UseSharedKernel(appSettings);
+app.UseGrpc(appSettings.GrpcEndpoints.ServiceNotification, _ => {});
 await NotificationContextInitialization.SeedAsync(app.Services);
 app.Run();

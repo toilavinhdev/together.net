@@ -51,7 +51,7 @@ public class RabbitMQClient : IRabbitMQClient
         _logger.LogInformation("Published message to channel {routingKey}", routingKey);
     }
 
-    public void  Subscribe<TEvent>(Func<TEvent, Task> callback) where TEvent : RabbitMQEvent
+    public void Subscribe<TEvent>(Func<TEvent, Task> callback) where TEvent : RabbitMQEvent
     {
         var routingKey = KebabCase(typeof(TEvent).Name);
         

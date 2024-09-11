@@ -10,8 +10,8 @@ public static class LanguageExtensions
 {
     private static readonly List<CultureInfo> SupportedCultures =
     [
-        new CultureInfo("en-US"),
-        new CultureInfo("vi-VN")
+        new("en-US"),
+        new("vi-VN")
     ];
     
     public static void AddCoreLanguages(this IServiceCollection services)

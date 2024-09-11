@@ -18,9 +18,9 @@ services.AddGrpc();
 var app = builder.Build();
 app.UseSharedKernel(appSettings);
 app.UseStaticFiles();
-app.UseGrpc(appSettings.GrpcEndpoints.ServiceIdentity, endpointBuilder =>
+app.UseGrpc(appSettings.GrpcEndpoints.ServiceIdentity, endpoint =>
 {
-    endpointBuilder.MapGrpcService<UserGrpcService>();
+    endpoint.MapGrpcService<UserGrpcService>();
 });
 await IdentityContextInitialization.SeedAsync(app.Services);
 app.Run();

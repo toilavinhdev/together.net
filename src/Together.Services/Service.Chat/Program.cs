@@ -15,5 +15,6 @@ services.AddPostgresDbContext<ChatContext>(appSettings.PostgresConfig);
 
 var app = builder.Build();
 app.UseSharedKernel(appSettings);
+app.UseGrpc(appSettings.GrpcEndpoints.ServiceChat, _ => {});
 await ChatContextInitialization.SeedAsync(app.Services);
 app.Run();
