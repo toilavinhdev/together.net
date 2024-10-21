@@ -16,11 +16,8 @@ public static class IdentityContextInitialization
         var logger = serviceProvider.GetRequiredService<ILogger<IdentityContext>>();
         
         logger.LogInformation("Starting to migrate database");
-        
         await context.Database.MigrateAsync();
-
         await context.Database.EnsureCreatedAsync();
-        
         var admin = new User
         {
             Id = Guid.NewGuid(),
@@ -32,13 +29,11 @@ public static class IdentityContextInitialization
             Status = UserStatus.Active,
             Gender = Gender.Other
         };
-        
         if (!await context.Users.AnyAsync(u => u.Email == admin.Email))
         {
             admin.MarkCreated();
             await context.Users.AddAsync(admin);
         }
-        
         var defaultRoles = new List<Role>();
         foreach (var role in Roles)
         {
@@ -60,7 +55,7 @@ public static class IdentityContextInitialization
     
     private static readonly List<Role> Roles =
     [
-        new Role
+        new()
         {
             Id = Guid.NewGuid(),
             Name = "Admin",
@@ -68,7 +63,7 @@ public static class IdentityContextInitialization
             Description = "Vai trò mặc định có quyền hạn cao nhất",
             Claims = [Policies.All]
         },
-        new Role
+        new()
         {
             Id = Guid.NewGuid(),
             Name = "Member",

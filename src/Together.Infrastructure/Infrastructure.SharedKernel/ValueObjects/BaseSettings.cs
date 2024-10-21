@@ -1,3 +1,4 @@
+using Infrastructure.Logging;
 using Infrastructure.RabbitMQ;
 
 namespace Infrastructure.SharedKernel.ValueObjects;
@@ -5,6 +6,8 @@ namespace Infrastructure.SharedKernel.ValueObjects;
 public abstract class BaseSettings
 {
     public Metadata Metadata { get; set; } = default!;
+
+    public LoggingConfig LoggingConfig { get; set; } = default!;
     
     public GrpcEndpoints GrpcEndpoints { get; set; } = default!;
 

@@ -69,10 +69,15 @@ public static class Policies
 
     public static List<string> RequiredPolicies() => [
         User.Get,
+        User.List,
         Forum.View,
         Topic.View,
         Prefix.View,
         Post.View,
         Reply.View,
+        Reply.Create,
+        Reply.Update,
+        Reply.Delete,
+        Reply.Vote
     ];
 }

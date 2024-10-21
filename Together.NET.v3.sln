@@ -7,10 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Together.Infrastructure", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Together.Gateways", "Together.Gateways", "{5081F1F4-0B2E-405E-869B-790CDA2BD9E4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Together.Docker", "Together.Docker", "{B62EF873-8439-4278-AF7E-5A501553DBDF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Together.Dockers", "Together.Dockers", "{B62EF873-8439-4278-AF7E-5A501553DBDF}"
 	ProjectSection(SolutionItems) = preProject
-		src\Together.Docker\docker-compose.env.yml = src\Together.Docker\docker-compose.env.yml
-		src\Together.Docker\docker-compose.prod.yml = src\Together.Docker\docker-compose.prod.yml
+		src\Together.Dockers\docker-compose.dev.yml = src\Together.Dockers\docker-compose.dev.yml
+		src\Together.Dockers\docker-compose.prod.yml = src\Together.Dockers\docker-compose.prod.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Identity", "src\Together.Services\Service.Identity\Service.Identity.csproj", "{6BF8E544-305A-493F-8339-53B4CE467184}"
@@ -18,6 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway.Nginx", "Gateway.Nginx", "{7E9D3F9C-2186-42E4-B776-0FEC1B0E3E30}"
 	ProjectSection(SolutionItems) = preProject
 		src\Together.Gateways\Gateway.Nginx\nginx.conf = src\Together.Gateways\Gateway.Nginx\nginx.conf
+		src\Together.Gateways\Gateway.Nginx\Dockerfile = src\Together.Gateways\Gateway.Nginx\Dockerfile
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.Yarp", "src\Together.Gateways\Gateway.Yarp\Gateway.Yarp.csproj", "{FEC4A735-F299-44AA-A7A9-1447B8C1B0B7}"
@@ -48,15 +49,44 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Cloudinary",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.SharedKernel", "src\Together.Infrastructure\Infrastructure.SharedKernel\Infrastructure.SharedKernel.csproj", "{11946879-996D-4C8B-BF40-BF1D02D7E99D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Logging", "src\Together.Infrastructure\Infrastructure.Logging\Infrastructure.Logging.csproj", "{E9BA8F54-8E06-47DA-B6CA-950B6AB9EE8F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Mail", "src\Together.Infrastructure\Infrastructure.Mail\Infrastructure.Mail.csproj", "{19102930-62C5-443F-AE61-D195B5CFD358}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{488AD767-8F50-40DA-B13A-7C96B6A4D358}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Together.Tests", "Together.Tests", "{5127D51B-E232-4614-8E30-2484AB20348C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.SharedKernel.Tests", "src\Together.Tests\Infrastructure.SharedKernel.Tests\Infrastructure.SharedKernel.Tests.csproj", "{3467E461-4A77-40C0-BDEE-8DF39C6407B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.PostgreSQL.Tests", "src\Together.Tests\Infrastructure.PostgreSQL.Tests\Infrastructure.PostgreSQL.Tests.csproj", "{01B50B57-D92A-4203-9784-1CBB31406CCC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deloy", "deloy", "{E99A4AB1-E702-4C41-9A23-D84D5B6DDE33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pgsql", "pgsql", "{7B41BF39-8F33-45A1-B302-D89009CD8136}"
 	ProjectSection(SolutionItems) = preProject
-		scripts\psql-fts-vietnamese-stopword.sh = scripts\psql-fts-vietnamese-stopword.sh
-		scripts\psql-fts-vietnamese-stopword.sql = scripts\psql-fts-vietnamese-stopword.sql
+		scripts\pgsql\psql-fts-vietnamese-stopword.sh = scripts\pgsql\psql-fts-vietnamese-stopword.sh
+		scripts\pgsql\psql-fts-vietnamese-stopword.sql = scripts\pgsql\psql-fts-vietnamese-stopword.sql
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8E94CF3E-B15E-404D-8685-5EF3005F0329}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{186B2E0F-C1D0-497F-8716-957A681D6CE2}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+		Together.NET.v3.sln = Together.NET.v3.sln
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{A00D9BA5-AE2A-4669-AEA1-50550947847E}"
+	ProjectSection(SolutionItems) = preProject
+		docs\architecture.png = docs\architecture.png
+		docs\capture.png = docs\capture.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dev", "dev", "{1686C550-786D-49AE-8AB0-1E9EBE281D58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Logging", "src\Together.Infrastructure\Infrastructure.Logging\Infrastructure.Logging.csproj", "{7AABB727-BD22-4955-807E-86DA590E03DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,8 +114,15 @@ Global
 		{7A57A40B-C956-479A-AE26-7EA24FDBAF28} = {88CC5C8D-374A-4D94-BB9A-68F17EF3008D}
 		{FB5FB569-03F2-4392-90CC-65008FC59535} = {52BA3F94-58E4-46A1-B01E-1B209F5104C6}
 		{11946879-996D-4C8B-BF40-BF1D02D7E99D} = {52BA3F94-58E4-46A1-B01E-1B209F5104C6}
-		{E9BA8F54-8E06-47DA-B6CA-950B6AB9EE8F} = {52BA3F94-58E4-46A1-B01E-1B209F5104C6}
 		{19102930-62C5-443F-AE61-D195B5CFD358} = {52BA3F94-58E4-46A1-B01E-1B209F5104C6}
+		{5127D51B-E232-4614-8E30-2484AB20348C} = {88CC5C8D-374A-4D94-BB9A-68F17EF3008D}
+		{3467E461-4A77-40C0-BDEE-8DF39C6407B6} = {5127D51B-E232-4614-8E30-2484AB20348C}
+		{01B50B57-D92A-4203-9784-1CBB31406CCC} = {5127D51B-E232-4614-8E30-2484AB20348C}
+		{E99A4AB1-E702-4C41-9A23-D84D5B6DDE33} = {488AD767-8F50-40DA-B13A-7C96B6A4D358}
+		{7B41BF39-8F33-45A1-B302-D89009CD8136} = {488AD767-8F50-40DA-B13A-7C96B6A4D358}
+		{8E94CF3E-B15E-404D-8685-5EF3005F0329} = {488AD767-8F50-40DA-B13A-7C96B6A4D358}
+		{1686C550-786D-49AE-8AB0-1E9EBE281D58} = {7E9D3F9C-2186-42E4-B776-0FEC1B0E3E30}
+		{7AABB727-BD22-4955-807E-86DA590E03DD} = {52BA3F94-58E4-46A1-B01E-1B209F5104C6}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6BF8E544-305A-493F-8339-53B4CE467184}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -148,13 +185,21 @@ Global
 		{11946879-996D-4C8B-BF40-BF1D02D7E99D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11946879-996D-4C8B-BF40-BF1D02D7E99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11946879-996D-4C8B-BF40-BF1D02D7E99D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E9BA8F54-8E06-47DA-B6CA-950B6AB9EE8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E9BA8F54-8E06-47DA-B6CA-950B6AB9EE8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E9BA8F54-8E06-47DA-B6CA-950B6AB9EE8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9BA8F54-8E06-47DA-B6CA-950B6AB9EE8F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{19102930-62C5-443F-AE61-D195B5CFD358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{19102930-62C5-443F-AE61-D195B5CFD358}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19102930-62C5-443F-AE61-D195B5CFD358}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19102930-62C5-443F-AE61-D195B5CFD358}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3467E461-4A77-40C0-BDEE-8DF39C6407B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3467E461-4A77-40C0-BDEE-8DF39C6407B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3467E461-4A77-40C0-BDEE-8DF39C6407B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3467E461-4A77-40C0-BDEE-8DF39C6407B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01B50B57-D92A-4203-9784-1CBB31406CCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01B50B57-D92A-4203-9784-1CBB31406CCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01B50B57-D92A-4203-9784-1CBB31406CCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01B50B57-D92A-4203-9784-1CBB31406CCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AABB727-BD22-4955-807E-86DA590E03DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AABB727-BD22-4955-807E-86DA590E03DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AABB727-BD22-4955-807E-86DA590E03DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AABB727-BD22-4955-807E-86DA590E03DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

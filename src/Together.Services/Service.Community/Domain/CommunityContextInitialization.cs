@@ -14,17 +14,11 @@ public static class CommunityContextInitialization
         var logger = serviceProvider.GetRequiredService<ILogger<CommunityContext>>();
         
         await context.Database.MigrateAsync();
-
         await context.Database.EnsureCreatedAsync();
-        
         logger.LogInformation("Starting to migrate database");
-
         if (!await context.Forums.AnyAsync()) await context.Forums.AddRangeAsync(Forums);
-        
         if (!await context.Prefixes.AnyAsync()) await context.Prefixes.AddRangeAsync(Prefixes);
-
         await context.SaveChangesAsync();
-        
         logger.LogInformation("Database migration completed");
     }
 

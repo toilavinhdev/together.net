@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { BaseComponent } from '@/core/abstractions';
+import { environment } from '@/environments/environment';
 import {
+  ScrollTopComponent,
   SpinnerComponent,
   SvgDefinitionsComponent,
   ToastComponent,
 } from '@/shared/components/elements';
-import { PrimeNGConfig } from 'primeng/api';
-import { environment } from '@/environments/environment';
+import { Component, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { localStorageKeys } from '@/shared/constants';
-import { BaseComponent } from '@/core/abstractions';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +20,7 @@ import { BaseComponent } from '@/core/abstractions';
     ToastComponent,
     SpinnerComponent,
     TranslateModule,
+    ScrollTopComponent,
   ],
   templateUrl: './app.component.html',
 })

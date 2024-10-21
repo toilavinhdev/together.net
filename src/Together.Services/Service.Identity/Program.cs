@@ -1,4 +1,3 @@
-using Infrastructure.Logging;
 using Infrastructure.PostgreSQL;
 using Infrastructure.SharedKernel;
 using Infrastructure.SharedKernel.Extensions;
@@ -6,9 +5,7 @@ using Service.Identity;
 using Service.Identity.Domain;
 using Service.Identity.gRPC;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.SetupEnvironment<AppSettings>(out var appSettings);
-builder.SetupSerilog();
+var (builder, appSettings) = WebApplicationBuilderExtensions.CreateCoreBuilder<AppSettings>(args);
 
 var services = builder.Services;
 services.AddSharedKernel<Program>(appSettings);

@@ -1,0 +1,44 @@
+version: "3.8"
+
+volumes:
+  tnenv-postgres-data: {}
+  tnenv-redis-data: {}
+  tnenv-seq-data: {}
+
+services:
+  tnenv-postgres:
+    container_name: tnenv-postgres
+    image: postgres
+    environment:
+      - POSTGRES_DB=Together.NET.v3
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - tnenv-postgres-data:/var/lib/postgresql/data/
+
+  tnenv-redis:
+    container_name: tnenv-redis
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - tnenv-redis-data:/data
+  
+  tnenv-rabbitmq:
+    container_name: tnenv-rabbitmq
+    image: rabbitmq:3.13-management
+    ports:
+      - "5672:5672"     # AMQP protocol
+      - "15672:15672"   # UI management
+  
+  tnenv-seq:
+    container_name: tnenv-seq
+    image: datalust/seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5341:80"
+    volumes:
+      - tnenv-seq-data:/data
