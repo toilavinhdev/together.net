@@ -11,6 +11,10 @@ import Quill from 'quill';
 import { BaseControl } from '@/core/abstractions';
 import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import QuillResizeImage from 'quill-resize-image';
+
+// TODO: Thêm scripts trong angular.json xong register quill modules
+Quill.register('modules/imageResize', QuillResizeImage);
 
 @Component({
   selector: 'together-editor',
@@ -60,7 +64,6 @@ export class EditorComponent extends BaseControl implements AfterViewInit {
 
   private buildQuill() {
     if (!this.editorContainer) return;
-
     this.quill = new Quill(this.editorContainer.nativeElement, {
       theme: this.theme,
       placeholder: this.placeholder,
@@ -68,6 +71,9 @@ export class EditorComponent extends BaseControl implements AfterViewInit {
       modules: {
         syntax: false,
         toolbar: this.toolbar,
+        imageResize: {
+          displaySize: true,
+        },
       },
     });
 

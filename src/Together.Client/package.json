@@ -28,6 +28,7 @@
     "primeicons": "^7.0.0",
     "primeng": "^17.18.2",
     "quill": "^2.0.2",
+    "quill-resize-image": "^1.0.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
