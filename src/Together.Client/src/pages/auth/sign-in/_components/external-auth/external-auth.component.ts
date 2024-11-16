@@ -27,7 +27,7 @@ export class ExternalAuthComponent extends BaseComponent implements OnInit {
   private buildGoogleAuth() {
     // @ts-ignore
     google.accounts.id.initialize({
-      client_id: environment.googleClientId,
+      client_id: environment.google.clientId,
       callback: this.googleAuthCallBack.bind(this),
       auto_select: false,
       cancel_on_tap_outside: true,
