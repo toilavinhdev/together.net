@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Service.Community.Domain;
@@ -11,9 +12,11 @@ using Service.Community.Domain;
 namespace Service.Community.Domain.Migrations
 {
     [DbContext(typeof(CommunityContext))]
-    partial class CommunityContextModelSnapshot : ModelSnapshot
+    [Migration("20241116155601_CreateTablePostReport")]
+    partial class CreateTablePostReport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

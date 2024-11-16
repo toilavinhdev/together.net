@@ -22,6 +22,10 @@ public sealed class PostEndpoint : IEndpoint
         group.MapPost("/create", CreatePost);
         
         group.MapPost("/vote", VotePost);
+
+        group.MapPost("/report", ReportPost);
+
+        group.MapPost("/handle-report", HandleReportPost);
         
         group.MapPut("/update", UpdatePost);
 
@@ -42,6 +46,14 @@ public sealed class PostEndpoint : IEndpoint
     
     [AccessControl(Policies.Post.Vote)]
     private static Task<BaseResponse<VotePostResponse>> VotePost(ISender sender, VotePostCommand command)
+        => sender.Send(command);
+
+    [AccessControl(Policies.Post.Report)]
+    private static Task<BaseResponse> ReportPost(ISender sender, ReportPostCommand command)
+        => sender.Send(command);
+
+    [AccessControl(Policies.Post.HandleReport)]
+    private static Task<BaseResponse> HandleReportPost(ISender sender, HandleReportPostCommand command)
         => sender.Send(command);
     
     [AccessControl(Policies.Post.Update)]

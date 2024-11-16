@@ -56,6 +56,8 @@ public static class Policies
         public const string Update = "Post:Update";
         public const string Delete = "Post:Delete";
         public const string Vote = "Post:Vote";
+        public const string Report = "Post:Report";
+        public const string HandleReport = "Post:HandleReport";
     }
     
     public static class Reply

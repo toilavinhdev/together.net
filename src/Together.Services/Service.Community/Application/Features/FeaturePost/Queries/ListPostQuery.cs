@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Service.Community.Application.Features.FeaturePost.Responses;
 using Service.Community.Domain;
 using Service.Community.Domain.Aggregates.PostAggregate;
+using Service.Community.Domain.Enums;
 
 namespace Service.Community.Application.Features.FeaturePost.Queries;
 
@@ -27,6 +28,8 @@ public sealed class ListPostQuery : IBaseRequest<ListPostResponse>, IPaginationR
     public Guid? UserId { get; set; }
     
     public string? Search { get; set; }
+
+    public string? Sort { get; set; }
     
     public class Validator : AbstractValidator<ListPostQuery>
     {
@@ -45,9 +48,10 @@ public sealed class ListPostQuery : IBaseRequest<ListPostResponse>, IPaginationR
         protected override async Task<ListPostResponse> HandleAsync(ListPostQuery request, CancellationToken ct)
         {
             var extra = new Dictionary<string, object>();
-            
-            Expression<Func<Post, bool>> whereExpression = x => true;
-            
+
+            // Build where expression
+            Expression<Func<PostViewModel, bool>> whereExpression = x => true;
+            whereExpression = whereExpression.And(x => x.Status != PostStatus.Deleted);
             if (request.TopicId is not null)
             {
                 var topic = await context.Topics
@@ -60,29 +64,27 @@ public sealed class ListPostQuery : IBaseRequest<ListPostResponse>, IPaginationR
                 extra.Add("forumId", topic.Forum.Id.ToString());
                 extra.Add("forumName", topic.Forum.Name);
             }
-
             if (request.UserId is not null)
             {
-                whereExpression = whereExpression.And(x => x.CreatedById == request.UserId);
+                whereExpression = whereExpression.And(x => x.Author.Id == request.UserId);
             }
-
             if (!string.IsNullOrEmpty(request.Search))
             {
                 whereExpression = whereExpression.And(p =>
                     p.Title.ToLower().Contains(request.Search.ToLower()));
             }
-            
-            var queryable = context.Posts
-                .Where(whereExpression);
 
-            var totalRecord = await queryable.LongCountAsync(ct);
-            
-            var data = await queryable
+            //Build sort expression
+            Expression<Func<PostViewModel, object>> sortExpression = x => x.CreatedAt;
+            request.Sort ??= "-CreatedAt";
+            if (request.Sort.Contains("VoteUpCount")) sortExpression = x => x.VoteUpCount;
+            if (request.Sort.Contains("VoteDownCount")) sortExpression = x => x.VoteDownCount;
+
+            var query = context.Posts
                 .Include(p => p.Topic)
                 .Include(p => p.Prefix)
                 .Include(p => p.Replies)
-                .OrderByDescending(p => p.CreatedAt)
-                .Paging(request.PageIndex, request.PageSize)
+                .Include(p => p.PostVotes)
                 .Select(p => new PostViewModel
                 {
                     Id = p.Id,
@@ -104,11 +106,19 @@ public sealed class ListPostQuery : IBaseRequest<ListPostResponse>, IPaginationR
                         Avatar = null
                     },
                     CreatedAt = p.CreatedAt,
-                    ReplyCount = p.Replies!.LongCount()
+                    Status = p.Status,
+                    ReplyCount = p.Replies!.LongCount(),
+                    VoteUpCount = p.PostVotes!.LongCount(x => x.Type == VoteType.UpVote),
+                    VoteDownCount = p.PostVotes!.LongCount(x => x.Type == VoteType.DownVote)
                 })
-                .ToListAsync(ct);
-            
-            foreach (var post in data)
+                .Where(whereExpression)
+                .Sort(sortExpression, request.Sort.StartsWith('+'))
+                .Paging(request.PageIndex, request.PageSize);
+
+            var posts = await query.ToListAsync(ct);
+
+            // Attach user info
+            foreach (var post in posts)
             {
                 var cachedUser = await redisService.StringGetAsync<IdentityPrivilege>(RedisKeys.Identity<IdentityPrivilege>(post.Author.Id));
 
@@ -128,10 +138,11 @@ public sealed class ListPostQuery : IBaseRequest<ListPostResponse>, IPaginationR
                 }
             }
 
+            var totalRecord = await query.LongCountAsync(ct);
             return new ListPostResponse
             {
                 Pagination = new Pagination(request.PageIndex, request.PageSize, totalRecord),
-                Result = data,
+                Result = posts,
                 Extra = extra
             };
         }

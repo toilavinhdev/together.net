@@ -6,6 +6,7 @@ import { IBreadcrumbItem } from '@/shared/models/breadcrumb.models';
 import { localStorageKeys } from '@/shared/constants';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '@/environments/environment';
+import { slugify } from '@/shared/utilities';
 
 @Injectable({
   providedIn: 'root',

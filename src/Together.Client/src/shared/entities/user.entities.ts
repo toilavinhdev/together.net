@@ -13,6 +13,7 @@ export interface IMeResponse {
 export interface IGetUserResponse {
   id: string;
   subId: number;
+  isOfficial: boolean;
   createdAt: string;
   userName: string;
   gender: EGender;

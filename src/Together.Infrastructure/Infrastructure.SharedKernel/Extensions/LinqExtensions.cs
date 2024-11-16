@@ -14,6 +14,11 @@ public static class LinqExtensions
         return query.Skip(pageSize * (pageIndex - 1)).Take(pageSize);
     }
 
+    public static IQueryable<T> Sort<T>(this IQueryable<T> query, Expression<Func<T, object>> sortExpression, bool asc = true)
+    {
+        return asc ? query.OrderBy(sortExpression) : query.OrderByDescending(sortExpression);
+    }
+
     public static string GetFieldName<TClass, TField>(this Expression<Func<TClass, TField>> expression)
     {
         var memberExpression = (MemberExpression) expression.Body;

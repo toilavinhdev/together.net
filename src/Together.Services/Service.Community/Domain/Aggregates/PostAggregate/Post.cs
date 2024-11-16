@@ -6,6 +6,7 @@ using Service.Community.Domain.Aggregates.ForumAggregate;
 using Service.Community.Domain.Aggregates.PrefixAggregate;
 using Service.Community.Domain.Aggregates.ReplyAggregate;
 using Service.Community.Domain.Aggregates.TopicAggregate;
+using Service.Community.Domain.Enums;
 
 namespace Service.Community.Domain.Aggregates.PostAggregate;
 
@@ -30,10 +31,15 @@ public class Post : ModifierTrackingEntity, IAggregateRoot
     public string Body { get; set; } = default!;
     
     public int ViewCount { get; set; }
+
+    public PostStatus Status { get; set; }
     
     [InverseProperty(nameof(Reply.Post))]
     public List<Reply>? Replies { get; set; }
     
     [InverseProperty(nameof(PostVote.Post))]
     public List<PostVote>? PostVotes { get; set; }
+
+    [InverseProperty(nameof(PostReport.Post))]
+    public List<PostReport>? PostReports { get; set; }
 }

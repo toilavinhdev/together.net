@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FileUploadModule } from 'primeng/fileupload';
 import { BaseComponent } from '@/core/abstractions';
 import { TooltipModule } from 'primeng/tooltip';
-import { FileService, UserService } from '@/shared/services';
+import { CloudinaryService, FileService, UserService } from '@/shared/services';
 import { takeUntil } from 'rxjs';
-import { getErrorMessage } from '@/shared/utilities';
 
 @Component({
   selector: 'together-profile-upload-avatar',
@@ -19,6 +18,7 @@ export class ProfileUploadAvatarComponent
   constructor(
     private userService: UserService,
     private fileService: FileService,
+    private cloudinaryService: CloudinaryService,
   ) {
     super();
   }
@@ -31,14 +31,11 @@ export class ProfileUploadAvatarComponent
       type: 'info',
       message: 'Đang tải ảnh lên server...',
     });
-    this.fileService
-      .uploadFile({
-        file,
-        bucket: 'v3-avatar',
-      })
+    this.cloudinaryService
+      .uploadImage(file)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ({ url, publicId }) => {
+        next: ({ url }) => {
           this.commonService.toast$.next({
             type: 'info',
             message: 'Tải ảnh thành công, đang cập nhật ảnh đại diện...',
@@ -65,10 +62,6 @@ export class ProfileUploadAvatarComponent
                   type: 'error',
                   message: 'Cập nhật ảnh đại diện thất bại',
                 });
-                this.fileService
-                  .deleteFile(publicId)
-                  .pipe(takeUntil(this.destroy$))
-                  .subscribe();
               },
             });
         },

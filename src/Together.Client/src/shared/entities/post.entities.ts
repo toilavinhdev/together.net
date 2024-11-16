@@ -9,6 +9,7 @@ export interface IListPostRequest extends IPaginationRequest {
   topicId?: string;
   userId?: string;
   search?: string;
+  sort?: string;
 }
 
 export interface IListPostResponse extends IPaginationResult<IPostViewModel> {
@@ -30,6 +31,8 @@ export interface IPostViewModel {
   createdAt: string;
   author: IGeneralUser;
   replyCount: number;
+  voteUpCount: number;
+  voteDownCount: number;
   postCount: number;
 }
 

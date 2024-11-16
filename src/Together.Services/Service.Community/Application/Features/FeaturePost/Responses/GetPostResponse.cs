@@ -38,4 +38,6 @@ public class GetPostResponse : ModifierTrackingEntity
     public VoteType? Voted { get; set; }
     
     public long ViewCount { get; set; }
+
+    public PostStatus Status { get; set; }
 }

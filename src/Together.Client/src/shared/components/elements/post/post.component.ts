@@ -5,6 +5,7 @@ import { BaseComponent } from '@/core/abstractions';
 import { AvatarComponent, PrefixComponent } from '@/shared/components/elements';
 import { ShortenNumberPipe, TimeAgoPipe } from '@/shared/pipes';
 import { SkeletonModule } from 'primeng/skeleton';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'together-post',
@@ -18,6 +19,7 @@ import { SkeletonModule } from 'primeng/skeleton';
     NgIf,
     SkeletonModule,
     NgStyle,
+    TooltipModule,
   ],
   templateUrl: './post.component.html',
 })
@@ -32,8 +34,15 @@ export class PostComponent extends BaseComponent {
   showReplyCount = true;
 
   @Input({ transform: booleanAttribute })
+  showPoint = true;
+
+  @Input({ transform: booleanAttribute })
   loading = false;
 
   @Input()
   bordered = true;
+
+  getPostPoint() {
+    return this.post.voteUpCount * 10;
+  }
 }

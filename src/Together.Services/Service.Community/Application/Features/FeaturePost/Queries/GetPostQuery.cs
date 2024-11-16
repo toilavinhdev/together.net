@@ -62,11 +62,13 @@ public sealed class GetPostQuery(Guid id) : IBaseRequest<GetPostResponse>
                     VoteUpCount = post.PostVotes!.LongCount(vote => vote.Type == VoteType.UpVote),
                     VoteDownCount = post.PostVotes!.LongCount(vote => vote.Type == VoteType.DownVote),
                     ViewCount = post.ViewCount,
+                    Status = post.Status,
                     Voted = post.PostVotes!.FirstOrDefault(vote => vote.CreatedById == UserClaimsPrincipal.Id)!.Type
                 })
                 .FirstOrDefaultAsync(x => x.Id == request.Id, ct);
             
-            if (post is null) throw new TogetherException(ErrorCodes.Post.PostNotFound);
+            if (post is null || post.Status == PostStatus.Deleted)
+                throw new TogetherException(ErrorCodes.Post.PostNotFound);
 
             // Attach authors info
             var cachedUser = await redisService.StringGetAsync<IdentityPrivilege>(RedisKeys.Identity<IdentityPrivilege>(post.CreatedById));

@@ -20,6 +20,8 @@ public sealed class CommunityContext(DbContextOptions<CommunityContext> options,
     public DbSet<Post> Posts  { get; init; } = default!;
     
     public DbSet<PostVote> PostVotes  { get; init; } = default!;
+
+    public DbSet<PostReport> PostReports  { get; init; } = default!;
     
     public DbSet<Reply> Replies  { get; init; } = default!;
     
