@@ -69,13 +69,18 @@ public static class Policies
         public const string Vote = "Reply:Vote";
     }
 
-    public static List<string> RequiredPolicies() => [
+    public static List<string> BasePolicies() => [
         User.Get,
         User.List,
         Forum.View,
         Topic.View,
         Prefix.View,
         Post.View,
+        Post.Create,
+        Post.Update,
+        Post.Delete,
+        Post.Vote,
+        Post.Report,
         Reply.View,
         Reply.Create,
         Reply.Update,

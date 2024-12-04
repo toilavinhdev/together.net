@@ -18,6 +18,8 @@ public sealed class ReportEndpoint : IEndpoint
         group.MapGet("/prefix", PrefixReport);
 
         group.MapPost("/statistics", Statistics);
+
+        group.MapGet("/daily-post", DailyPostReport);
     }
 
     [Authorize]
@@ -27,4 +29,8 @@ public sealed class ReportEndpoint : IEndpoint
     [AccessControl(Policies.Management.ViewDashboard)]
     private static Task<BaseResponse<List<PrefixReportResponse>>> PrefixReport(ISender sender)
         => sender.Send(new PrefixReportQuery());
+
+    [AccessControl(Policies.Management.ViewDashboard)]
+    private static Task<BaseResponse<List<DailyPostReportResponse>>> DailyPostReport(ISender sender, [AsParameters] DailyPostReportQuery query)
+        => sender.Send(query);
 }

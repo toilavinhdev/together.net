@@ -4,6 +4,7 @@ import { PrefixService, UserService } from '@/shared/services';
 import { IPrefixViewModel } from '@/shared/entities/prefix.entities';
 import { takeUntil } from 'rxjs';
 import {
+  ContainerComponent,
   PrefixComponent,
   TableCellDirective,
   TableColumnDirective,
@@ -30,6 +31,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
     ConfirmDialogModule,
     NgIf,
     AsyncPipe,
+    ContainerComponent,
   ],
   templateUrl: './m-prefix-list.component.html',
   providers: [ConfirmationService],

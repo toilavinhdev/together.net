@@ -45,7 +45,7 @@ public static class CommunityContextInitialization
                 }
             ]
         },
-        new Forum
+        new()
         {
             Id = Guid.NewGuid(),
             Name = "Học tập & Sự nghiệp",
@@ -86,7 +86,7 @@ public static class CommunityContextInitialization
                 },
             ]
         },
-        new Forum
+        new()
         {
             Id = Guid.NewGuid(),
             Name = "Sản phẩm công nghệ",
@@ -127,7 +127,7 @@ public static class CommunityContextInitialization
                 }
             ]
         },
-        new Forum
+        new()
         {
             Id = Guid.NewGuid(),
             Name = "Khác",
@@ -162,7 +162,7 @@ public static class CommunityContextInitialization
 
     private static readonly List<Prefix> Prefixes =
     [
-        new Prefix
+        new()
         {
             Id = Guid.NewGuid(),
             Name = "Thông báo",
@@ -173,7 +173,7 @@ public static class CommunityContextInitialization
             CreatedById = Guid.Empty,
             ModifiedById = Guid.Empty
         },
-        new Prefix
+        new()
         {
             Id = Guid.NewGuid(),
             Name = "Kiến thức",
@@ -184,7 +184,7 @@ public static class CommunityContextInitialization
             CreatedById = Guid.Empty,
             ModifiedById = Guid.Empty
         },
-        new Prefix
+        new()
         {
             Id = Guid.NewGuid(),
             Name = "Thảo luận",
@@ -195,7 +195,7 @@ public static class CommunityContextInitialization
             CreatedById = Guid.Empty,
             ModifiedById = Guid.Empty
         },
-        new Prefix
+        new()
         {
             Id = Guid.NewGuid(),
             Name = "Chia sẻ",

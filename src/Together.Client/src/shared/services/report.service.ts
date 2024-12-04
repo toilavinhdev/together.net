@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { BaseService } from '@/core/abstractions';
 import { map, Observable } from 'rxjs';
 import {
+  IDailyPostReportRequest,
+  IDailyPostReportResponse,
   IDailyUserReportRequest,
   IDailyUserReportResponse,
   IPrefixReportResponse,
@@ -41,6 +43,18 @@ export class ReportService extends BaseService {
     return this.client
       .get<
         IBaseResponse<IDailyUserReportResponse[]>
+      >(url, { params: this.createParams(params) })
+      .pipe(map((response) => response.data));
+  }
+
+  getDailyPostReport(
+    params: IDailyPostReportRequest,
+  ): Observable<IDailyPostReportResponse[]> {
+    this.setEndpoint('community', 'report');
+    const url = this.createUrl('/daily-post');
+    return this.client
+      .get<
+        IBaseResponse<IDailyPostReportResponse[]>
       >(url, { params: this.createParams(params) })
       .pipe(map((response) => response.data));
   }

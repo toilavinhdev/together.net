@@ -127,7 +127,7 @@ export class MUserStatisticsComponent extends BaseComponent implements OnInit {
       datasets: [
         {
           label: 'Thành viên',
-          data: data.map((daily) => daily.totalUser),
+          data: data.map((daily) => daily.totalNewUser),
           borderWidth: 1,
         },
       ],

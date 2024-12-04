@@ -7,11 +7,11 @@ import { takeUntil } from 'rxjs';
 import { getErrorMessage } from '@/shared/utilities';
 import { IForumViewModel } from '@/shared/entities/forum.entities';
 import {
+  ContainerComponent,
   TableCellDirective,
   TableColumnDirective,
   TableComponent,
 } from '@/shared/components/elements';
-import { ITopicViewModel } from '@/shared/entities/topic.entities';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
 import { Button } from 'primeng/button';
 import { RouterLink } from '@angular/router';
@@ -34,6 +34,7 @@ import { policies } from '@/shared/constants';
     ConfirmDialogModule,
     NgIf,
     AsyncPipe,
+    ContainerComponent,
   ],
   templateUrl: './m-forum-list.component.html',
   providers: [ConfirmationService],

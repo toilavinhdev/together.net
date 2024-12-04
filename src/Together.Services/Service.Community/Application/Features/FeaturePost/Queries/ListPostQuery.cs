@@ -110,12 +110,12 @@ public sealed class ListPostQuery : IBaseRequest<ListPostResponse>, IPaginationR
                     ReplyCount = p.Replies!.LongCount(),
                     VoteUpCount = p.PostVotes!.LongCount(x => x.Type == VoteType.UpVote),
                     VoteDownCount = p.PostVotes!.LongCount(x => x.Type == VoteType.DownVote)
-                })
-                .Where(whereExpression)
-                .Sort(sortExpression, request.Sort.StartsWith('+'))
-                .Paging(request.PageIndex, request.PageSize);
+                }).Where(whereExpression);
 
-            var posts = await query.ToListAsync(ct);
+            var posts = await query
+                .Sort(sortExpression, request.Sort.StartsWith('+'))
+                .Paging(request.PageIndex, request.PageSize)
+                .ToListAsync(ct);
 
             // Attach user info
             foreach (var post in posts)

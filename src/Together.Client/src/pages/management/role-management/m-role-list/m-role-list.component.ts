@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@/core/abstractions';
 import {
+  ContainerComponent,
   TableCellDirective,
   TableColumnDirective,
   TableComponent,
@@ -31,6 +32,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
     ConfirmDialogModule,
     AsyncPipe,
     NgIf,
+    ContainerComponent,
   ],
   templateUrl: './m-role-list.component.html',
   providers: [ConfirmationService],

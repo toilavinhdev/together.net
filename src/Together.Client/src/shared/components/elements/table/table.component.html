@@ -15,7 +15,7 @@
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th *ngIf="nestedTableTpl" style="width: 5rem"></th>
-      <th *ngFor="let column of columns" [ngClass]="column.headerClass">
+      <th *ngFor="let column of columns" [ngClass]="column.headerClass" class="bg-primary text-white border-none">
         <ng-container *ngIf="column.headerTpl"
                       [ngTemplateOutlet]="column.headerTpl.template"
         />

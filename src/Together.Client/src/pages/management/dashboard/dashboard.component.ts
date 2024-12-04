@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@/core/abstractions';
 import {
-  MBlocksStatisticsComponent,
+  MBlocksStatisticsComponent, MPostStatisticsComponent,
   MPrefixStatisticsComponent,
   MUserStatisticsComponent,
 } from '@/pages/management/dashboard/_components';
@@ -13,6 +13,7 @@ import {
     MPrefixStatisticsComponent,
     MUserStatisticsComponent,
     MBlocksStatisticsComponent,
+    MPostStatisticsComponent,
   ],
   templateUrl: './dashboard.component.html',
 })

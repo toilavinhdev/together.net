@@ -26,3 +26,13 @@ export interface IDailyUserReportResponse {
   totalNewUser: number;
   totalUser: number;
 }
+
+export interface IDailyPostReportRequest {
+  from: string;
+  to: string;
+}
+
+export interface IDailyPostReportResponse {
+  day: string;
+  totalPost: number;
+}
