@@ -46,12 +46,12 @@ public sealed class ExternalAuthCommand : IBaseRequest<AuthToken>
             {
                 var memberRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == "Member", ct);
                 if (memberRole is null) throw new ApplicationException("Member role has not been initialized");
-                var userName = await RandomUserNameAsync();
+                var fullName = payload.Name;
                 user = new User
                 {
                     Id = Guid.NewGuid(),
-                    FullName = payload.Name,
-                    UserName = userName,
+                    FullName = fullName,
+                    UserName = $"{fullName.Slugify().Replace("-", "")}-{4.RandomString("0123456789")}",
                     Email = payload.Email,
                     PasswordHash = 12.RandomString().ToSha256(),
                     UserRoles = [new UserRole { RoleId = memberRole.Id }],

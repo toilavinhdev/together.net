@@ -1,6 +1,7 @@
 using Infrastructure.PostgreSQL;
 using Infrastructure.SharedKernel.BusinessObjects;
 using Infrastructure.SharedKernel.ValueObjects;
+using Service.Community.Domain.Enums;
 
 namespace Service.Community.Application.Features.FeaturePost.Responses;
 
@@ -30,6 +31,12 @@ public class PostViewModel : TimeTrackingEntity
     public string Body { get; set; } = default!;
 
     public GeneralUser Author { get; set; } = default!;
-    
+
+    public PostStatus Status { get; set; }
+
     public long ReplyCount { get; set; }
+
+    public long VoteUpCount { get; set; }
+
+    public long VoteDownCount { get; set; }
 }

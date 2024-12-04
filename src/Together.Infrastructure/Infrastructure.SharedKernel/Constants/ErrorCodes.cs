@@ -58,6 +58,7 @@ public static class ErrorCodes
     public static class Post
     {
         public const string PostNotFound = nameof(PostNotFound);
+        public const string PostReportNotFound = nameof(PostReportNotFound);
     }
     
     public static class Reply

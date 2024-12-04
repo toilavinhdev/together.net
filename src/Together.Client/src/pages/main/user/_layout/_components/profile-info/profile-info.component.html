@@ -2,7 +2,16 @@
   <div *ngIf="user" class="flex items-start gap-x-10 bg-white rounded shadow px-10 py-6 mt-4">
     <together-avatar [src]="user.avatar" componentClass="h-[140px] w-[140px]"/>
     <div class="relative flex-1">
-      <div class="font-medium text-[28px]">{{user.userName}}</div>
+      <div class="flex gap-x-2 items-center text-[28px]">
+        <span class="font-medium">{{user.userName}}</span>
+        <span
+          *ngIf="user.isOfficial"
+          pTooltip="Tài khoản đã được xác minh"
+          tooltipPosition="right"
+        >
+          <i class="fa-solid fa-circle-check text-primary"></i>
+        </span>
+      </div>
       <div>
         <span *ngIf="user.fullName">{{user.fullName}}</span>
         <span *ngIf="!user.fullName" class="text-gray-500 italic">{{commonService.translate('No name')}}</span>

@@ -89,6 +89,9 @@ namespace Service.Community.Domain.Migrations
                     b.Property<Guid?>("PrefixId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.Property<long>("SubId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
@@ -118,6 +121,50 @@ namespace Service.Community.Domain.Migrations
                     b.HasIndex("TopicId");
 
                     b.ToTable("Posts", "Service.Community");
+                });
+
+            modelBuilder.Entity("Service.Community.Domain.Aggregates.PostAggregate.PostReport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTimeOffset>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ReportByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("SubId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("SubId"));
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("SubId")
+                        .IsUnique();
+
+                    b.ToTable("PostReports", "Service.Community");
                 });
 
             modelBuilder.Entity("Service.Community.Domain.Aggregates.PostAggregate.PostVote", b =>
@@ -365,6 +412,17 @@ namespace Service.Community.Domain.Migrations
                     b.Navigation("Topic");
                 });
 
+            modelBuilder.Entity("Service.Community.Domain.Aggregates.PostAggregate.PostReport", b =>
+                {
+                    b.HasOne("Service.Community.Domain.Aggregates.PostAggregate.Post", "Post")
+                        .WithMany("PostReports")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("Service.Community.Domain.Aggregates.PostAggregate.PostVote", b =>
                 {
                     b.HasOne("Service.Community.Domain.Aggregates.PostAggregate.Post", "Post")
@@ -424,6 +482,8 @@ namespace Service.Community.Domain.Migrations
 
             modelBuilder.Entity("Service.Community.Domain.Aggregates.PostAggregate.Post", b =>
                 {
+                    b.Navigation("PostReports");
+
                     b.Navigation("PostVotes");
 
                     b.Navigation("Replies");

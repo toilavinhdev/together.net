@@ -69,7 +69,7 @@ public static class IdentityContextInitialization
             Name = "Member",
             IsDefault = true,
             Description = "Vai trò mặc định cho mọi thành viên",
-            Claims = Policies.RequiredPolicies().Distinct().ToList()
+            Claims = Policies.BasePolicies().Distinct().ToList()
         }
     ];
 }

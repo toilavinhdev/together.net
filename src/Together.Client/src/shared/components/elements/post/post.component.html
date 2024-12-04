@@ -21,6 +21,13 @@
         </div>
         <div class="text-xs text-gray-500 mt-[2px]">
           <a (click)="commonService.navigateToProfile(post.author.id)" class="hover:underline cursor-pointer">{{ post.author.userName }}</a>
+          <span
+            *ngIf="post.author.isOfficial"
+            pTooltip="Tài khoản đã được xác minh"
+            tooltipPosition="right"
+          >
+            <i class="fa-solid fa-circle-check text-primary"></i>
+          </span>
           <span class="font-light">&nbsp;&bull;&nbsp;{{ post.createdAt | timeAgo }}</span>
         </div>
         @if (showTopicName) {
@@ -30,12 +37,20 @@
         }
       </div>
     </div>
-    @if (showReplyCount) {
-      <div class="ml-auto min-w-[80px] flex flex-col items-center justify-center">
-        <div class="text-[18px] font-bold">{{post.replyCount | shortenNumber}}</div>
-        <div class="leading-[8px] font-light text-[11px]">{{commonService.translate('Replies')}}</div>
-      </div>
-    }
+    <div class="ml-auto flex">
+      @if (showReplyCount) {
+        <div class="min-w-[80px] flex flex-col items-center justify-center">
+          <div class="text-[18px] font-bold">{{post.replyCount | shortenNumber}}</div>
+          <div class="leading-[8px] font-light text-[11px]">{{commonService.translate('Replies')}}</div>
+        </div>
+      }
+      @if (showPoint) {
+        <div class="min-w-[80px] flex flex-col items-center justify-center">
+          <div class="text-[18px] font-bold">{{getPostPoint() | shortenNumber}}</div>
+          <div class="leading-[8px] font-light text-[11px]">{{commonService.translate('Point')}}</div>
+        </div>
+      }
+    </div>
   </div>
 }
 @else {

@@ -1,5 +1,52 @@
 <div class="together-editor-wrapper {{isError ? 'together-editor-error' : ''}}" [ngClass]="wrapperClass">
-  <div #editorContainer [ngClass]="controlClass" class="min-h-[400px] rounded-b"></div>
+  <div id="editor-toolbar">
+    <!--Clean-->
+    <span class="ql-formats">
+      <button class="ql-clean" pTooltip="Xóa định dạng text" [tooltipPosition]="tooltipPosition"></button>
+    </span>
+    <!--Text-->
+    <span class="ql-formats">
+      <select class="ql-header" pTooltip="Paragraph" [tooltipPosition]="tooltipPosition">
+        <option value="">Normal</option>
+        <option value="1">Heading 1</option>
+        <option value="2">Heading 2</option>
+        <option value="2">Heading 3</option>
+      </select>
+    </span>
+    <span class="ql-formats">
+      <button class="ql-bold" pTooltip="Bold" [tooltipPosition]="tooltipPosition"></button>
+      <button class="ql-italic" pTooltip="Italic" [tooltipPosition]="tooltipPosition"></button>
+      <button class="ql-underline" pTooltip="Underline" [tooltipPosition]="tooltipPosition"></button>
+      <button class="ql-strike" pTooltip="Strike" [tooltipPosition]="tooltipPosition"></button>
+    </span>
+    <!--Color-->
+    <span class="ql-formats">
+      <select class="ql-color" pTooltip="Màu chữ" [tooltipPosition]="tooltipPosition"></select>
+      <select class="ql-background" pTooltip="Nền chữ" [tooltipPosition]="tooltipPosition"></select>
+    </span>
+    <!--Indent & Align-->
+    <span class="ql-formats">
+      <button class="ql-indent" value="-1" pTooltip="Tăng thụt lề" [tooltipPosition]="tooltipPosition"></button>
+      <button class="ql-indent" value="+1" pTooltip="Giảm thụt lề" [tooltipPosition]="tooltipPosition"></button>
+      <select class="ql-align" pTooltip="Align" [tooltipPosition]="tooltipPosition"></select>
+    </span>
+    <!--List-->
+    <span class="ql-formats">
+      <button class="ql-list" value="ordered" pTooltip="List order" [tooltipPosition]="tooltipPosition"></button>
+      <button class="ql-list" value="bullet" pTooltip="List bullet" [tooltipPosition]="tooltipPosition"></button>
+    </span>
+    <!--Block-->
+    <span class="ql-formats">
+      <button class="ql-blockquote" pTooltip="Quote block" [tooltipPosition]="tooltipPosition"></button>
+      <button class="ql-code-block" pTooltip="Code block" [tooltipPosition]="tooltipPosition"></button>
+    </span>
+    <!--Media-->
+    <span class="ql-formats">
+      <button class="ql-link" pTooltip="Chèn URL" [tooltipPosition]="tooltipPosition"></button>
+      <button class="ql-image" pTooltip="Chèn ảnh" [tooltipPosition]="tooltipPosition"></button>
+    </span>
+  </div>
+  <div #editorContainer id="editor-container" [ngClass]="controlClass" class="min-h-[400px] rounded-b"></div>
   <ng-container *ngIf="bottomTpl" [ngTemplateOutlet]="bottomTpl"/>
 </div>
 
@@ -31,5 +78,24 @@
     .ql-container {
       border-color: red !important;
     }
+  }
+
+  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value]::before,
+  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value]::before {
+    content: attr(data-value) !important;
+  }
+
+  .spinner {
+    border: 8px solid #f3f3f3; /* Màu nền */
+    border-top: 8px solid #3498db; /* Màu của spinner */
+    border-radius: 50%;
+    width: 40px; /* Đường kính spinner */
+    height: 40px; /* Đường kính spinner */
+    animation: spin 1s linear infinite; /* Hiệu ứng quay */
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 </style>

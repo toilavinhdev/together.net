@@ -15,18 +15,22 @@ import {
   throwError,
 } from 'rxjs';
 import { getErrorMessage } from '@/shared/utilities';
+import { environment } from '@/environments/environment';
 
 const reqWithAT = (
   req: HttpRequest<unknown>,
   accessToken: string | null,
 ): HttpRequest<unknown> => {
   if (!accessToken) return req;
-  return req.clone({
-    setHeaders: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    withCredentials: true,
-  });
+  if (req.url.startsWith(environment.host)) {
+    return req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      withCredentials: true,
+    });
+  }
+  return req;
 };
 
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {

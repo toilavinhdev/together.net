@@ -12,9 +12,9 @@ public static class StringExtensions
     public static Guid ToGuid(this string input) => Guid.TryParse(input, out var result) ? result : default;
 
     public static int ToInt(this string input) => int.TryParse(input, out var result) ? result : default;
-    
+
     public static long ToLong(this string input) => long.TryParse(input, out var result) ? result : default;
-    
+
     public static double ToDouble(this string input) => double.TryParse(input, out var result) ? result : default;
 
     public static bool ToBool(this char value) => value switch
@@ -23,12 +23,12 @@ public static class StringExtensions
         '0' => false,
         _ => throw new ArgumentOutOfRangeException()
     };
-    
+
     public static string ToJson<T>(this T input) => JsonConvert.SerializeObject(
-        input, 
-        new JsonSerializerSettings 
-        { 
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore, 
+        input,
+        new JsonSerializerSettings
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             ContractResolver = new DefaultContractResolver
             {
                 NamingStrategy = new CamelCaseNamingStrategy()
@@ -53,9 +53,9 @@ public static class StringExtensions
             stringBuilder.Append(byteCode.ToString("X2"));
         return stringBuilder.ToString();
     }
-    
+
     public static string To16Md5(this string value) => value.To32Md5().Substring(8, 16);
-    
+
     public static string To32Md5(this string input)
     {
         if (string.IsNullOrEmpty(input)) return default!;
@@ -65,31 +65,31 @@ public static class StringExtensions
             builder.Append(byteCode.ToString("X2"));
         return builder.ToString();
     }
-    
+
     public static string RandomString(this int length, string? pattern = null)
     {
         const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         return new string(Enumerable.Repeat(pattern ?? characters, length)
             .Select(s => s[new Random().Next(s.Length)]).ToArray());
     }
-    
+
     public static string ToUnderscoreCase(this string input)
     {
         return input.ToSnakeCase('_');
     }
-    
+
     public static string ToKebabCase(this string input)
     {
         return input.ToSnakeCase('-');
     }
-    
+
     private static string ToSnakeCase(this string input, char separator)
     {
         if (string.IsNullOrEmpty(input)) return default!;
         var inspect = input.Select(
-            (x, idx) => idx > 0 && char.IsUpper(x) 
-                ? $"{separator}{x}" 
-                : string.IsNullOrWhiteSpace(x.ToString()) 
+            (x, idx) => idx > 0 && char.IsUpper(x)
+                ? $"{separator}{x}"
+                : string.IsNullOrWhiteSpace(x.ToString())
                     ? string.Empty
                     : x.ToString());
         return string.Concat(inspect).ToLower();
@@ -110,5 +110,23 @@ public static class StringExtensions
         input = RegexUtils.CharacterVariantURegex.Replace(input, "u");
         input = RegexUtils.CharacterVariantYRegex.Replace(input, "y");
         return input;
+    }
+
+    public static string Slugify(this string input)
+    {
+        var regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
+        var slug = input
+            .Normalize(NormalizationForm.FormD)
+            .Trim()
+            .ToLower();
+
+        slug = regex.Replace(slug, String.Empty)
+            .Replace('\u0111', 'd').Replace('\u0110', 'D')
+            .Replace(",", "-").Replace(".", "-").Replace("!", "")
+            .Replace("(", "").Replace(")", "").Replace(";", "-")
+            .Replace("/", "-").Replace("%", "ptram").Replace("&", "va")
+            .Replace("?", "").Replace('"', '-').Replace(' ', '-');
+
+        return slug;
     }
 }
