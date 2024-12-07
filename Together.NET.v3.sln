@@ -84,6 +84,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dev", "dev", "{1686C550-786
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Logging", "src\Together.Infrastructure\Infrastructure.Logging\Infrastructure.Logging.csproj", "{7AABB727-BD22-4955-807E-86DA590E03DD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploys", "deploys", "{65B77A51-BC6B-4E87-8993-D88FBEE8EB1F}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\deploys\157.245.53.60.sh = scripts\deploys\157.245.53.60.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jenkins", "jenkins", "{253F3A9B-8711-44EC-8C37-665FE00D4D36}"
+	ProjectSection(SolutionItems) = preProject
+		jenkins\Dockerfile = jenkins\Dockerfile
+		jenkins\plugins.txt = jenkins\plugins.txt
+		jenkins\jenkins.yaml = jenkins\jenkins.yaml
+		jenkins\SETUP.md = jenkins\SETUP.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +130,7 @@ Global
 		{7B41BF39-8F33-45A1-B302-D89009CD8136} = {488AD767-8F50-40DA-B13A-7C96B6A4D358}
 		{1686C550-786D-49AE-8AB0-1E9EBE281D58} = {7E9D3F9C-2186-42E4-B776-0FEC1B0E3E30}
 		{7AABB727-BD22-4955-807E-86DA590E03DD} = {52BA3F94-58E4-46A1-B01E-1B209F5104C6}
+		{65B77A51-BC6B-4E87-8993-D88FBEE8EB1F} = {488AD767-8F50-40DA-B13A-7C96B6A4D358}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6BF8E544-305A-493F-8339-53B4CE467184}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
