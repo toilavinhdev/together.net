@@ -11,7 +11,7 @@ public sealed class AuthEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/v1/auth").WithTags("Auth");
+        var group = app.MapGroup("/v1/auth").WithTags("Auth");
         
         group.MapPost("/sign-in", SignIn);
         

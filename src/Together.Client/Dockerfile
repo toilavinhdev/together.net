@@ -10,10 +10,10 @@ COPY ["package*.json", "."]
 RUN npm i -g @angular/cli@17
 RUN npm i
 COPY . .
-RUN npm run build:dev
+RUN npm run build:prod
 
 FROM nginx:alpine AS final
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist/together.net /usr/share/nginx/html
 
 RUN ls -lha /usr/share/nginx/html

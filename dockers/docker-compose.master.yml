@@ -1,0 +1,56 @@
+# 139.59.111.123
+# docker compose -f dockers/docker-compose.master.yml up -d
+# docker compose -f dockers/docker-compose.master.yml up -d --force-recreate --no-deps --build <service-name>
+version: "3.8"
+
+volumes:
+  tnprod-postgres-data: {}
+  tnprod-redis-data: {}
+  tnprod-rabbitmq-data: {}
+  tnprod-seq-data: {}
+
+services:
+  tnprod-postgres:
+    container_name: tnprod-postgres
+    image: postgres
+    environment:
+      - POSTGRES_DB=Together.NET.v3
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    volumes:
+      - tnprod-postgres-data:/var/lib/postgresql/data/
+
+  tnprod-redis:
+    container_name: tnprod-redis
+    image: redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - tnprod-redis-data:/data
+
+  tnprod-rabbitmq:
+    container_name: tnprod-rabbitmq
+    image: rabbitmq:3.13-management
+    ports:
+      - "5672:5672"     # AMQP protocol
+      - "15672:15672"   # UI management
+    restart: unless-stopped
+    volumes:
+      - tnprod-rabbitmq-data:/var/lib/rabbitmq
+
+  tnprod-seq:
+    container_name: tnprod-seq
+    image: datalust/seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5341:80"
+    restart: unless-stopped
+    volumes:
+      - tnprod-seq-data:/data

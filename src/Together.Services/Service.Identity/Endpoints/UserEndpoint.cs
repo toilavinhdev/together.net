@@ -14,7 +14,7 @@ public sealed class UserEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/v1/user").WithTags("User");
+        var group = app.MapGroup("/v1/user").WithTags("User");
         
         group.MapGet("/me", Me);
         

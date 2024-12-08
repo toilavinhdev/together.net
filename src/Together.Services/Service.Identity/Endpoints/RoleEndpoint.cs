@@ -13,7 +13,7 @@ public sealed class RoleEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/v1/role").WithTags("Role");
+        var group = app.MapGroup("/v1/role").WithTags("Role");
         
         group.MapGet("/{roleId:guid}", GetRole);
         

@@ -12,7 +12,7 @@ public sealed class NotificationEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/v1/notification").WithTags("Notification");
+        var group = app.MapGroup("/v1/notification").WithTags("Notification");
 
         group.MapGet("/list", ListNotification);
         

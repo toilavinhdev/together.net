@@ -13,7 +13,7 @@ public sealed class ReportEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/v1/report").WithTags("Report");
+        var group = app.MapGroup("/v1/report").WithTags("Report");
         
         group.MapGet("/prefix", PrefixReport);
 

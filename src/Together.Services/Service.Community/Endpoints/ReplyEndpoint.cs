@@ -13,7 +13,7 @@ public sealed class ReplyEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/v1/reply").WithTags("Reply");
+        var group = app.MapGroup("/v1/reply").WithTags("Reply");
 
         group.MapGet("/query", ListReply);
         
