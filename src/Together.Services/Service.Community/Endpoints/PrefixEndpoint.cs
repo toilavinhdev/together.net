@@ -13,7 +13,7 @@ public sealed class PrefixEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/v1/prefix").WithTags("Prefix");
+        var group = app.MapGroup("/v1/prefix").WithTags("Prefix");
         
         group.MapGet("/{prefixId:guid}", GetPrefix);
         

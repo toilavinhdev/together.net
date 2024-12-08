@@ -13,7 +13,7 @@ public sealed class PostEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/v1/post").WithTags("Post");
+        var group = app.MapGroup("/v1/post").WithTags("Post");
         
         group.MapGet("/list", ListPost);
         

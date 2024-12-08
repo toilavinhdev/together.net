@@ -4,11 +4,24 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\Together.Infrastructure\Infrastructure.SharedKernel\Infrastructure.SharedKernel.csproj" />
         <ProjectReference Include="..\..\Together.Infrastructure\Infrastructure.WebSocket\Infrastructure.WebSocket.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+      </Content>
+      <Content Update="AppSettings\appsettings.Production.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="AppSettings\appsettings.Development.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

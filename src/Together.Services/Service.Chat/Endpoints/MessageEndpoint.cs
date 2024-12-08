@@ -12,7 +12,7 @@ public sealed class MessageEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/v1/message").WithTags("Message");
+        var group = app.MapGroup("/v1/message").WithTags("Message");
         
         group.MapGet("/list", ListMessage);
         

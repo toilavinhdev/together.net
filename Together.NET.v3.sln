@@ -7,12 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Together.Infrastructure", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Together.Gateways", "Together.Gateways", "{5081F1F4-0B2E-405E-869B-790CDA2BD9E4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Together.Dockers", "Together.Dockers", "{B62EF873-8439-4278-AF7E-5A501553DBDF}"
-	ProjectSection(SolutionItems) = preProject
-		src\Together.Dockers\docker-compose.dev.yml = src\Together.Dockers\docker-compose.dev.yml
-		src\Together.Dockers\docker-compose.prod.yml = src\Together.Dockers\docker-compose.prod.yml
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Identity", "src\Together.Services\Service.Identity\Service.Identity.csproj", "{6BF8E544-305A-493F-8339-53B4CE467184}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway.Nginx", "Gateway.Nginx", "{7E9D3F9C-2186-42E4-B776-0FEC1B0E3E30}"
@@ -52,6 +46,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Mail", "src\Together.Infrastructure\Infrastructure.Mail\Infrastructure.Mail.csproj", "{19102930-62C5-443F-AE61-D195B5CFD358}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{488AD767-8F50-40DA-B13A-7C96B6A4D358}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\https-cert.sh = scripts\https-cert.sh
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Together.Tests", "Together.Tests", "{5127D51B-E232-4614-8E30-2484AB20348C}"
 EndProject
@@ -84,6 +81,32 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dev", "dev", "{1686C550-786
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Logging", "src\Together.Infrastructure\Infrastructure.Logging\Infrastructure.Logging.csproj", "{7AABB727-BD22-4955-807E-86DA590E03DD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploys", "deploys", "{65B77A51-BC6B-4E87-8993-D88FBEE8EB1F}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\deploys\139.59.111.123.sh = scripts\deploys\139.59.111.123.sh
+		scripts\deploys\128.199.239.124.sh = scripts\deploys\128.199.239.124.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dockers", "dockers", "{B1A4E889-31CC-44AB-AE29-55C8C3EC0FB5}"
+	ProjectSection(SolutionItems) = preProject
+		dockers\docker-compose.dev.yml = dockers\docker-compose.dev.yml
+		dockers\docker-compose.cluster-1.yml = dockers\docker-compose.cluster-1.yml
+		dockers\docker-compose.master.yml = dockers\docker-compose.master.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jenkins", "jenkins", "{2C13FD6B-91EF-4299-94D3-5187216B9A05}"
+	ProjectSection(SolutionItems) = preProject
+		dockers\jenkins\Dockerfile = dockers\jenkins\Dockerfile
+		dockers\jenkins\jenkins.yaml = dockers\jenkins\jenkins.yaml
+		dockers\jenkins\plugins.txt = dockers\jenkins\plugins.txt
+		dockers\jenkins\SETUP.md = dockers\jenkins\SETUP.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "redis", "redis", "{5F14201C-2B13-498C-8731-F95FC2CD2111}"
+	ProjectSection(SolutionItems) = preProject
+		dockers\redis\redis.conf = dockers\redis\redis.conf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,7 +116,6 @@ Global
 		{FEF233A7-79C9-4B9D-8680-7EB08B6D2B4B} = {88CC5C8D-374A-4D94-BB9A-68F17EF3008D}
 		{52BA3F94-58E4-46A1-B01E-1B209F5104C6} = {88CC5C8D-374A-4D94-BB9A-68F17EF3008D}
 		{5081F1F4-0B2E-405E-869B-790CDA2BD9E4} = {88CC5C8D-374A-4D94-BB9A-68F17EF3008D}
-		{B62EF873-8439-4278-AF7E-5A501553DBDF} = {88CC5C8D-374A-4D94-BB9A-68F17EF3008D}
 		{6BF8E544-305A-493F-8339-53B4CE467184} = {FEF233A7-79C9-4B9D-8680-7EB08B6D2B4B}
 		{7E9D3F9C-2186-42E4-B776-0FEC1B0E3E30} = {5081F1F4-0B2E-405E-869B-790CDA2BD9E4}
 		{FEC4A735-F299-44AA-A7A9-1447B8C1B0B7} = {5081F1F4-0B2E-405E-869B-790CDA2BD9E4}
@@ -117,6 +139,9 @@ Global
 		{7B41BF39-8F33-45A1-B302-D89009CD8136} = {488AD767-8F50-40DA-B13A-7C96B6A4D358}
 		{1686C550-786D-49AE-8AB0-1E9EBE281D58} = {7E9D3F9C-2186-42E4-B776-0FEC1B0E3E30}
 		{7AABB727-BD22-4955-807E-86DA590E03DD} = {52BA3F94-58E4-46A1-B01E-1B209F5104C6}
+		{65B77A51-BC6B-4E87-8993-D88FBEE8EB1F} = {488AD767-8F50-40DA-B13A-7C96B6A4D358}
+		{2C13FD6B-91EF-4299-94D3-5187216B9A05} = {B1A4E889-31CC-44AB-AE29-55C8C3EC0FB5}
+		{5F14201C-2B13-498C-8731-F95FC2CD2111} = {B1A4E889-31CC-44AB-AE29-55C8C3EC0FB5}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6BF8E544-305A-493F-8339-53B4CE467184}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

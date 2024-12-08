@@ -20,7 +20,7 @@ export abstract class BaseService {
   }
 
   protected createUrl(path: string, apiVersion?: string) {
-    return `${this.host}/${this.serviceName}/api/${apiVersion ?? this.apiVersion}/${this.endpoint}/${this.normalizePath(path)}`;
+    return `${this.host}/api/${this.serviceName}/${apiVersion ?? this.apiVersion}/${this.endpoint}/${this.normalizePath(path)}`;
   }
 
   protected createParams(obj: object): HttpParams {

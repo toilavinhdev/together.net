@@ -12,7 +12,7 @@ public sealed class ConversationEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/v1/conversation").WithTags("Chat");
+        var group = app.MapGroup("/v1/conversation").WithTags("Chat");
 
         group.MapGet("/get", GetConversation);
         

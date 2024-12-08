@@ -13,7 +13,7 @@ public sealed class ForumEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/v1/forum").WithTags("Forum");
+        var group = app.MapGroup("/v1/forum").WithTags("Forum");
         
         group.MapGet("/{forumId:guid}", GetForum);
         

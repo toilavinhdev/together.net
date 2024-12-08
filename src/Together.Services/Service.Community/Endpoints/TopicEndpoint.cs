@@ -13,7 +13,7 @@ public sealed class TopicEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/v1/topic").WithTags("Topic");
+        var group = app.MapGroup("/v1/topic").WithTags("Topic");
         
         group.MapGet("/{topicId:guid}", GetTopic);
         
