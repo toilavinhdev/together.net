@@ -1,16 +1,26 @@
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { BaseComponent } from '@/core/abstractions';
 import { ActivatedRoute } from '@angular/router';
-import { filter, take, takeUntil } from 'rxjs';
+import { filter, take, takeUntil, tap } from 'rxjs';
 import {
+  CloudinaryService,
   ConversationService,
   MessageService,
   UserService,
   WebSocketService,
 } from '@/shared/services';
 import { IListMessageRequest } from '@/shared/entities/message.entities';
-import { getErrorMessage, scrollToBottom } from '@/shared/utilities';
-import { AvatarComponent } from '@/shared/components/elements';
+import { getErrorMessage, isUrl, scrollToBottom } from '@/shared/utilities';
+import {
+  AvatarComponent,
+  EmojiPickerComponent,
+} from '@/shared/components/elements';
 import { TooltipModule } from 'primeng/tooltip';
 import { TimeAgoPipe } from '@/shared/pipes';
 import { Button } from 'primeng/button';
@@ -25,6 +35,7 @@ import {
 } from '@angular/forms';
 import { websocketClientTarget } from '@/shared/constants';
 import { ScrollReachedDirective } from '@/shared/directives';
+import { ImageModule } from 'primeng/image';
 
 @Component({
   selector: 'together-message-list',
@@ -39,6 +50,8 @@ import { ScrollReachedDirective } from '@/shared/directives';
     ReactiveFormsModule,
     AsyncPipe,
     ScrollReachedDirective,
+    EmojiPickerComponent,
+    ImageModule,
   ],
   templateUrl: './message-list.component.html',
 })
@@ -46,6 +59,12 @@ export class MessageListComponent
   extends BaseComponent
   implements OnInit, AfterViewChecked
 {
+  @ViewChild('messageTextEditor', { static: true }) messageTextEditorElement:
+    | ElementRef
+    | undefined;
+
+  @ViewChild('audio') audio!: ElementRef<HTMLAudioElement>;
+
   protected readonly EConversationType = EConversationType;
 
   extra: { [key: string]: any } = {};
@@ -60,6 +79,8 @@ export class MessageListComponent
 
   loading = false;
 
+  loadingSendMessage = false;
+
   hasNextPage = false;
 
   // fix animate scroll bottom when init conversation: opacity = 0
@@ -72,6 +93,7 @@ export class MessageListComponent
     protected userService: UserService,
     private conversationService: ConversationService,
     private webSocketService: WebSocketService,
+    private cloudinaryService: CloudinaryService,
   ) {
     super();
   }
@@ -91,6 +113,11 @@ export class MessageListComponent
   }
 
   ngAfterViewChecked() {}
+
+  onSelectEmoji(emoji: string) {
+    const message = `${this.messageForm.get('text')?.value ?? ''}${emoji}`;
+    this.messageForm.get('text')?.setValue(message);
+  }
 
   private loadMessages() {
     this.loading = true;
@@ -157,6 +184,7 @@ export class MessageListComponent
 
   onSendMessage() {
     if (this.messageForm.invalid) return;
+    this.loadingSendMessage = true;
     this.messageService
       .sendMessage({
         ...this.messageForm.value,
@@ -165,6 +193,7 @@ export class MessageListComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
+          this.loadingSendMessage = false;
           this.messageForm.reset();
           this.userService.me$.pipe(take(1)).subscribe((me) => {
             if (!me) return;
@@ -212,6 +241,7 @@ export class MessageListComponent
           });
         },
         error: (err) => {
+          this.loadingSendMessage = false;
           this.commonService.toast$.next({
             type: 'error',
             message: getErrorMessage(err),
@@ -227,11 +257,14 @@ export class MessageListComponent
         filter(
           (message) => message.target === websocketClientTarget.ReceivedMessage,
         ),
+        tap(() => {}),
       )
       .subscribe({
         next: (socket) => {
-          if (socket.message.conversationId !== this.params.conversationId)
+          if (socket.message.conversationId !== this.params.conversationId) {
+            this.commonService.playAudio('notification');
             return;
+          }
           // add message
           this.extra['userOnline'] = true;
           this.messageService.messages$.pipe(take(1)).subscribe((messages) => {
@@ -252,4 +285,26 @@ export class MessageListComponent
         },
       });
   }
+
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    this.loadingSendMessage = true;
+    this.cloudinaryService
+      .uploadImage(file)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: ({ url }) => {
+          this.messageForm.get('text')?.setValue(url);
+          this.onSendMessage();
+        },
+        error: () => {
+          this.commonService.toast$.next({
+            type: 'error',
+            message: 'Upload ảnh không thành công',
+          });
+        },
+      });
+  }
+
+  protected readonly isUrl = isUrl;
 }

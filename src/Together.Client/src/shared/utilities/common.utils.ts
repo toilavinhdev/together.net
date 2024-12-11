@@ -63,3 +63,9 @@ export function areArraysEqual<T>(arr1: T[], arr2: T[]) {
   const set = new Set(arr1);
   return arr2.every((item) => set.has(item));
 }
+
+export function isUrl(str: string) {
+  const urlRegex =
+    /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/;
+  return urlRegex.test(str);
+}

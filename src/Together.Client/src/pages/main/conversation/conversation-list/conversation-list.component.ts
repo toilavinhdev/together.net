@@ -7,7 +7,7 @@ import {
 } from '@/shared/services';
 import { IListConversationRequest } from '@/shared/entities/conversation.entities';
 import { filter, take, takeUntil } from 'rxjs';
-import { getErrorMessage } from '@/shared/utilities';
+import { getErrorMessage, isUrl } from '@/shared/utilities';
 import { AvatarComponent } from '@/shared/components/elements';
 import { TimeAgoPipe } from '@/shared/pipes';
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
@@ -108,4 +108,6 @@ export class ConversationListComponent extends BaseComponent implements OnInit {
         error: () => {},
       });
   }
+
+  protected readonly isUrl = isUrl;
 }

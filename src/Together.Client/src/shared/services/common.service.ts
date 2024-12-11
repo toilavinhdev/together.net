@@ -6,7 +6,6 @@ import { IBreadcrumbItem } from '@/shared/models/breadcrumb.models';
 import { localStorageKeys } from '@/shared/constants';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '@/environments/environment';
-import { slugify } from '@/shared/utilities';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +18,8 @@ export class CommonService {
   toast$ = new BehaviorSubject<IToast | undefined>(undefined);
 
   breadcrumb$ = new BehaviorSubject<IBreadcrumbItem[]>([]);
+
+  audio$ = new Subject<string>();
 
   constructor(
     private router: Router,
@@ -77,5 +78,15 @@ export class CommonService {
   setLanguage(lang: string) {
     localStorage.setItem(localStorageKeys.LANG, lang);
     this.translateService.use(lang);
+  }
+
+  playAudio(type: 'notification') {
+    let src;
+    switch (type) {
+      case 'notification':
+        src = 'shared/assets/audio/notification-sound.mp3';
+        break;
+    }
+    this.audio$.next(src);
   }
 }

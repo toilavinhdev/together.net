@@ -1,0 +1,19 @@
+<div #emojiPickerContainer class="emoji-picker-container">
+  <p-button (onClick)="toggle()" styleClass="bg-primary">😀</p-button>
+  <emoji-mart
+    *ngIf="isOpened"
+    class="emoji-mart"
+    emoji="point_up"
+    [set]="set"
+    (emojiSelect)="emojiSelected($event)"
+    [autoFocus]="true"
+    [showPreview]="false"
+    [darkMode]="false"
+    [isNative]="true"
+    [useButton]="true"
+    [totalFrequentLines]="0"
+    [virtualize]="true"
+    [virtualizeOffset]="220"
+    color="var(--primary)"
+  />
+</div>

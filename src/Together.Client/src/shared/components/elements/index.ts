@@ -19,3 +19,4 @@ export * from './user-status/user-status.component';
 export * from './notification-dropdown/notification-dropdown.component';
 export * from './notification-alert/notification-alert.component';
 export * from './scroll-top/scroll-top.component';
+export * from './emoij-picker/emoji-picker.component';

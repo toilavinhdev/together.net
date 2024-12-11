@@ -35,27 +35,58 @@
             [src]="message.createdByAvatar"
             componentClass="cursor-pointer h-[28px] w-[28px]"
           />
+          <!--Message from other people-->
           <div>
             <div
+              *ngIf="!isUrl(message.text)"
               class="flex-1 bg-gray-200 px-3 py-2 rounded-2xl"
               [pTooltip]="message.createdAt | timeAgo"
               [tooltipPosition]="'right'"
-              [innerHTML]="message.text"></div>
+              [innerHTML]="message.text"
+            ></div>
+            <div *ngIf="isUrl(message.text)">
+              <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="250" [preview]="true" />
+            </div>
           </div>
         </div>
+        <!--Message from current user-->
         <div
           *ngIf="message.createdById === (userService.me$ | async)?.id"
-          class="bg-primary text-white max-w-[48%] px-3 py-2 rounded-2xl ml-auto"
-          [pTooltip]="message.createdAt | timeAgo"
-          [tooltipPosition]="'left'"
-          [innerHTML]="message.text"></div>
+          class="max-w-[48%] ml-auto">
+          <div
+            *ngIf="!isUrl(message.text)"
+            class="bg-primary text-white px-3 py-2 rounded-2xl"
+            [pTooltip]="message.createdAt | timeAgo"
+            [tooltipPosition]="'left'"
+            [innerHTML]="message.text"></div>
+          <div *ngIf="isUrl(message.text)" class="w-[50%] ml-auto">
+            <p-image
+              [src]="message.text"
+              alt="Image"
+              width="100%"
+              loading="lazy"
+              [preview]="true"
+            />
+          </div>
+        </div>
       </div>
     }
   </div>
   <!--Send message form-->
   <div class="flex gap-x-2 p-2">
+    <label for="upload-avatar">
+      <input
+        id="upload-avatar"
+        type="file"
+        accept=".png, .jpg, .jpeg, .webp"
+        class="hidden"
+        (change)="onFileChange($event)"
+      />
+      <div class="pi pi-image p-[10px] bg-[#f1f5f9] hover:bg-[#e2e8f0] rounded-lg cursor-pointer"></div>
+    </label>
     <form [formGroup]="messageForm" class="flex-1">
       <input
+        #messageTextEditor
         (keyup.enter)="onSendMessage()"
         formControlName="text"
         pInputText
@@ -63,6 +94,16 @@
         class="w-full"
       />
     </form>
-    <p-button (onClick)="onSendMessage()" [disabled]="!messageForm.get('text')?.value" icon="pi pi-send" styleClass="bg-primary"></p-button>
+    <together-emoji-picker
+      (onSelectEmoji)="onSelectEmoji($event)"
+      [selectedFocusToTpl]="messageTextEditorElement"
+    />
+    <p-button
+      (onClick)="onSendMessage()"
+      [loading]="loadingSendMessage"
+      [disabled]="!messageForm.get('text')?.value"
+      icon="pi pi-send"
+      styleClass="bg-primary"
+    />
   </div>
 </div>

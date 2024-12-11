@@ -45,12 +45,6 @@ export class ProfileUploadAvatarComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: () => {
-                if (this.userService.me$.value?.avatar) {
-                  this.fileService
-                    .deleteFile(this.userService.me$.value.avatar)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe();
-                }
                 this.updateAvatar(url);
                 this.commonService.toast$.next({
                   type: 'success',
