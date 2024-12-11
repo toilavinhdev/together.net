@@ -6,10 +6,17 @@ import {
   SvgDefinitionsComponent,
   ToastComponent,
 } from '@/shared/components/elements';
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +31,12 @@ import { PrimeNGConfig } from 'primeng/api';
   ],
   templateUrl: './app.component.html',
 })
-export class AppComponent extends BaseComponent implements OnInit {
+export class AppComponent
+  extends BaseComponent
+  implements OnInit, AfterViewInit
+{
+  @ViewChild('audio') audioElement!: ElementRef<HTMLAudioElement>;
+
   constructor(
     private primengConfig: PrimeNGConfig,
     private translateService: TranslateService,
@@ -35,7 +47,10 @@ export class AppComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     this.setLanguages();
     this.configPrimeNG();
+    this.audioHandler();
   }
+
+  ngAfterViewInit() {}
 
   private setLanguages() {
     this.translateService.setDefaultLang(environment.lang);
@@ -50,5 +65,15 @@ export class AppComponent extends BaseComponent implements OnInit {
       menu: 10, // overlay menus
       tooltip: 10, // tooltip
     };
+  }
+
+  private audioHandler() {
+    this.commonService.audio$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((src) => {
+        this.audioElement.nativeElement.src = src;
+        this.audioElement.nativeElement.load();
+        this.audioElement.nativeElement.play();
+      });
   }
 }

@@ -15,7 +15,7 @@
           <div class="flex text-[12px] mt-1">
             <div class="text-ellipsis line-clamp-1">
               <span *ngIf="conversation.lastMessageByUserId === (userService.me$ | async)?.id">{{commonService.translate('You')}}:&nbsp;</span>
-              {{conversation.lastMessageText}}
+              {{!isUrl(conversation.lastMessageText ?? '') ? conversation.lastMessageText : 'Đã gửi 1 ảnh'}}
             </div>
             <div *ngIf="conversation.lastMessageAt" class="text-gray-500 whitespace-nowrap mr-1">&nbsp;&bull;&nbsp;{{conversation.lastMessageAt | timeAgo}}</div>
           </div>
