@@ -1,4 +1,6 @@
 ﻿#!/bin/sh
+# chmod +x ./scripts/deploys/128.199.239.124.sh
+# ./scripts/deploys/128.199.239.124.sh
 
 ip_address=$(hostname -I | awk '{print $1}')
 
