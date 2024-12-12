@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Infrastructure.Logging;
 using Infrastructure.SharedKernel.Utilities;
 using Infrastructure.SharedKernel.ValueObjects;
 using MediatR;
@@ -26,6 +27,12 @@ public abstract class BaseRequestHandler(IHttpContextAccessor httpContextAccesso
         return string.IsNullOrEmpty(accessToken) 
             ? default! 
             : JwtUtils.DecodeAccessToken(accessToken);
+    }
+
+    public string CorrelationId()
+    {
+        return httpContextAccessor.HttpContext?.GetCorrelationId()
+               ?? CorrelationIdExtensions.GenerateCorrelationId();
     }
 }
 

@@ -1,3 +1,4 @@
+using Infrastructure.Logging;
 using Infrastructure.RabbitMQ;
 using Infrastructure.Redis;
 using Infrastructure.SharedKernel.Extensions;
@@ -42,6 +43,8 @@ public static class SharedKernelInstaller
         app.UseCoreExceptionHandler();
         
         app.UseCoreAuth();
+
+        app.UseCorrelationId();
         
         app.UseCoreSwagger(baseSettings.Metadata.Name, baseSettings.Metadata.EndpointPrefix);
         

@@ -6,4 +6,6 @@ namespace Infrastructure.RabbitMQ;
 public abstract class RabbitMQEvent
 {
     public Guid EventId { get; set; } = Guid.NewGuid();
+
+    public string CorrelationId { get; set; } = default!;
 }

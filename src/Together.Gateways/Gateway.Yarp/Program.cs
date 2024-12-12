@@ -1,4 +1,5 @@
 using Infrastructure.Logging;
+using Yarp.ReverseProxy.Transforms;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,18 @@ LoggingExtensions.ConfigureLogging(
                      ?? throw new NullReferenceException("Metadata is null"));
 
 var services = builder.Services;
-services.AddReverseProxy().LoadFromConfig(configurationRoot.GetSection("ReverseProxy"));
+services
+    .AddReverseProxy()
+    .LoadFromConfig(configurationRoot.GetSection("ReverseProxy"))
+    .AddTransforms(b =>
+    {
+        b.AddRequestTransform(ctx =>
+        {
+            var correlationId = CorrelationIdExtensions.GenerateCorrelationId();
+            ctx.ProxyRequest.Headers.AddCorrelationId(correlationId);
+            return ValueTask.CompletedTask;
+        });
+    });
 
 var app = builder.Build();
 app.MapReverseProxy();

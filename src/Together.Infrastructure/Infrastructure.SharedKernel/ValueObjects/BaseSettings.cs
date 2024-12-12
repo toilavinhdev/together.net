@@ -3,7 +3,7 @@ using Infrastructure.RabbitMQ;
 
 namespace Infrastructure.SharedKernel.ValueObjects;
 
-public abstract class BaseSettings
+public class BaseSettings
 {
     public Metadata Metadata { get; set; } = default!;
 

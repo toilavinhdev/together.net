@@ -5,13 +5,18 @@ using System.Text.Json;
 namespace Infrastructure.WebSocket;
 using WebSocket = System.Net.WebSockets.WebSocket;
 
-public abstract class WebSocketHandler(ConnectionManager connectionManager)
+public abstract class WebSocketHandler
 {
-    public ConnectionManager ConnectionManager { get; set; } = connectionManager;
-    
+    public ConnectionManager ConnectionManager { get; set; }
+
+    protected WebSocketHandler(ConnectionManager connectionManager)
+    {
+        ConnectionManager = connectionManager;
+    }
+
     protected abstract Task ReceiveAsync(string socketId, WebSocket socket, WebSocketMessage message);
 
-    private static JsonSerializerOptions _jsonSerializerOptions = new()
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
@@ -55,7 +60,7 @@ public abstract class WebSocketHandler(ConnectionManager connectionManager)
 
         foreach (var socket in sockets)
         {
-            var jsonMessage = JsonSerializer.Serialize(message, _jsonSerializerOptions);
+            var jsonMessage = JsonSerializer.Serialize(message, JsonSerializerOptions);
             await SendMessageAsync(socket, jsonMessage);
         }
     }

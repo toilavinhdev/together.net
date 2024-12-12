@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
 namespace Infrastructure.Redis;
@@ -50,7 +51,7 @@ public interface IRedisService
     Task SubscribeAsync<TEvent>(Func<TEvent, Task> callback) where TEvent : RedisPubSubEvent;
 }
 
-public class RedisService(IConnectionMultiplexer connection) : IRedisService
+public class RedisService(IConnectionMultiplexer connection, ILogger<RedisService> logger) : IRedisService
 {
     private IDatabase Database(RedisDatabase db = RedisDatabase.Default) => connection.GetDatabase((int)db);
     
@@ -177,7 +178,14 @@ public class RedisService(IConnectionMultiplexer connection) : IRedisService
     public async Task<long> PublishAsync<TEvent>(TEvent message) where TEvent : RedisPubSubEvent
     {
         var channel = new RedisChannel(typeof(TEvent).Name, RedisChannel.PatternMode.Auto);
-        return await Subscriber().PublishAsync(channel, JsonSerializer.Serialize(message));
+        var json = JsonSerializer.Serialize(message);
+        var result = await Subscriber().PublishAsync(channel, json);
+        logger.LogInformation(
+            "Published event {EventName} to [Redis]: {EventPayload}",
+            typeof(TEvent).Name,
+            json
+        );
+        return result;
     }
 
     public async Task SubscribeAsync<TEvent>(Func<TEvent, Task> callback) where TEvent : RedisPubSubEvent
@@ -187,7 +195,17 @@ public class RedisService(IConnectionMultiplexer connection) : IRedisService
         {
             var @event = JsonSerializer.Deserialize<TEvent>(value.ToString());
             if (@event is null) return;
+            using var scope = logger.BeginScope("{@CorrelationId}", @event.CorrelationId);
+            logger.LogInformation(
+                "Received event {EventName} from [Redis]: {EventPayload}",
+                typeof(TEvent).Name,
+                value.ToString()
+            );
             callback(@event);
+            logger.LogInformation(
+                "Processed event {EventName} from [Redis]",
+                typeof(TEvent).Name
+            );
         });
     }
 }

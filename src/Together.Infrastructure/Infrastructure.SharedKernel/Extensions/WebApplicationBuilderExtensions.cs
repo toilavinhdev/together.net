@@ -12,6 +12,15 @@ public static class WebApplicationBuilderExtensions
     {
         var builder = WebApplication.CreateBuilder(args);
         var settings = GetEnvironment<TSetting>(builder);
+        builder.Services.AddSingleton(new BaseSettings
+        {
+            Metadata = settings.Metadata,
+            LoggingConfig = settings.LoggingConfig,
+            GrpcEndpoints = settings.GrpcEndpoints,
+            JwtConfig = settings.JwtConfig,
+            RedisConfiguration = settings.RedisConfiguration,
+            RabbitMqConfig = settings.RabbitMqConfig
+        });
         builder.Services.AddSingleton(settings);
         LoggingExtensions.ConfigureLogging(builder, settings.LoggingConfig, settings.Metadata.Name);
         return (builder, settings);

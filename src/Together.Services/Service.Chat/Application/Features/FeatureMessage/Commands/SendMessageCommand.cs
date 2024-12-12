@@ -68,6 +68,7 @@ public sealed class SendMessageCommand : IBaseRequest<SendMessageResponse>
             
             await redisService.PublishAsync(new SendMessageSocketEvent
             {
+                CorrelationId = CorrelationId(),
                 SocketIds = [..participantIds],
                 ConversationId = message.ConversationId,
                 Text = message.Text,

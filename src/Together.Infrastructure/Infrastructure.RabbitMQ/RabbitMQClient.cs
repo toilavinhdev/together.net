@@ -36,8 +36,10 @@ public class RabbitMQClient : IRabbitMQClient
     public void Publish<TEvent>(TEvent @event) where TEvent : RabbitMQEvent
     {
         var routingKey = KebabCase(typeof(TEvent).Name);
+
+        var serialized = JsonSerializer.Serialize(@event);
         
-        var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(@event));
+        var body = Encoding.UTF8.GetBytes(serialized);
 
         var properties = _channel.CreateBasicProperties();
         properties.DeliveryMode = 1; // non-persistent (1) or persistent (2)
@@ -48,7 +50,11 @@ public class RabbitMQClient : IRabbitMQClient
             basicProperties: null, 
             body: body);
         
-        _logger.LogInformation("Published message to channel {routingKey}", routingKey);
+        _logger.LogInformation(
+            "Published message to [RabbitMQ] channel {RoutingKey}: {Payload}",
+            routingKey,
+            serialized
+        );
     }
 
     public void Subscribe<TEvent>(Func<TEvent, Task> callback) where TEvent : RabbitMQEvent
@@ -69,12 +75,20 @@ public class RabbitMQClient : IRabbitMQClient
 
         consumer.Received += async (_, ea) =>
         {
-            _logger.LogInformation("Processing received message from channel {routingKey}", routingKey);
-            
             var body = ea.Body.ToArray();
-            var @event = JsonSerializer.Deserialize<TEvent>(Encoding.UTF8.GetString(body)) 
-                          ?? throw new InvalidCastException();
+            var json = Encoding.UTF8.GetString(body);
+            var @event = JsonSerializer.Deserialize<TEvent>(json) ?? throw new InvalidCastException();
+            using var scope = _logger.BeginScope("{@CorrelationId}", @event.CorrelationId);
+            _logger.LogInformation(
+                "Received message from [RabbitMQ] channel {RoutingKey}: {Payload}",
+                routingKey,
+                json
+            );
             await callback(@event);
+            _logger.LogInformation(
+                "Processed message from [RabbitMQ] channel {RoutingKey}",
+                routingKey
+            );
         };
 
         _channel.BasicConsume(

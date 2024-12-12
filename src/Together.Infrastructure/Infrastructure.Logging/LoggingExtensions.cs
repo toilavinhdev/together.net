@@ -11,6 +11,9 @@ public static class LoggingExtensions
         LoggingConfig loggingConfig,
         string applicationName)
     {
+        const string logTemplate =
+            "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {Level:u3}] [{CorrelationId}] {Message:lj}{NewLine}{Exception}";
+
         builder.Host.UseSerilog((_ , configuration) =>
         {
             configuration
@@ -19,11 +22,17 @@ public static class LoggingExtensions
                 .Enrich.FromLogContext()
                 .Enrich.WithProperty("Application", applicationName);
             configuration
-                .WriteTo.Async(c => c.Console())
-                .WriteTo.Async(c => c.File(
-                    path: loggingConfig.LogToFilePath, 
-                    rollingInterval: RollingInterval.Day, 
-                    restrictedToMinimumLevel: LogEventLevel.Error))
+                .WriteTo.Async(c =>
+                    c.Console(outputTemplate: logTemplate)
+                )
+                .WriteTo.Async(c =>
+                    c.File(
+                        path: loggingConfig.LogToFilePath,
+                        rollingInterval: RollingInterval.Day,
+                        restrictedToMinimumLevel: LogEventLevel.Error,
+                        outputTemplate: logTemplate
+                    )
+                )
                 .WriteTo.Async(c => c.Seq(loggingConfig.LogToSeqUrl));
         });
         builder.Logging.ClearProviders();
