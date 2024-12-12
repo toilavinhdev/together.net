@@ -1,11 +1,11 @@
 using Infrastructure.SharedKernel.Enums;
-using MediatR;
+using Infrastructure.SharedKernel.Mediator;
 using Microsoft.EntityFrameworkCore;
 using Service.Notification.Domain;
 
 namespace Service.Notification.Application.Features.FeatureNotification.Commands;
 
-public sealed class DeleteNotificationCommand : IRequest
+public sealed class DeleteNotificationCommand : IBaseRequest
 {
     public Guid SubjectId { get; set; }
     
@@ -13,9 +13,10 @@ public sealed class DeleteNotificationCommand : IRequest
     
     public Guid DirectObjectId { get; set; }
     
-    internal class Handler(NotificationContext context) : IRequestHandler<DeleteNotificationCommand>
+    internal class Handler(NotificationContext context,
+        IHttpContextAccessor httpContextAccessor) : BaseRequestHandler<DeleteNotificationCommand>(httpContextAccessor)
     {
-        public async Task Handle(DeleteNotificationCommand request, CancellationToken ct)
+        protected override async Task HandleAsync(DeleteNotificationCommand request, CancellationToken ct)
         {
             var notification = await context.Notifications
                 .FirstOrDefaultAsync(n =>

@@ -102,6 +102,7 @@ public sealed class VotePostCommand : IBaseRequest<VotePostResponse>
             messageBus.Publish(new CreateNotificationEvent
             {
                 EventId = Guid.NewGuid(),
+                CorrelationId = CorrelationId(),
                 ReceiverId = postAuthorId,
                 SubjectId = UserClaimsPrincipal.Id,
                 NotificationType = (int)NotificationType.VotePost,
@@ -115,6 +116,7 @@ public sealed class VotePostCommand : IBaseRequest<VotePostResponse>
             messageBus.Publish(new DeleteNotificationEvent
             {
                 EventId = Guid.NewGuid(),
+                CorrelationId = CorrelationId(),
                 SubjectId = UserClaimsPrincipal.Id,
                 NotificationType = (int)NotificationType.VotePost,
                 DirectObjectId = postId

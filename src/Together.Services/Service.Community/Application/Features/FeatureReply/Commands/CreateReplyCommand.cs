@@ -76,6 +76,7 @@ public sealed class CreateReplyCommand : IBaseRequest<CreateReplyResponse>
                 messageBus.Publish(new CreateNotificationEvent
                 {
                     EventId = Guid.NewGuid(),
+                    CorrelationId = CorrelationId(),
                     ReceiverId = postAuthorId,
                     SubjectId = UserClaimsPrincipal.Id,
                     NotificationType = (int)NotificationType.ReplyPost,
@@ -88,6 +89,7 @@ public sealed class CreateReplyCommand : IBaseRequest<CreateReplyResponse>
                 messageBus.Publish(new CreateNotificationEvent
                 {
                     EventId = Guid.NewGuid(),
+                    CorrelationId = CorrelationId(),
                     ReceiverId = postAuthorId,
                     SubjectId = UserClaimsPrincipal.Id,
                     NotificationType = (int)NotificationType.ReplyReply,

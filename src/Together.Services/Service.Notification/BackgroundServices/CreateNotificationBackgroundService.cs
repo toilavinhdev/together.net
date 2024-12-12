@@ -18,6 +18,7 @@ public sealed class CreateNotificationBackgroundService(IServiceProvider service
         {
             await _sender.Send(new CreateNotificationCommand
             {
+                CorrelationId = @event.CorrelationId,
                 ReceiverId = @event.ReceiverId,
                 SubjectId = @event.SubjectId,
                 Type = (NotificationType)@event.NotificationType,

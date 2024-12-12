@@ -2,7 +2,7 @@ using Infrastructure.Redis;
 using Infrastructure.Redis.Events;
 using Infrastructure.SharedKernel.BusinessObjects;
 using Infrastructure.SharedKernel.Enums;
-using MediatR;
+using Infrastructure.SharedKernel.Mediator;
 using Microsoft.EntityFrameworkCore;
 using Service.Notification.Domain;
 using Service.Notification.Domain.Enums;
@@ -10,7 +10,7 @@ using Service.Notification.Domain.Enums;
 namespace Service.Notification.Application.Features.FeatureNotification.Commands;
 using Notification = Domain.Aggregates.NotificationAggregate.Notification;
 
-public sealed class CreateNotificationCommand : IRequest
+public sealed class CreateNotificationCommand : IBaseRequest
 {
     public Guid ReceiverId { get; set; }
     
@@ -23,10 +23,16 @@ public sealed class CreateNotificationCommand : IRequest
     public Guid? IndirectObjectId { get; set; }
     
     public Guid? PrepositionalObjectId { get; set; }
+
+    public string CorrelationId { get; set; } = default!;
     
-    internal class Handler(NotificationContext context, IRedisService redisService) : IRequestHandler<CreateNotificationCommand>
+    internal class Handler(
+        NotificationContext context,
+        IRedisService redisService,
+        IHttpContextAccessor httpContextAccessor
+    ) : BaseRequestHandler<CreateNotificationCommand>(httpContextAccessor)
     {
-        public async Task Handle(CreateNotificationCommand request, CancellationToken ct)
+        protected override async Task HandleAsync(CreateNotificationCommand request, CancellationToken ct)
         {
             var existedNotification = await context.Notifications
                 .FirstOrDefaultAsync(n =>
@@ -62,12 +68,12 @@ public sealed class CreateNotificationCommand : IRequest
 
             await context.Notifications.AddAsync(notification, ct);
 
-            await PublishSendNotificationSocketEvent(notification);
+            await PublishSendNotificationSocketEvent(notification, request.CorrelationId);
 
             await context.SaveChangesAsync(ct);
         }
         
-        private async Task PublishSendNotificationSocketEvent(Notification notification)
+        private async Task PublishSendNotificationSocketEvent(Notification notification, string correlationId)
         {
             var subject = await redisService.StringGetAsync<IdentityPrivilege>(
                 RedisKeys.Identity<IdentityPrivilege>(notification.SubjectId));
@@ -76,6 +82,7 @@ public sealed class CreateNotificationCommand : IRequest
             
             await redisService.PublishAsync(new SendNotificationSocketEvent
             {
+                CorrelationId = correlationId,
                 SocketIds = [notification.ReceiverId.ToString()],
                 NotificationId = notification.Id,
                 SubjectId = subject.Id,

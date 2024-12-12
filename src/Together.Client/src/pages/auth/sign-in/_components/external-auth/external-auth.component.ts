@@ -64,6 +64,7 @@ export class ExternalAuthComponent extends BaseComponent implements OnInit {
               message: 'Đăng nhập thành công',
             });
             this.commonService.navigateToMain();
+            window.location.reload();
           });
         },
         error: (err) => {

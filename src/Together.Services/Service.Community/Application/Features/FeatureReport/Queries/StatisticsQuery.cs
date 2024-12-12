@@ -1,4 +1,6 @@
+using Grpc.Core;
 using Grpc.Net.Client;
+using Infrastructure.Logging;
 using Infrastructure.SharedKernel.Extensions;
 using Infrastructure.SharedKernel.Mediator;
 using Infrastructure.SharedKernel.Protos.Identity;
@@ -61,13 +63,26 @@ public sealed class StatisticsQuery : IBaseRequest<Dictionary<string, object>>
             if (request.Metrics.Contains("totalUserToday")) userMetrics.Add("totalUserToday");
             if (request.Metrics.Contains("newMember")) userMetrics.Add("newMember");
 
-            var channelOptions = new GrpcChannelOptions { HttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator } };
+            var channelOptions = new GrpcChannelOptions
+            {
+                HttpHandler = new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                }
+            };
             var channel = GrpcChannel.ForAddress(appSettings.GrpcEndpoints.ServiceIdentity, channelOptions);
             var client = new UserGrpcServerService.UserGrpcServerServiceClient(channel);
-            var response = await client.UserStatisticsGrpcAsync(new UserStatisticsGrpcRequest
-            {
-                Metrics = { userMetrics }
-            }, cancellationToken: ct);
+            var response = await client.UserStatisticsGrpcAsync(
+                request: new UserStatisticsGrpcRequest
+                {
+                    Metrics = { userMetrics }
+                },
+                headers: new Metadata
+                {
+                    { CorrelationIdExtensions.XCorrelationId, CorrelationId() }
+                },
+                cancellationToken: ct
+            );
 
             foreach (var pair in response.Data) data.Add(pair.Metric, pair.Value);
             

@@ -45,7 +45,13 @@
               [innerHTML]="message.text"
             ></div>
             <div *ngIf="isUrl(message.text)">
-              <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="250" [preview]="true" />
+              <p-image
+                [src]="message.text"
+                alt="Image"
+                width="100%"
+                loading="lazy"
+                [preview]="true"
+              />
             </div>
           </div>
         </div>

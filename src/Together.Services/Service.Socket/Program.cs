@@ -1,3 +1,4 @@
+using Infrastructure.Redis;
 using Infrastructure.SharedKernel;
 using Infrastructure.SharedKernel.Extensions;
 using Infrastructure.WebSocket;
@@ -18,4 +19,7 @@ app.UseGrpc(appSettings.GrpcEndpoints.ServiceSocket, _ => {});
 app.UseWebSockets();
 app.MapWebSocketHandler<SocketHandler>("/socket/ws");
 app.MapGet("/api/socket/connections", (SocketHandler handler) => handler.ConnectionManager.GetAll());
+await app.Services
+    .GetRequiredService<IRedisService>()
+    .KeyDeleteAsync(RedisKeys.SocketOnlineUsers());
 app.Run();
