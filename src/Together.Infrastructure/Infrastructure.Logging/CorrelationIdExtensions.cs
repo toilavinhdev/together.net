@@ -10,7 +10,7 @@ public sealed class CorrelationLogger;
 
 public static class CorrelationIdExtensions
 {
-    private const string XCorrelationId = "X-Correlation-ID";
+    public const string XCorrelationId = "X-Correlation-ID";
 
     public static string GenerateCorrelationId() => Guid.NewGuid().ToString();
 

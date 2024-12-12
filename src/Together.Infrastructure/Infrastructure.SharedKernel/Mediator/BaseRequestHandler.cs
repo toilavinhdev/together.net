@@ -29,10 +29,9 @@ public abstract class BaseRequestHandler(IHttpContextAccessor httpContextAccesso
             : JwtUtils.DecodeAccessToken(accessToken);
     }
 
-    public string CorrelationId()
+    protected string CorrelationId()
     {
-        return httpContextAccessor.HttpContext?.GetCorrelationId()
-               ?? CorrelationIdExtensions.GenerateCorrelationId();
+        return httpContextAccessor.HttpContext?.GetCorrelationId() ?? CorrelationIdExtensions.GenerateCorrelationId();
     }
 }
 
