@@ -1,0 +1,229 @@
+\documentclass[a4paper, 13pt, 3p, twoside]{report}
+
+\usepackage{scrextend}
+\changefontsizes{13pt}
+\usepackage[utf8]{vietnam}
+\usepackage[top=2cm, bottom=2cm, left=3.5cm, right=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{fancybox}
+\usepackage{indentfirst}
+\usepackage{amsthm}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{times}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{subfiles} 
+\usepackage{titlesec} 
+\usepackage{titletoc}
+\usepackage{chngcntr}
+\usepackage{pdflscape}
+\usepackage{afterpage}
+\usepackage[ruled, vlined]{algorithm2e}
+\usepackage{capt-of}
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage{appendix}
+\usepackage[font=small, labelfont=bf]{caption}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{xurl}
+\usepackage[nonumberlist, nopostdot, nogroupskip, acronym]{glossaries}
+\usepackage{glossary-superragged}
+\setglossarystyle{superraggedheaderborder}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{tocbasic}
+\usepackage{blindtext}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[backend=bibtex,style=ieee]{biblatex}
+\include{lstlisting}
+\input{sections/abbreviation}
+
+\fancypagestyle{plain}{%
+\fancyhf{}
+\fancyfoot[RO,RE]{\thepage} 
+\renewcommand{\headrulewidth}{0pt} \renewcommand{\footrulewidth}{0pt}}
+\setlength{\headheight}{10pt}
+
+\def
+\TITLE{ĐỒ ÁN TỐT NGHIỆP}
+\def
+\AUTHOR{HOÀNG ĐÌNH VINH}
+
+\titleformat{\chapter}[hang]{\centering\bfseries}{CHƯƠNG \thechapter.\ }{0pt}{}[]
+
+\titleformat
+{\chapter}
+[hang]
+{\centering\bfseries}
+{CHƯƠNG \thechapter.\ } 
+{0pt} 
+{} 
+[] 
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+
+\titleformat
+{\section} 
+[hang] 
+{\bfseries} 
+{\thechapter.\arabic{section}\ \ \ \ }
+{0pt} 
+{} 
+[] 
+\titlespacing{\section}{0pt}{\parskip}{0.5\parskip}
+
+\titleformat
+{\subsection}
+[hang] 
+{\bfseries} 
+{\thechapter.\arabic{section}.\arabic{subsection}\ \ \ \ } 
+{0pt}
+{}
+[] 
+\titlespacing{\subsection}{30pt}{\parskip}{0.5\parskip}
+
+\renewcommand{\thesubsubsection}{\alph{subsubsection}}
+\titleformat
+{\subsubsection}
+[hang] 
+{\bfseries} 
+{\alph{subsubsection}, \ }
+{0pt} 
+{} 
+[] 
+\titlespacing{\subsubsection}{50pt}{\parskip}{0.5\parskip}
+
+\usepackage{hyperref}
+\hypersetup{pdfborder={0 0 0}} %
+\hypersetup{pdftitle={\TITLE}, pdfauthor={\AUTHOR}}
+
+\usepackage[all]{
+    hypcap
+}
+
+\graphicspath{{figures/}{../figures/}} 
+
+\counterwithin{figure}{chapter}
+
+\title{\bf \TITLE}
+\author{\AUTHOR}
+
+\setcounter{secnumdepth}{3} 
+
+\theoremstyle{definition}
+\newtheorem{example}{Ví dụ}[chapter] 
+
+\onehalfspacing
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{15pt}
+
+\begin{document}
+    \subfile{sections/cover-v2}
+
+    \newpage
+    \pagenumbering{gobble}
+    \subfile{sections/abstract.vi}
+
+    \newpage
+    \pagenumbering{gobble}
+    \subfile{sections/abstract.en}
+
+    \newpage
+    \pagenumbering{gobble}
+    \subfile{sections/thanks}
+
+    \newpage
+    \pagenumbering{roman}
+    \renewcommand*{\contentsname}{MỤC LỤC}
+
+    \titlecontents{chapter} [0.0cm]
+    {\bfseries\vspace{0.3cm}}
+    {{\bfseries{\scshape} CHƯƠNG \thecontentslabel.\ }}
+    {}
+    {\titlerule*[0.3pc]{.}\contentspage}
+
+    \titlecontents{section} [0.0cm]
+    {\vspace{0.3cm}}
+    {\thecontentslabel \ }
+    {}
+    {\titlerule*[0.3pc]{.}\contentspage}
+
+    \titlecontents{subsection} [1.0cm]
+    {\vspace{0.3cm}}
+    {\thecontentslabel \ }
+    {}
+    {\titlerule*[0.3pc]{.}\contentspage}
+
+    \addtocontents{toc}{\protect
+    \thispagestyle{empty}}
+    \tableofcontents
+    \thispagestyle{empty}
+    \cleardoublepage
+
+    \renewcommand{\listfigurename}{DANH MỤC HÌNH VẼ}
+    {\let\oldnumberline\numberline \renewcommand{\numberline}{Hình~\oldnumberline} \listoffigures}
+    \newpage
+
+    \renewcommand{\listtablename}{DANH MỤC BẢNG BIỂU}
+    {\let\oldnumberline\numberline \renewcommand{\numberline}{Bảng~\oldnumberline} \listoftables}
+
+    \glsaddall
+    \renewcommand*{\glossaryname}{Danh sách thuật ngữ}
+    \renewcommand*{\acronymname}{DANH MỤC THUẬT NGỮ VÀ TỪ VIẾT TẮT}
+    \renewcommand*{\entryname}{Thuật ngữ}
+    \renewcommand*{\descriptionname}{Ý nghĩa}
+    \printnoidxglossaries
+
+    \newpage
+    \pagenumbering{arabic}
+
+    \pagestyle{fancy}
+    \fancyhf{} \fancyhead[RE, LO]{\leftmark}
+    \fancyfoot[RE, LO]{\thepage}
+
+    \chapter{GIỚI THIỆU ĐỀ TÀI}
+    \label{chapter:Introduction} \subfile{chapters/1_introduction}
+
+    \newpage
+    \chapter{KHẢO SÁT VÀ PHÂN TÍCH NGHIỆP VỤ}
+    \label{chapter:Related_works} \subfile{chapters/2_business}
+
+    \newpage
+    \chapter{CÔNG NGHỆ SỬ DỤNG}
+    \label{chapter:Methodology} \subfile{chapters/3_technologies}
+
+    \newpage
+    \chapter{THIẾT KẾ HỆ THỐNG}
+    \label{chapter:Experiment} \subfile{chapters/4_system-design}
+
+    \newpage
+    \chapter{XÂY DỰNG ỨNG DỤNG}
+    \label{chapter:Experiment} \subfile{chapters/5_building-application}
+
+    \newpage
+    \chapter{CÁC GIẢI PHÁP VÀ ĐÓNG GÓP NỔI BẬT}
+    \label{chapter:Experiment} \subfile{chapters/6_contributions}
+
+    \newpage
+    \chapter{KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}
+    \label{chapter:Experiment} \subfile{chapters/7_conclude}
+
+    \newpage
+    \chapter*{TÀI LIỆU THAM KHẢO}
+    \subfile{sections/references}
+
+    \titleformat{\chapter}[hang]{\centering\bfseries}{ \thechapter.\ }{0pt}{}[]
+    \titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+    
+    \titlecontents{chapter}
+        [0.0cm]             
+        {\bfseries\vspace{0.3cm}}                  
+        {{\bfseries{\scshape} \thecontentslabel.\ }} 
+        {}
+        {\titlerule*[0.3pc]{.}\contentspage}
+\end{document}

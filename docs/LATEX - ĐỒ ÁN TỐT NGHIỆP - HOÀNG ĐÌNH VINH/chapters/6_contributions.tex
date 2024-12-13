@@ -1,0 +1,75 @@
+\documentclass[../index.tex]{subfiles}
+
+\begin{document}
+    \section{Máy chủ ủy quyền}
+    \subsection{Xác thực người dùng với JWT}
+    Em đã lựa chọn JWT (Json Web Token) để xác thực và ủy quyền thông tin người dùng cho máy chủ ủy quyền (Service.Identity), từ đây các service chỉ cần xác thực 1 lần duy nhất ở máy chủ này tương tự như cơ chế Single Sign-On (SSO).
+    
+    JWT là stateless nên mọi thông tin của người dùng được lưu trong token, không cần lưu trữ thông tin phiên trên server, giúp giảm tải truy vấn vào database. 
+    
+    Sau khi xác thực thành công, sẽ cấp access token chứa header, payload và signalture. Ở đây chúng ta có thể tùy ý tùy chỉnh payload như Id người dùng, email và các quyền mà người dùng này có.
+    
+    \subsection{Cơ chế refresh token}
+    Cơ chế refresh token là một kỹ thuật được sử dụng để gia hạn phiên đăng nhập của người dùng mà không yêu cầu người dùng phải đăng nhập lại. Nó hoạt động như sau:
+    \begin{enumerate}
+        \item Khi người dùng đăng nhập thành công, hệ thống sẽ cấp cho người dùng hai loại token
+            \begin{itemize}
+                \item Access token: Token này có thời hạn ngắn (ví dụ 15-30 phút), được sử dụng để xác thực người dùng trong các yêu cầu API.
+                \item Refresh token: Token này có thời hạn dài hơn (ví dụ 1-2 tuần), được sử dụng để gia hạn access token khi access token hết hạn.
+            \end{itemize}
+        \item Khi access token hết hạn, ứng dụng sẽ gửi yêu cầu gia hạn token đến hệ thống, kèm theo refresh token.
+        \item Hệ thống sẽ kiểm tra tính hợp lệ của refresh token. Nếu hợp lệ, hệ thống sẽ cấp cho ứng dụng một access token mới, giữ nguyên refresh token cũ.
+        \item Ứng dụng sẽ sử dụng access token mới để tiếp tục thực hiện các yêu cầu API, mà không cần người dùng phải đăng nhập lại.
+    \end{enumerate}
+    Cơ chế này giúp tăng tính bảo mật, vì access token có thời hạn ngắn, hạn chế rủi ro khi access token bị đánh cắp, cải thiện trải nghiệm người dùng, vì họ không cần phải đăng nhập lại thường xuyên và giảm tải cho hệ thống xác thực, vì không cần xác thực lại người dùng mỗi lần access token hết hạn.
+    
+    \subsection{Cơ chế phân quyền Role-Based Access Control (RBAC)}
+    RBAC (Role-Based Access Control) là một phương pháp quản lý và kiểm soát quyền truy cập trong hệ thống thông tin. Nó dựa trên ý tưởng cấp quyền truy cập cho người dùng dựa trên vai trò (role) của họ trong tổ chức, thay vì cấp quyền trực tiếp cho từng người dùng.
+
+    Dựa vào khái niệm trên, em đã phát triển được cơ chế ủy quyền dành riêng cho hệ thống. Khi người dùng xác thực, hệ thống sẽ truy vấn ra các vai trò của người dùng, từ đấy có thể lấy được các quyền của vai trò và tổng hợp lại rồi đẩy vào payload của access token. Mỗi request đến API hệ thống sẽ kiểm tra claims chứa trong access token và đối chiếu với policies của API. Nếu có thì sẽ được tiếp tục request và ngược lại nếu không có thì trả về mã lỗi 403 Forbiden.
+
+    \section{Realtime với WebSocket}
+    Service Socket sẽ theo dõi trạng thái hoạt động của người dùng thông qua Redis. Cụ thể
+    \begin{enumerate}
+        \item Client kết nối hệ thống với giao thức WebSocket thành công. 
+        \item Service Socket thêm UserId vào 1 set trong Redis có key ví dụ là "togethernet-user-online" như 1 nơi để lưu trữ kết nối WebSocket.
+        \item Hệ thống truy vấn theo key này để xử lý 1 số case như số lượng người dùng truy cập hoặc WebSocket gửi message chính xác đến người dùng đang online.
+        \item Khi client ngắt kết nối WebSocket, Service Socket sẽ xóa UserId trong Redis.
+    \end{enumerate}
+
+    \section{Giao tiếp giữa các service}
+    Để giao tiếp giữa các service trong hệ thống phân tán như hiện tại, em đã sử dụng gRPC, RabbitMQ và Redis. Tùy từng trường hợp cần thiết đồng bộ hay bất đồng bộ. Dưới đây là 1 số ý tưởng cũng như giải pháp triển khai cho 1 số case của em:
+    
+    \subsection{Trao đổi thông tin người dùng}
+    Khi bất kì service nào cần lấy thông tin của người dùng như tác giả bài viết, người dùng bình luận. Mà thông tin người dùng ở Service Identity, ta cần phải đồng bộ dữ liệu để trả response về cho client. Vì vậy gRPC rất phù hợp đối với trường hợp này. Cụ thể:
+    \begin{enumerate}
+        \item Các service gửi request gRPC đến service Identity.
+        \item Service Identity xử lý và trả về dữ liệu cho service yêu cầu.
+        \item Sau khi lấy được thông tin người dùng, sẽ ghép vào dữ liệu và trả về cho client.
+    \end{enumerate}
+    
+    \subsection{Xử lý các hoạt động, chat và thông báo theo thời gian thực}
+    Khi người dùng bình luận hay vote bài viết, service Community sẽ gửi một thông điệp đến RabbitMQ để thông báo về sự kiện này. Cụ thể:
+    \begin{enumerate}
+        \item Service Community phát đi một message đến RabbitMQ.
+        \item Service Notification đăng ký kênh nhận message từ Service Community, mỗi lần message đến sẽ xử lý và lưu lại dữ liệu thông báo.
+    \end{enumerate}
+    Vậy còn thời gian thực thì sao? Ta tiếp tục gửi message đến Service Socket một lần nữa:
+    \begin{enumerate}
+        \item Service Socket lắng nghe sự kiện trên các kênh được Service Notification và Service Chat gửi message
+        \item Service Socket xử lý message, nếu người dùng đang hoạt động thì sử dụng WebSocket để gửi message về cho client.
+        \item Client (Angular) nhận message từ WebSocket sẽ hiển thị thông báo cho người dùng. 
+    \end{enumerate}
+    Ý tưởng ở đây của em là ta tạo ra một service dành riêng cho việc quản lý kết nối WebSocket mà không bị phụ thuộc vào service nào. Ngoài ra trong tương lai, nếu số lượng người dùng tăng ta rất dễ dàng scacle và load balancer cho WebSocket.
+    
+    
+    \section{Tính lượt xem bài viết}
+    Em đã phát triển cơ chế tính view cho bài viết với yêu cầu mỗi lần người dùng xem 1 bài viết sẽ tính 1 lượt xem và ngăn chặn người dùng spam reload lại trang để gian lận.
+    
+    Redis có 1 khái niệm đó là atomicity (tính nguyên tử), đó là một tính chất quan trọng giúp đảm bảo tính nhất quán và đáng tin cậy của dữ liệu, đặc biệt khi có nhiều luồng (thread) hoặc tiến trình (process) truy cập và thao tác trên cùng một tập dữ liệu. Redis sử dụng các lệnh nguyên tử để thực hiện các thao tác trên dữ liệu, chẳng hạn như INCR, DECR, SET, GET, v.v. Các lệnh này được thực hiện một cách nguyên tử, đảm bảo rằng các thao tác này không thể bị gián đoạn bởi các thao tác khác.
+    
+    Dựa trên các tính chất của Redis, em đã triển khai Redis vào dự án. Mỗi khi người dùng xem bài viết, hệ thống sẽ increment 1 key lượt xem của bài viết này trên Redis. Đồng thời sẽ lưu trữ thời gian chờ để cộng lượt xem trên Redis thành 1 key có cài TTL (Time to Live) ví dụ như 1800 giây (30 phút). Nếu key còn tồn tại trên Redis thì không được cộng lượt xem, ngược lại thì sẽ cộng lượt xem bài viết đó.
+
+    Tuy nhiên, chúng ta cần phải đồng bộ dữ liệu từ Redis vào database vì Redis lưu trữ trên ram, có thể bị mất dữ liệu. Do thời gian còn ít nên hiện tại em chưa triển khai job đồng bộ được. Dự định trong tương lai, em sẽ thiết kế và phát triển thêm một service dành riêng cho việc xử lý các job định kỳ, sử dụng thư viện như Hangfire.
+
+\end{document}

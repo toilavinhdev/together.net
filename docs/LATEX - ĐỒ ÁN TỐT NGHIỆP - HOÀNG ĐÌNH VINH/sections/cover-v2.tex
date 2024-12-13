@@ -1,0 +1,40 @@
+\documentclass[../index.tex]{subfiles}
+
+\newcommand{\underwrite}[3][]{% \underwrite[<thickness>]{<numerator>}{<denominator>}
+\genfrac{}{}{#1}{}{\textstyle #2}{\scriptstyle #3} }
+
+\begin{document}
+  \begin{tikzpicture}[overlay, remember picture]
+    \draw[line width=3pt]
+      ($(current page.north west) + (3.0cm,-2.0cm)$) rectangle ($(current page.south east) + (-2.0cm,2.5cm)$);
+    \draw[line width=0.5pt]
+      ($(current page.north west) + (3.1cm,-2.1cm)$) rectangle ($(current page.south east) + (-2.1cm,2.6cm)$);
+  \end{tikzpicture}
+  
+  \begin{center}
+    {\textbf{\large{ĐẠI HỌC XÂY DỰNG HÀ NỘI\\[0.2cm]KHOA CÔNG NGHỆ THÔNG TIN\\}}}
+    \vspace{1.5cm}
+    \begin{figure}[h]
+      \centering
+      \includegraphics[width=0.3\textwidth]{figures/huce_logo.png}
+    \end{figure}
+    \vspace{1.5cm}
+    {\textbf{\huge{ĐỒ ÁN TỐT NGHIỆP\\}}}
+    \vspace{1cm}
+    {\textbf{XÂY DỰNG WEBSITE DIỄN ĐÀN TRỰC TUYẾN\\DỰA TRÊN KIẾN TRÚC MICROSERVICES\\}}
+    \vspace{1cm}
+
+    \begin{table}[h]
+      \centering
+      \begin{tabular}{ll}
+        \textbf{Sinh viên thực hiện:}    & Hoàng Đình Vinh      \\[0.3cm]
+        \textbf{Mã sinh viên:}           & 0222066              \\[0.3cm]
+        \textbf{Ngành:}                  & Khoa học máy tính    \\[0.3cm]
+        \textbf{Lớp:}                    & 66CS1                \\[0.3cm]
+        \textbf{Giảng viên hướng dẫn:}   & TS. Phạm Hồng Phong \\[2cm]
+        \multicolumn{2}{c}{Hà Nội - 2024}
+      \end{tabular}
+    \end{table}
+  \end{center}
+  \pagenumbering{gobble}
+\end{document}
