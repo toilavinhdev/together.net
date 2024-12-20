@@ -1,6 +1,4 @@
 ﻿# 128.199.239.124
-# docker compose -f dockers/docker-compose.cluster-1.yml up -d
-# docker compose -f dockers/docker-compose.cluster-1.yml up -d --force-recreate --no-deps --build <service-name>
 version: "3.8"
 
 services:

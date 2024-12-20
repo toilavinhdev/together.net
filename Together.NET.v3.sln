@@ -90,8 +90,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dockers", "dockers", "{B1A4E889-31CC-44AB-AE29-55C8C3EC0FB5}"
 	ProjectSection(SolutionItems) = preProject
 		dockers\docker-compose.dev.yml = dockers\docker-compose.dev.yml
-		dockers\docker-compose.cluster-1.yml = dockers\docker-compose.cluster-1.yml
-		dockers\docker-compose.master.yml = dockers\docker-compose.master.yml
+		dockers\docker-compose.prod-cluster-1.yml = dockers\docker-compose.prod-cluster-1.yml
+		dockers\docker-compose.prod-master.yml = dockers\docker-compose.prod-master.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jenkins", "jenkins", "{2C13FD6B-91EF-4299-94D3-5187216B9A05}"

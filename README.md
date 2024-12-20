@@ -22,3 +22,7 @@
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Please note, all source code is publicly available. 
+
+Absolutely do not use for trading purposes, please give me 1 ⭐ and cite me as a reference.

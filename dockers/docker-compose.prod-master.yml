@@ -1,6 +1,4 @@
 # 139.59.111.123
-# docker compose -f dockers/docker-compose.master.yml up -d
-# docker compose -f dockers/docker-compose.master.yml up -d --force-recreate --no-deps --build <service-name>
 version: "3.8"
 
 volumes:
